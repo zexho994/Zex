@@ -9,11 +9,11 @@ import java.util.Iterator;
  * @author Zexho
  * @date 2021/5/15 11:20 上午
  */
-public class ASLeaf extends ASTree {
+public class ASTLeaf extends ASTree {
 
     protected final Token token;
 
-    public ASLeaf(Token t) {
+    public ASTLeaf(Token t) {
         this.token = t;
     }
 
