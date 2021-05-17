@@ -1,4 +1,4 @@
-package astree;
+package ast;
 
 import java.util.Iterator;
 
