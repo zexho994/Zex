@@ -1,4 +1,7 @@
+import ast.ASTree;
 import exception.ParseException;
+import lexer.Lexer;
+import parse.BasicParser;
 import token.Token;
 
 /**
@@ -9,8 +12,10 @@ public class LexerRunner {
     public static void main(String[] args) throws ParseException {
         CodeDialog codeDialog = new CodeDialog();
         Lexer l = new Lexer(codeDialog);
-        for (Token t; (t = l.read()) != Token.EOF; ) {
-            System.out.println("=> " + t.getText());
+        BasicParser bp = new BasicParser();
+        while (l.peek(0) != Token.EOF) {
+            ASTree ast = bp.parse(l);
+            System.out.println("program: \n" + ast);
         }
     }
 }
