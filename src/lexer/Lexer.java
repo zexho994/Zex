@@ -1,3 +1,5 @@
+package lexer;
+
 import exception.ParseException;
 import token.IdToken;
 import token.NumToken;
