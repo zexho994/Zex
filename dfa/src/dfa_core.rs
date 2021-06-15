@@ -32,3 +32,10 @@ pub fn is_digit(idx: usize, s: &str) -> bool {
         false
     }
 }
+
+pub fn is_gt(idx: usize, s: &str) -> bool {
+    match s.chars().nth(idx) {
+        Some('>') => true,
+        _ => false
+    }
+}

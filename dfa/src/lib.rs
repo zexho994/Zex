@@ -35,4 +35,12 @@ mod test {
         assert!(!dfa_core::is_digit(5, &s1));
         assert!(!dfa_core::is_digit(6, &s1));
     }
+
+    #[test]
+    fn is_gt_test1() {
+        let s1 = "><=";
+        assert!(dfa_core::is_gt(0, &s1));
+        assert!(!dfa_core::is_gt(1, &s1));
+        assert!(!dfa_core::is_gt(2, &s1));
+    }
 }
