@@ -22,3 +22,13 @@ pub fn is_alpha(idx: usize, s: &str) -> bool {
         false
     }
 }
+
+// 判断idx索引的字符是否是数字 0~9
+pub fn is_digit(idx: usize, s: &str) -> bool {
+    let ch = s.chars().nth(idx).unwrap();
+    if ch >= '0' && ch <= '9' {
+        true
+    } else {
+        false
+    }
+}
