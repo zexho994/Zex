@@ -28,12 +28,11 @@ pub struct Token {
 }
 
 pub fn parse_part_one(s: String) {
-    let mut state = DfaState::Initial;
+    let mut state: DfaState = DfaState::Initial;
     let mut token = Token { _type: TokenType::None, text: String::from("") };
-    let len = s.chars().count();
     let mut i: usize = 0;
     let mut ch: char;
-    while i < len {
+    while i < s.chars().count() {
         ch = s.chars().nth(i).unwrap();
         if char_is_alpha(ch) {
             state = DfaState::Id;
@@ -49,7 +48,7 @@ pub fn parse_part_one(s: String) {
             token.text.push(ch);
         }
         i += 1;
-        if i == len {
+        if i == s.chars().count() {
             break;
         }
         ch = s.chars().nth(i).unwrap();
