@@ -4,7 +4,7 @@ mod dfa_core;
 mod test {
     use super::*;
 
-    // #[test]
+// #[test]
     // fn str_is_alpha_test() {
     //     let s1 = "h1a!";
     //     assert!(dfa_core::str_is_alpha(0, &s1));
@@ -44,7 +44,8 @@ mod test {
     // }
 
     #[test]
-    fn parse_part_one_test(){
-           dfa_core::parse_part_one(String::from("age<15"));
+    fn parse_part_one_test() {
+        let str1 = String::from("age>=15");
+        dfa_core::parse_part_one(str1);
     }
 }
