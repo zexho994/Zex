@@ -3,7 +3,7 @@ pub enum DfaState {
     // 初始状态
     Initial,
     // 字面量状态,数字
-    IntLiteral,
+    Number,
     // 标识符状态，数字或者字母
     Identifier,
     // 大于状态
@@ -16,12 +16,10 @@ pub enum DfaState {
 pub enum TokenType {
     None,
     Identifier,
-    IntLiteral,
+    Number,
     GT,
     GE,
 }
-
-type TokenList = Vec<Token>;
 
 #[derive(Debug)]
 pub struct Token {
@@ -32,50 +30,51 @@ pub struct Token {
 pub fn parse(s: String) {
     // let mut state: DfaState = DfaState::Initial;
     let mut i: usize = 0;
+    let mut tokens: Vec<Token> = Vec::new();
+
     while i < s.chars().count() {
         let (mut token, mut state) = init_to_other(i, s.as_str());
         i += 1;
         if i == s.chars().count() {
             break;
         }
-        let ch = s.chars().nth(i).unwrap();
+        let mut ch = s.chars().nth(i).unwrap();
         match state {
             DfaState::Initial => {
                 state = DfaState::Initial;
             }
             DfaState::Identifier => {
-                if char_is_alpha(ch) | char_is_digit(ch) {
+                while i < s.chars().count() && (char_is_alpha(ch) || char_is_digit(ch)) {
                     token.text.push(ch);
                     i += 1;
-                } else {
-                    state = DfaState::Initial;
+                    ch = s.chars().nth(i).unwrap();
                 }
+                tokens.push(token);
                 state = DfaState::Initial;
             }
             DfaState::GT => {
+                token._type = TokenType::GT;
                 if char_is_eq(ch) {
                     token._type = TokenType::GE;
-                    state = DfaState::GE;
                     token.text.push(ch);
                     i += 1;
-                } else {
-                    state = DfaState::Initial;
                 }
-            }
-            DfaState::GE => {
                 state = DfaState::Initial;
+                tokens.push(token);
             }
-            DfaState::IntLiteral => {
-                if char_is_digit(ch) {
+            DfaState::Number => {
+                while i < s.chars().count() && char_is_digit(ch) {
                     token.text.push(ch);
                     i += 1;
-                } else {
-                    state = DfaState::Initial;
+                    ch = s.chars().nth(i).unwrap();
                 }
+                token._type = TokenType::Number;
+                tokens.push(token);
+                state = DfaState::Initial;
             }
             _ => { panic!("token type error!") }
         }
-        println!("state: {:?}, token: {:?}", state, token);
+        println!("state: {:?}, tokens: {:?}", state, tokens);
     }
 }
 
@@ -89,15 +88,15 @@ pub fn init_to_other(i: usize, s: &str) -> (Token, DfaState) {
         token.text.push(ch);
         (token, DfaState::Identifier)
     } else if char_is_digit(ch) {
-        token._type = TokenType::IntLiteral;
+        token._type = TokenType::Number;
         token.text.push(ch);
-        (token, DfaState::IntLiteral)
+        (token, DfaState::Number)
     } else if char_is_gt(ch) {
         token._type = TokenType::GT;
         token.text.push(ch);
         (token, DfaState::GT)
     } else {
-        (token, DfaState::GT)
+        (token, DfaState::Initial)
     }
 }
 
