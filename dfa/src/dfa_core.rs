@@ -5,7 +5,7 @@ pub enum DfaState {
     // 字面量状态,数字
     IntLiteral,
     // 标识符状态，数字或者字母
-    Id,
+    Identifier,
     // 大于状态
     GT,
     // 大于等于状态
@@ -35,7 +35,7 @@ pub fn parse_part_one(s: String) {
     while i < s.chars().count() {
         ch = s.chars().nth(i).unwrap();
         if char_is_alpha(ch) {
-            state = DfaState::Id;
+            state = DfaState::Identifier;
             token._type = TokenType::Identifier;
             token.text.push(ch);
         } else if char_is_digit(ch) {
@@ -47,16 +47,18 @@ pub fn parse_part_one(s: String) {
             token._type = TokenType::GT;
             token.text.push(ch);
         }
+
         i += 1;
         if i == s.chars().count() {
             break;
         }
+
         ch = s.chars().nth(i).unwrap();
         match state {
             DfaState::Initial => {
                 state = DfaState::Initial;
             }
-            DfaState::Id => {
+            DfaState::Identifier => {
                 if char_is_alpha(ch) | char_is_digit(ch) {
                     token.text.push(ch);
                     i += 1;
