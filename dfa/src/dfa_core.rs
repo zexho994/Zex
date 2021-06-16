@@ -21,39 +21,24 @@ pub enum TokenType {
     GE,
 }
 
+type TokenList = Vec<Token>;
+
 #[derive(Debug)]
 pub struct Token {
     _type: TokenType,
     text: String,
 }
 
-pub fn parse_part_one(s: String) {
-    let mut state: DfaState = DfaState::Initial;
-    let mut token = Token { _type: TokenType::None, text: String::from("") };
+pub fn parse(s: String) {
+    // let mut state: DfaState = DfaState::Initial;
     let mut i: usize = 0;
-    let mut ch: char;
     while i < s.chars().count() {
-        ch = s.chars().nth(i).unwrap();
-        if char_is_alpha(ch) {
-            state = DfaState::Identifier;
-            token._type = TokenType::Identifier;
-            token.text.push(ch);
-        } else if char_is_digit(ch) {
-            state = DfaState::IntLiteral;
-            token._type = TokenType::IntLiteral;
-            token.text.push(ch);
-        } else if char_is_gt(ch) {
-            state = DfaState::GT;
-            token._type = TokenType::GT;
-            token.text.push(ch);
-        }
-
+        let (mut token, mut state) = init_to_other(i, s.as_str());
         i += 1;
         if i == s.chars().count() {
             break;
         }
-
-        ch = s.chars().nth(i).unwrap();
+        let ch = s.chars().nth(i).unwrap();
         match state {
             DfaState::Initial => {
                 state = DfaState::Initial;
@@ -90,9 +75,30 @@ pub fn parse_part_one(s: String) {
             }
             _ => { panic!("token type error!") }
         }
+        println!("state: {:?}, token: {:?}", state, token);
     }
+}
 
-    println!("state: {:?}, token: {:?}", state, token);
+/// 第一阶段，由Initial状态转化成其他状态
+pub fn init_to_other(i: usize, s: &str) -> (Token, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    let mut token = Token { _type: TokenType::None, text: String::from("") };
+
+    if char_is_alpha(ch) {
+        token._type = TokenType::Identifier;
+        token.text.push(ch);
+        (token, DfaState::Identifier)
+    } else if char_is_digit(ch) {
+        token._type = TokenType::IntLiteral;
+        token.text.push(ch);
+        (token, DfaState::IntLiteral)
+    } else if char_is_gt(ch) {
+        token._type = TokenType::GT;
+        token.text.push(ch);
+        (token, DfaState::GT)
+    } else {
+        (token, DfaState::GT)
+    }
 }
 
 // 判断字符是否是字母
