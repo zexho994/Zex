@@ -7,6 +7,6 @@ mod test {
     #[test]
     fn parse_part_one_test() {
         let str1 = String::from("age >= 15");
-        dfa_core::parse(str1);
+        dfa_core::parse_to_tokens(str1);
     }
 }

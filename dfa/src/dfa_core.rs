@@ -1,24 +1,25 @@
 #[derive(Debug)]
 pub enum DfaState {
     // 初始状态
-    Initial,
+    Initial = 0x1,
     // 字面量状态,数字
-    Number,
+    Number = 0x2,
     // 标识符状态，数字或者字母
-    Identifier,
+    Identifier = 0x3,
     // 大于状态
-    GT,
+    GT = 0x4,
     // 大于等于状态
-    GE,
+    GE = 0x5,
 }
 
 #[derive(Debug)]
 pub enum TokenType {
-    None,
-    Identifier,
-    Number,
-    GT,
-    GE,
+    None = 0x0,
+    Blank = 0x1,
+    Identifier = 0x2,
+    Number = 0x3,
+    GT = 0x4,
+    GE = 0x5,
 }
 
 #[derive(Debug)]
@@ -27,30 +28,27 @@ pub struct Token {
     text: String,
 }
 
-pub fn parse(s: String) {
-    // let mut state: DfaState = DfaState::Initial;
+pub fn parse_to_tokens(s: String) {
     let mut i: usize = 0;
     let mut tokens: Vec<Token> = Vec::new();
 
     while i < s.chars().count() {
-        let (mut token, mut state) = init_to_other(i, s.as_str());
+        let (mut token, mut state) = initial_to_other(i, s.as_str());
         i += 1;
-        if i == s.chars().count() {
-            break;
-        }
+        if i == s.chars().count() { break; }
         let mut ch = s.chars().nth(i).unwrap();
         match state {
             DfaState::Initial => {
-                state = DfaState::Initial;
+                continue;
             }
             DfaState::Identifier => {
-                while i < s.chars().count() && (char_is_alpha(ch) || char_is_digit(ch)) {
+                while char_is_alpha(ch) || char_is_digit(ch) {
                     token.text.push(ch);
                     i += 1;
+                    if i == s.chars().count() { break; }
                     ch = s.chars().nth(i).unwrap();
                 }
                 tokens.push(token);
-                state = DfaState::Initial;
             }
             DfaState::GT => {
                 token._type = TokenType::GT;
@@ -59,18 +57,17 @@ pub fn parse(s: String) {
                     token.text.push(ch);
                     i += 1;
                 }
-                state = DfaState::Initial;
                 tokens.push(token);
             }
             DfaState::Number => {
-                while i < s.chars().count() && char_is_digit(ch) {
+                while char_is_digit(ch) {
                     token.text.push(ch);
                     i += 1;
+                    if i == s.chars().count() { break; }
                     ch = s.chars().nth(i).unwrap();
                 }
                 token._type = TokenType::Number;
                 tokens.push(token);
-                state = DfaState::Initial;
             }
             _ => { panic!("token type error!") }
         }
@@ -79,11 +76,13 @@ pub fn parse(s: String) {
 }
 
 /// 第一阶段，由Initial状态转化成其他状态
-pub fn init_to_other(i: usize, s: &str) -> (Token, DfaState) {
+pub fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     let mut token = Token { _type: TokenType::None, text: String::from("") };
-
-    if char_is_alpha(ch) {
+    if ch == ' ' {
+        token._type = TokenType::Blank;
+        (token, DfaState::Initial)
+    } else if char_is_alpha(ch) {
         token._type = TokenType::Identifier;
         token.text.push(ch);
         (token, DfaState::Identifier)
@@ -96,7 +95,7 @@ pub fn init_to_other(i: usize, s: &str) -> (Token, DfaState) {
         token.text.push(ch);
         (token, DfaState::GT)
     } else {
-        (token, DfaState::Initial)
+        panic!("initial to other error");
     }
 }
 
