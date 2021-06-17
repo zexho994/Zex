@@ -1,5 +1,5 @@
 [package]
-name = "dfa"
+name = "parse_token"
 version = "0.1.0"
 authors = ["zexho <zouzhihao994@gmail.com>"]
 edition = "2018"
