@@ -3,6 +3,7 @@ use super::char_help::*;
 /// 有限状态机的状态枚举类
 #[derive(Debug)]
 enum DfaState {
+    Blank = 0x0,
     /// 初始状态
     Initial = 0x1,
     /// 字面量状态,数字
@@ -61,7 +62,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     let mut token = Token { _type: TokenType::Blank, text: String::from("") };
     if char_is_blank(ch) {
-        return (token, DfaState::Initial);
+        return (token, DfaState::Blank);
     }
     token.text.push(ch);
     if char_is_alpha(ch) {
@@ -91,7 +92,7 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
     while i < count {
         match state {
             DfaState::Initial => {
-                return i;
+                break;
             }
             DfaState::Int1 => {
                 let r = state_int1_handle(i, s, &mut token);
@@ -112,10 +113,9 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
                 break;
             }
             DfaState::Identifier => {
-                let ch = s.chars().nth(i).unwrap();
-                if !char_is_alpha(ch) && !char_is_digit(ch) { break; }
-                i += 1;
-                token.text.push(ch);
+                let r = state_identifier_handle(i, s, &mut token);
+                i = r.0;
+                state = r.1;
             }
             DfaState::GT => {
                 let ch = s.chars().nth(i).unwrap();
@@ -133,6 +133,9 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
                 }
                 i += 1;
                 token.text.push(ch);
+            }
+            DfaState::Blank => {
+                return i;
             }
             _ => { panic!("token type error!") }
         }
@@ -170,5 +173,15 @@ fn state_int3_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) 
     } else {
         token._type = TokenType::Identifier;
         (i, DfaState::Identifier)
+    }
+}
+
+fn state_identifier_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if char_is_alpha(ch) || char_is_digit(ch) {
+        token.text.push(ch);
+        (i + 1, DfaState::Identifier)
+    } else {
+        (i, DfaState::Initial)
     }
 }
