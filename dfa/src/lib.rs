@@ -1,4 +1,5 @@
 mod dfa_core;
+mod char_help;
 
 #[cfg(test)]
 mod test {
