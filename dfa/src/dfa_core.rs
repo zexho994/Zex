@@ -104,16 +104,9 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
                 state = r.1;
             }
             DfaState::Int3 => {
-                let ch = s.chars().nth(i).unwrap();
-                if !char_is_blank(ch) {
-                    token._type = TokenType::Identifier;
-                    state = DfaState::Identifier;
-                    continue;
-                }
-                token.text.push(ch);
-                state = DfaState::IntOK;
-                i += 1;
-                println!("dfa state int_3 -> int_ok");
+                let r = state_int3_handle(i, s, &mut token);
+                i = r.0;
+                state = r.1;
             }
             DfaState::IntOK => {
                 break;
@@ -167,5 +160,15 @@ fn state_int2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) 
     } else {
         token.text.push(ch);
         (i + 1, DfaState::Int3)
+    }
+}
+
+fn state_int3_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if char_is_blank(ch) {
+        (i + 1, DfaState::IntOK)
+    } else {
+        token._type = TokenType::Identifier;
+        (i, DfaState::Identifier)
     }
 }
