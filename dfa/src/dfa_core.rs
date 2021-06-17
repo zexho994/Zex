@@ -59,18 +59,22 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     let mut token = Token { _type: TokenType::Blank, text: String::from("") };
     if char_is_blank(ch) {
-        (token, DfaState::Initial)
-    } else if char_is_alpha(ch) {
-        token._type = TokenType::Identifier;
-        token.text.push(ch);
-        (token, DfaState::Identifier)
+        return (token, DfaState::Initial);
+    }
+    token.text.push(ch);
+    if char_is_alpha(ch) {
+        if ch == 'i' {
+            token._type = TokenType::Int;
+            (token, DfaState::Int1)
+        } else {
+            token._type = TokenType::Identifier;
+            (token, DfaState::Identifier)
+        }
     } else if char_is_digit(ch) {
         token._type = TokenType::Number;
-        token.text.push(ch);
         (token, DfaState::Number)
     } else if char_is_gt(ch) {
         token._type = TokenType::GT;
-        token.text.push(ch);
         (token, DfaState::GT)
     } else {
         panic!("initial to other error");
@@ -80,7 +84,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
 /// parse_to_token 会解析出一个完整的token，并添加到tokens中.
 ///     parse int keyword:  int_1 -> int_2 -> int_3 -> int_ok
 ///
-fn parse_to_token(state: DfaState, mut i: usize, s: &str, mut token: Token, mut tokens: &mut Vec<Token>) -> usize {
+fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, mut tokens: &mut Vec<Token>) -> usize {
     let count = s.chars().count();
     while i < count {
         match state {
@@ -88,7 +92,43 @@ fn parse_to_token(state: DfaState, mut i: usize, s: &str, mut token: Token, mut 
                 return i;
             }
             DfaState::Int1 => {
-                panic!("not impl Int1");
+                let ch = s.chars().nth(i).unwrap();
+                if ch != 'n' {
+                    token._type = TokenType::Identifier;
+                    state = DfaState::Identifier;
+                    continue;
+                }
+                token.text.push(ch);
+                state = DfaState::Int2;
+                i += 1;
+                println!("dfa state int_1 -> int_2");
+            }
+            DfaState::Int2 => {
+                let ch = s.chars().nth(i).unwrap();
+                if ch != 't' {
+                    token._type = TokenType::Identifier;
+                    state = DfaState::Identifier;
+                    continue;
+                }
+                token.text.push(ch);
+                state = DfaState::Int3;
+                i += 1;
+                println!("dfa state int_2 -> int_3");
+            }
+            DfaState::Int3 => {
+                let ch = s.chars().nth(i).unwrap();
+                if !char_is_blank(ch) {
+                    token._type = TokenType::Identifier;
+                    state = DfaState::Identifier;
+                    continue;
+                }
+                token.text.push(ch);
+                state = DfaState::IntOK;
+                i += 1;
+                println!("dfa state int_3 -> int_ok");
+            }
+            DfaState::IntOK => {
+                break;
             }
             DfaState::Identifier => {
                 let ch = s.chars().nth(i).unwrap();
@@ -117,7 +157,7 @@ fn parse_to_token(state: DfaState, mut i: usize, s: &str, mut token: Token, mut 
         }
     }
     tokens.push(token);
-    return i;
+    i
 }
 
 fn char_is_blank(ch: char) -> bool {

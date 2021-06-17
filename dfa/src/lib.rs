@@ -22,4 +22,27 @@ mod test {
         dfa_core::parse_to_tokens(str1);
     }
 
+    #[test]
+    fn parse_test_4() {
+        let str1 = String::from("int num > 01");
+        dfa_core::parse_to_tokens(str1);
+    }
+
+    #[test]
+    fn parse_test_5() {
+        let str1 = String::from("inte num > 01");
+        dfa_core::parse_to_tokens(str1);
+    }
+
+    #[test]
+    fn parse_test_6() {
+        let str1 = String::from("in num > 01");
+        dfa_core::parse_to_tokens(str1);
+    }
+
+    #[test]
+    fn parse_test_7() {
+        let str1 = String::from("i int num > 01");
+        dfa_core::parse_to_tokens(str1);
+    }
 }
