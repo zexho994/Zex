@@ -1,23 +1,30 @@
+/// 有限状态机的状态枚举类
 #[derive(Debug)]
 enum DfaState {
-    // 初始状态
+    /// 初始状态
     Initial = 0x1,
-    // 字面量状态,数字
+    /// 字面量状态,数字
     Number = 0x2,
-    // 标识符状态，数字或者字母
+    /// 标识符状态，数字或者字母
     Identifier = 0x3,
-    // 大于状态
+    /// 大于状态
     GT = 0x4,
-    // 大于等于状态
+    /// 大于等于状态
     GE = 0x5,
 }
 
+/// token 的类型枚举
 #[derive(Debug)]
 enum TokenType {
+    /// 空格类型
     Blank = 0x1,
+    /// 标识符类型
     Identifier = 0x2,
+    /// 数字字面量类型
     Number = 0x3,
+    /// > 符号
     GT = 0x4,
+    /// >= 符号
     GE = 0x5,
 }
 
@@ -61,6 +68,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     }
 }
 
+/// other_to_token 会解析出一个完整的token，并添加到tokens中.
 fn other_to_token(state: DfaState, mut i: usize, s: &str, mut token: Token, mut tokens: &mut Vec<Token>) -> usize {
     match state {
         DfaState::Initial => {}
@@ -98,7 +106,7 @@ fn other_to_token(state: DfaState, mut i: usize, s: &str, mut token: Token, mut 
     return i;
 }
 
-// 判断字符是否是字母
+/// 判断字符是否是字母
 fn char_is_alpha(ch: char) -> bool {
     if ch >= 'a' && ch <= 'z' {
         true
@@ -109,7 +117,7 @@ fn char_is_alpha(ch: char) -> bool {
     }
 }
 
-// 判断字符是否是数字 0~9
+/// 判断字符是否是数字 0~9
 fn char_is_digit(ch: char) -> bool {
     if ch >= '0' && ch <= '9' {
         true
@@ -118,7 +126,7 @@ fn char_is_digit(ch: char) -> bool {
     }
 }
 
-// 判断字符是否是'>'符号
+/// 判断字符是否是'>'符号
 fn char_is_gt(ch: char) -> bool {
     if ch == '>' {
         true
@@ -127,7 +135,7 @@ fn char_is_gt(ch: char) -> bool {
     }
 }
 
-// 判断字符是否是'='符号
+/// 判断字符是否是'='符号
 fn char_is_eq(ch: char) -> bool {
     if ch == '=' {
         true
