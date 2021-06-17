@@ -1,5 +1,6 @@
-mod dfa_core;
-mod char_help;
+pub mod dfa_core;
+pub mod char_help;
+pub mod state_handing;
 
 #[cfg(test)]
 mod test {

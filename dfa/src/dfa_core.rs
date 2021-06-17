@@ -1,8 +1,9 @@
 use super::char_help::*;
+use super::state_handing::*;
 
 /// 有限状态机的状态枚举类
 #[derive(Debug)]
-enum DfaState {
+pub enum DfaState {
     Blank = 0x0,
     /// 初始状态
     Initial = 0x1,
@@ -26,7 +27,7 @@ enum DfaState {
 
 /// token 的类型枚举
 #[derive(Debug)]
-enum TokenType {
+pub enum TokenType {
     /// 空格类型
     Blank = 0x1,
     /// 标识符类型
@@ -42,9 +43,9 @@ enum TokenType {
 }
 
 #[derive(Debug)]
-struct Token {
-    _type: TokenType,
-    text: String,
+pub struct Token {
+    pub _type: TokenType,
+    pub text: String,
 }
 
 pub fn parse_to_tokens(s: String) {
@@ -125,67 +126,4 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
     }
     tokens.push(token);
     return i;
-}
-
-fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
-    let ch = s.chars().nth(i).unwrap();
-    if ch == 'n' {
-        token.text.push(ch);
-        (i + 1, DfaState::Int2)
-    } else {
-        token._type = TokenType::Identifier;
-        (i, DfaState::Identifier)
-    }
-}
-
-fn state_int2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
-    let ch = s.chars().nth(i).unwrap();
-    if ch != 't' {
-        token._type = TokenType::Identifier;
-        (i, DfaState::Identifier)
-    } else {
-        token.text.push(ch);
-        (i + 1, DfaState::Int3)
-    }
-}
-
-fn state_int3_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
-    let ch = s.chars().nth(i).unwrap();
-    if char_is_blank(ch) {
-        (i + 1, DfaState::IntOK)
-    } else {
-        token._type = TokenType::Identifier;
-        (i, DfaState::Identifier)
-    }
-}
-
-fn state_identifier_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
-    let ch = s.chars().nth(i).unwrap();
-    if char_is_alpha(ch) || char_is_digit(ch) {
-        token.text.push(ch);
-        (i + 1, DfaState::Identifier)
-    } else {
-        (i, DfaState::Initial)
-    }
-}
-
-fn state_gt_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
-    let ch = s.chars().nth(i).unwrap();
-    if char_is_eq(ch) {
-        token._type = TokenType::GE;
-        token.text.push(ch);
-        (i + 1, DfaState::Initial)
-    } else {
-        (i, DfaState::Initial)
-    }
-}
-
-fn state_number_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
-    let ch = s.chars().nth(i).unwrap();
-    if char_is_digit(ch) {
-        token.text.push(ch);
-        (i + 1, DfaState::Number)
-    } else {
-        (i, DfaState::Initial)
-    }
 }
