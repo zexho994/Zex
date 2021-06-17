@@ -99,15 +99,9 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
                 state = r.1;
             }
             DfaState::Int2 => {
-                let ch = s.chars().nth(i).unwrap();
-                if ch != 't' {
-                    token._type = TokenType::Identifier;
-                    state = DfaState::Identifier;
-                    continue;
-                }
-                token.text.push(ch);
-                state = DfaState::Int3;
-                i += 1;
+                let r = state_int2_handle(i, s, &mut token);
+                i = r.0;
+                state = r.1;
             }
             DfaState::Int3 => {
                 let ch = s.chars().nth(i).unwrap();
@@ -154,7 +148,7 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
     i
 }
 
-fn state_int1_handle(mut i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'n' {
         token.text.push(ch);
@@ -162,5 +156,16 @@ fn state_int1_handle(mut i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
     } else {
         token._type = TokenType::Identifier;
         (i, DfaState::Identifier)
+    }
+}
+
+fn state_int2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch != 't' {
+        token._type = TokenType::Identifier;
+        (i, DfaState::Identifier)
+    } else {
+        token.text.push(ch);
+        (i + 1, DfaState::Int3)
     }
 }
