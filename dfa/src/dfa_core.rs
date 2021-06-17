@@ -1,4 +1,4 @@
-use super::char_help;
+use super::char_help::*;
 
 /// 有限状态机的状态枚举类
 #[derive(Debug)]
@@ -60,11 +60,11 @@ pub fn parse_to_tokens(s: String) {
 fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     let mut token = Token { _type: TokenType::Blank, text: String::from("") };
-    if char_help::char_is_blank(ch) {
+    if char_is_blank(ch) {
         return (token, DfaState::Initial);
     }
     token.text.push(ch);
-    if char_help::char_is_alpha(ch) {
+    if char_is_alpha(ch) {
         if ch == 'i' {
             token._type = TokenType::Int;
             (token, DfaState::Int1)
@@ -72,10 +72,10 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
             token._type = TokenType::Identifier;
             (token, DfaState::Identifier)
         }
-    } else if char_help::char_is_digit(ch) {
+    } else if char_is_digit(ch) {
         token._type = TokenType::Number;
         (token, DfaState::Number)
-    } else if char_help::char_is_gt(ch) {
+    } else if char_is_gt(ch) {
         token._type = TokenType::GT;
         (token, DfaState::GT)
     } else {
@@ -119,7 +119,7 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
             }
             DfaState::Int3 => {
                 let ch = s.chars().nth(i).unwrap();
-                if !char_help::char_is_blank(ch) {
+                if !char_is_blank(ch) {
                     token._type = TokenType::Identifier;
                     state = DfaState::Identifier;
                     continue;
@@ -134,13 +134,13 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
             }
             DfaState::Identifier => {
                 let ch = s.chars().nth(i).unwrap();
-                if !(char_help::char_is_alpha(ch) || char_help::char_is_digit(ch)) { break; }
+                if !(char_is_alpha(ch) || char_is_digit(ch)) { break; }
                 i += 1;
                 token.text.push(ch);
             }
             DfaState::GT => {
                 let ch = s.chars().nth(i).unwrap();
-                if char_help::char_is_eq(ch) {
+                if char_is_eq(ch) {
                     token._type = TokenType::GE;
                     token.text.push(ch);
                     i += 1;
@@ -149,7 +149,7 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
             }
             DfaState::Number => {
                 let ch = s.chars().nth(i).unwrap();
-                if !char_help::char_is_digit(ch) {
+                if !char_is_digit(ch) {
                     break;
                 }
                 i += 1;
