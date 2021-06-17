@@ -87,54 +87,44 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
 /// parse_to_token 会解析出一个完整的token，并添加到tokens中.
 ///     parse int keyword:  int_1 -> int_2 -> int_3 -> int_ok
 ///
-fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, mut tokens: &mut Vec<Token>) -> usize {
-    let count = s.chars().count();
-    while i < count {
+fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, tokens: &mut Vec<Token>) -> usize {
+    let mut handle_res: (usize, DfaState);
+    while i < s.chars().count() {
         match state {
-            DfaState::Initial => {
+            DfaState::Initial => { // 遇到initial的时候，表示一个token已经解析完，跳出此次循环保存该token
                 break;
             }
             DfaState::Int1 => {
-                let r = state_int1_handle(i, s, &mut token);
-                i = r.0;
-                state = r.1;
+                handle_res = state_int1_handle(i, s, &mut token);
             }
             DfaState::Int2 => {
-                let r = state_int2_handle(i, s, &mut token);
-                i = r.0;
-                state = r.1;
+                handle_res = state_int2_handle(i, s, &mut token);
             }
             DfaState::Int3 => {
-                let r = state_int3_handle(i, s, &mut token);
-                i = r.0;
-                state = r.1;
+                handle_res = state_int3_handle(i, s, &mut token);
             }
             DfaState::IntOK => {
                 break;
             }
             DfaState::Identifier => {
-                let r = state_identifier_handle(i, s, &mut token);
-                i = r.0;
-                state = r.1;
+                handle_res = state_identifier_handle(i, s, &mut token);
             }
             DfaState::GT => {
-                let r = state_gt_handle(i, s, &mut token);
-                i = r.0;
-                state = r.1;
+                handle_res = state_gt_handle(i, s, &mut token);
             }
             DfaState::Number => {
-                let r = state_number_handle(i, s, &mut token);
-                i = r.0;
-                state = r.1;
+                handle_res = state_number_handle(i, s, &mut token);
             }
             DfaState::Blank => {
                 return i;
             }
             _ => { panic!("token type error!") }
         }
+        i = handle_res.0;
+        state = handle_res.1;
     }
     tokens.push(token);
-    i
+    return i;
 }
 
 fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
