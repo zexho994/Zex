@@ -94,16 +94,9 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
                 return i;
             }
             DfaState::Int1 => {
-                let ch = s.chars().nth(i).unwrap();
-                if ch != 'n' {
-                    token._type = TokenType::Identifier;
-                    state = DfaState::Identifier;
-                    continue;
-                }
-                token.text.push(ch);
-                state = DfaState::Int2;
-                i += 1;
-                println!("dfa state int_1 -> int_2");
+                let r = state_int1_handle(i, s, &mut token);
+                i = r.0;
+                state = r.1;
             }
             DfaState::Int2 => {
                 let ch = s.chars().nth(i).unwrap();
@@ -115,7 +108,6 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
                 token.text.push(ch);
                 state = DfaState::Int3;
                 i += 1;
-                println!("dfa state int_2 -> int_3");
             }
             DfaState::Int3 => {
                 let ch = s.chars().nth(i).unwrap();
@@ -134,7 +126,7 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
             }
             DfaState::Identifier => {
                 let ch = s.chars().nth(i).unwrap();
-                if !(char_is_alpha(ch) || char_is_digit(ch)) { break; }
+                if !char_is_alpha(ch) && !char_is_digit(ch) { break; }
                 i += 1;
                 token.text.push(ch);
             }
@@ -160,4 +152,15 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
     }
     tokens.push(token);
     i
+}
+
+fn state_int1_handle(mut i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 'n' {
+        token.text.push(ch);
+        (i + 1, DfaState::Int2)
+    } else {
+        token._type = TokenType::Identifier;
+        (i, DfaState::Identifier)
+    }
 }
