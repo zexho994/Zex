@@ -118,13 +118,9 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
                 state = r.1;
             }
             DfaState::GT => {
-                let ch = s.chars().nth(i).unwrap();
-                if char_is_eq(ch) {
-                    token._type = TokenType::GE;
-                    token.text.push(ch);
-                    i += 1;
-                }
-                break;
+                let r = state_gt_handle(i, s, &mut token);
+                i = r.0;
+                state = r.1;
             }
             DfaState::Number => {
                 let ch = s.chars().nth(i).unwrap();
@@ -181,6 +177,17 @@ fn state_identifier_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaS
     if char_is_alpha(ch) || char_is_digit(ch) {
         token.text.push(ch);
         (i + 1, DfaState::Identifier)
+    } else {
+        (i, DfaState::Initial)
+    }
+}
+
+fn state_gt_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if char_is_eq(ch) {
+        token._type = TokenType::GE;
+        token.text.push(ch);
+        (i + 1, DfaState::Initial)
     } else {
         (i, DfaState::Initial)
     }
