@@ -47,4 +47,11 @@ mod test {
         let str1 = String::from("i int num > 01");
         dfa_core::parse_to_tokens(str1);
     }
+
+    /// 测试 + 符号解析
+    #[test]
+    fn parse_test_8() {
+        let str1 = String::from("int a > 1 + 1 ");
+        let tokens = dfa_core::parse_to_tokens(str1);
+    }
 }

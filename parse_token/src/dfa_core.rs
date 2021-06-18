@@ -64,7 +64,7 @@ pub struct Token {
     pub text: String,
 }
 
-pub fn parse_to_tokens(s: String) {
+pub fn parse_to_tokens(s: String) -> Vec<Token> {
     let mut i: usize = 0;
     let mut tokens: Vec<Token> = Vec::new();
     while i < s.chars().count() {
@@ -72,6 +72,7 @@ pub fn parse_to_tokens(s: String) {
         i = parse_to_token(state, i + 1, s.as_str(), token, &mut tokens);
     }
     println!("the tokens is {:?}", tokens);
+    tokens
 }
 
 /// 第一阶段，由Initial状态转化成其他状态
@@ -82,27 +83,55 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
         return (token, DfaState::Blank);
     }
     token.text.push(ch);
+
     if char_is_alpha(ch) {
-        if ch == 'i' {
+        return if ch == 'i' {
             token._type = TokenType::Int;
             (token, DfaState::Int1)
         } else {
             token._type = TokenType::Identifier;
             (token, DfaState::Identifier)
-        }
-    } else if char_is_digit(ch) {
-        token._type = TokenType::Number;
-        (token, DfaState::Number)
-    } else if char_is_gt(ch) {
-        token._type = TokenType::GT;
-        (token, DfaState::GT)
-    } else {
-        panic!("initial to other error");
+        };
     }
+
+    if char_is_digit(ch) {
+        token._type = TokenType::Number;
+        return (token, DfaState::Number);
+    }
+
+    if char_is_gt(ch) {
+        token._type = TokenType::GT;
+        return (token, DfaState::GT);
+    }
+
+    if ch == '+' {
+        token._type = TokenType::Plus;
+        return (token, DfaState::Plus);
+    }
+
+    if ch == '-' {
+        token._type = TokenType::Minux;
+        return (token, DfaState::Minux);
+    }
+
+    if ch == '*' {
+        token._type = TokenType::Star;
+        return (token, DfaState::Star);
+    }
+
+    if ch == '/' {
+        token._type = TokenType::Slash;
+        return (token, DfaState::Slash);
+    }
+
+    panic!("initial to other error");
 }
 
-/// parse_to_token 会解析出一个完整的token，并添加到tokens中.
-///     parse int keyword:  int_1 -> int_2 -> int_3 -> int_ok
+/// # parse_to_token ()
+/// 会解析出一个完整的token，并添加到tokens中.
+/// ##
+/// ## 解析说明:
+/// - parse int keyword:  int_1 -> int_2 -> int_3 -> int_ok
 ///
 fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, tokens: &mut Vec<Token>) -> usize {
     let mut handle_res: (usize, DfaState);
@@ -132,6 +161,10 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
             DfaState::Number => {
                 handle_res = state_number_handle(i, s, &mut token);
             }
+            DfaState::Plus => { handle_res = state_plus_handle(i, s, &mut token); }
+            // DfaState::Minux => {}
+            // DfaState::Star => {}
+            // DfaState::Slash => {}
             DfaState::Blank => {
                 return i;
             }
