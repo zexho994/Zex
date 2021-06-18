@@ -135,6 +135,12 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
 ///
 fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, tokens: &mut Vec<Token>) -> usize {
     let mut handle_res: (usize, DfaState);
+
+    match state {
+        DfaState::Blank => { return i; }
+        _ => {}
+    }
+
     while i < s.chars().count() {
         match state {
             DfaState::Initial => { // 遇到initial的时候，表示一个token已经解析完，跳出此次循环保存该token
@@ -161,18 +167,12 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
             DfaState::Number => {
                 handle_res = state_number_handle(i, s, &mut token);
             }
-            DfaState::Plus => { handle_res = state_plus_handle(i, s, &mut token); }
-            // DfaState::Minux => {}
-            // DfaState::Star => {}
-            // DfaState::Slash => {}
-            DfaState::Blank => {
-                return i;
-            }
+            DfaState::Plus | DfaState::Minux | DfaState::Star | DfaState::Slash => { handle_res = state_algorithm_handle(i); }
             _ => { panic!("token type error!") }
         }
         i = handle_res.0;
         state = handle_res.1;
     }
     tokens.push(token);
-    return i;
+    i
 }

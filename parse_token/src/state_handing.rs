@@ -64,8 +64,6 @@ pub fn state_number_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaS
     }
 }
 
-pub fn state_plus_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
-    let ch = s.chars().nth(i).unwrap();
-    token.text.push(ch);
+pub fn state_algorithm_handle(i:usize) -> (usize, DfaState) {
     (i, DfaState::Initial)
 }
