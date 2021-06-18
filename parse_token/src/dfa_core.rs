@@ -23,23 +23,39 @@ pub enum DfaState {
     Int3 = 0x8,
     /// int_ok 的状态.int_3后字符为空格
     IntOK = 0x9,
+    // '+'
+    Plus = 0xa,
+    // '-'
+    Minux = 0xb,
+    // '*'
+    Star = 0xc,
+    // '/'
+    Slash = 0xd,
 }
 
 /// token 的类型枚举
 #[derive(Debug)]
 pub enum TokenType {
-    /// 空格类型
+    // 空格类型
     Blank = 0x1,
-    /// 标识符类型
+    // 标识符类型
     Identifier = 0x2,
-    /// 数字字面量类型
+    // 数字字面量类型
     Number = 0x3,
-    /// > 符号
+    // > 符号
     GT = 0x4,
-    /// >= 符号
+    // >= 符号
     GE = 0x5,
-    /// int 关键字
+    // int 关键字
     Int = 0x6,
+    // '+'
+    Plus = 0x7,
+    // '-'
+    Minux = 0x8,
+    // '*'
+    Star = 0x9,
+    // '/'
+    Slash = 0xc,
 }
 
 #[derive(Debug)]
@@ -52,7 +68,7 @@ pub fn parse_to_tokens(s: String) {
     let mut i: usize = 0;
     let mut tokens: Vec<Token> = Vec::new();
     while i < s.chars().count() {
-        let (mut token, mut state) = initial_to_other(i, s.as_str());
+        let (token, state) = initial_to_other(i, s.as_str());
         i = parse_to_token(state, i + 1, s.as_str(), token, &mut tokens);
     }
     println!("the tokens is {:?}", tokens);
