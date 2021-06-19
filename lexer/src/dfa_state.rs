@@ -1,4 +1,3 @@
-
 /// 有限状态机的状态枚举类
 #[derive(Debug)]
 pub enum DfaState {

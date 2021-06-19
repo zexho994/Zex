@@ -2,6 +2,7 @@ pub mod dfa_core;
 pub mod char_help;
 pub mod state_handing;
 pub mod dfa_state;
+pub mod token;
 
 #[cfg(test)]
 mod test {

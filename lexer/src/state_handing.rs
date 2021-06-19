@@ -1,6 +1,7 @@
 use super::char_help::*;
 use super::dfa_core::*;
 use super::dfa_state::*;
+use super::token::*;
 
 pub fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
