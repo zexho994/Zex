@@ -1,15 +1,13 @@
 use super::*;
+use token::*;
 
-pub fn hello() {
-    println!("Hello parse");
+pub fn parse_tokens(tokens: &mut Tokens){
+
 }
 
-pub fn blank() {
-    let b = ' ';
-    let f = char_is_blank(b);
-    assert!(f);
-}
+fn int_variable_declaration() {
 
-fn int_variable_declaration(tokens: &mut Vec<Token>) {}
+
+}
 
 

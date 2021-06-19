@@ -1,3 +1,5 @@
+use super::dfa_core;
+
 /// token 的类型枚举
 #[derive(Debug)]
 pub enum TokenType {
@@ -55,6 +57,10 @@ impl Tokens {
             false
         }
     }
+}
+
+pub fn new_tokens(text: String) -> Tokens {
+    dfa_core::parse_to_tokens(text)
 }
 
 #[derive(Debug)]

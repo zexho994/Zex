@@ -115,7 +115,21 @@ mod test {
         match tokens.read() {
             Option::Some(_token) => {
                 assert!(tokens.count() == 0);
-                assert_eq!(_token.text,"a");
+                assert_eq!(_token.text, "a");
+            }
+            _ => { panic!("parse_test_12 failure!") }
+        }
+    }
+
+    #[test]
+    fn get_tokens() {
+        let str1 = String::from("a");
+        let mut tokens = token::new_tokens(str1);
+        assert!(tokens.data.len() == 1);
+        match tokens.read() {
+            Option::Some(_token) => {
+                assert!(tokens.count() == 0);
+                assert_eq!(_token.text, "a");
             }
             _ => { panic!("parse_test_12 failure!") }
         }
