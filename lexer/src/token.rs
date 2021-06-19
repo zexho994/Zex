@@ -1,4 +1,3 @@
-
 /// token 的类型枚举
 #[derive(Debug)]
 pub enum TokenType {
@@ -25,12 +24,22 @@ pub enum TokenType {
 }
 
 #[derive(Debug)]
+pub struct Tokens {
+    pub data: Vec<Token>,
+}
+
+impl Tokens {
+    pub fn peek(&self) -> Option<&Token> {
+        if self.data.len() == 0 {
+            return Option::None;
+        }
+        Option::Some(&self.data[0])
+    }
+}
+
+#[derive(Debug)]
 pub struct Token {
     pub _type: TokenType,
     pub text: String,
 }
 
-#[derive(Debug)]
-pub struct Tokens {
-    pub data: Vec<Token>,
-}

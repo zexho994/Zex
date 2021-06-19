@@ -87,5 +87,20 @@ mod test {
         let str1 = String::from(" / ");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 1);
+        match tokens.peek() {
+            Option::Some(_token) => { assert!(_token.text == "/") }
+            _ => { panic!("parse_test_11: unexpected") }
+        }
+    }
+
+    #[test]
+    fn parse_test_12() {
+        let str1 = String::from(" ");
+        let tokens = dfa_core::parse_to_tokens(str1);
+        assert!(tokens.data.len() == 0);
+        match tokens.peek() {
+            Option::None => {}
+            _ => { panic!("parse_test_12 failure!") }
+        }
     }
 }

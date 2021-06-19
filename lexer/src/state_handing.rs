@@ -1,4 +1,4 @@
-use super::{char_help::*, dfa_core::*, dfa_state::*, token::*};
+use super::{char_help::*, dfa_state::*, token::*};
 
 pub fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
