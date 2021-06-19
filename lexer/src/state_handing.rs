@@ -1,7 +1,4 @@
-use super::char_help::*;
-use super::dfa_core::*;
-use super::dfa_state::*;
-use super::token::*;
+use super::{char_help::*, dfa_core::*, dfa_state::*, token::*};
 
 pub fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
@@ -66,6 +63,6 @@ pub fn state_number_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaS
     }
 }
 
-pub fn state_algorithm_handle(i:usize) -> (usize, DfaState) {
+pub fn state_algorithm_handle(i: usize) -> (usize, DfaState) {
     (i, DfaState::Initial)
 }
