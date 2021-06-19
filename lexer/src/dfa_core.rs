@@ -1,37 +1,6 @@
 use super::char_help::*;
 use super::state_handing::*;
-
-/// 有限状态机的状态枚举类
-#[derive(Debug)]
-pub enum DfaState {
-    Blank = 0x0,
-    /// 初始状态
-    Initial = 0x1,
-    /// 字面量状态,数字
-    Number = 0x2,
-    /// 标识符状态，数字或者字母
-    Identifier = 0x3,
-    /// 大于状态
-    GT = 0x4,
-    /// 大于等于状态
-    GE = 0x5,
-    /// int_1的状态.首字母为'i'的情况
-    Int1 = 0x6,
-    /// int_2的状态.int_1后字母为'n'
-    Int2 = 0x7,
-    /// int_3的状态.int_2后字母为't'
-    Int3 = 0x8,
-    /// int_ok 的状态.int_3后字符为空格
-    IntOK = 0x9,
-    // '+'
-    Plus = 0xa,
-    // '-'
-    Minux = 0xb,
-    // '*'
-    Star = 0xc,
-    // '/'
-    Slash = 0xd,
-}
+use super::dfa_state::*;
 
 /// token 的类型枚举
 #[derive(Debug)]
@@ -64,12 +33,17 @@ pub struct Token {
     pub text: String,
 }
 
-pub fn parse_to_tokens(s: String) -> Vec<Token> {
+#[derive(Debug)]
+pub struct Tokens {
+    pub data: Vec<Token>,
+}
+
+pub fn parse_to_tokens(s: String) -> Tokens {
     let mut i: usize = 0;
-    let mut tokens: Vec<Token> = Vec::new();
+    let mut tokens: Tokens = Tokens { data: Vec::new() };
     while i < s.chars().count() {
         let (token, state) = initial_to_other(i, s.as_str());
-        i = parse_to_token(state, i + 1, s.as_str(), token, &mut tokens);
+        i = parse_to_token(state, i + 1, s.as_str(), token, &mut tokens.data);
     }
     println!("the tokens is {:?}", tokens);
     tokens
