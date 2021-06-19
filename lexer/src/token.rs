@@ -35,6 +35,26 @@ impl Tokens {
         }
         Option::Some(&self.data[0])
     }
+
+    pub fn read(&mut self) -> Option<Token> {
+        if self.is_empty() {
+            return Option::None;
+        }
+        Option::Some(self.data.remove(0))
+    }
+
+    pub fn count(&self) -> usize {
+        self.data.len()
+    }
+
+    /// 判断token.data的元素数量是否为0
+    fn is_empty(&self) -> bool {
+        if self.data.len() == 0 {
+            true
+        } else {
+            false
+        }
+    }
 }
 
 #[derive(Debug)]
