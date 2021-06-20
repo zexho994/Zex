@@ -35,6 +35,10 @@ mod tests {
     fn ast(){
         let mut tokens = token::new_tokens(String::from("int a = 1 +  2 * 3"));
         let mut root = parse::new_ast_node(tokens.read().unwrap());
+        match root.get_child(0) {
+            None => {}
+            _ => {panic!("root get child should be None")}
+        }
         root.add_child(tokens.read().unwrap());
         let c1 = root.get_child(0).unwrap();
         c1.add_child(tokens.read().unwrap());

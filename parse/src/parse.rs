@@ -19,7 +19,11 @@ pub fn add_child(ast: &mut AstNode,t: Token) {
 
 impl AstNode {
     pub fn get_child(&mut self,i: usize) -> Option<&mut AstNode> {
-        self._child.get_mut(i)
+        return if self._child.len() <= i {
+            None
+        }else{
+            self._child.get_mut(i)
+        }
     }
 
     pub fn add_child(&mut self,child: Token) {
