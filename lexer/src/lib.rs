@@ -17,21 +17,14 @@ mod test {
 
     #[test]
     fn parse_test_2() {
-        let str1 = String::from("num > 0");
+        let str1 = String::from("num > = 0");
         let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 3);
-    }
-
-    #[test]
-    fn parse_test_3() {
-        let str1 = String::from("num > 01");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 3);
+        assert!(tokens.data.len() == 4);
     }
 
     #[test]
     fn parse_test_4() {
-        let str1 = String::from("int num > 01");
+        let str1 = String::from("int num >= 01");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 4);
     }
@@ -39,13 +32,6 @@ mod test {
     #[test]
     fn parse_test_5() {
         let str1 = String::from("inte num > 01");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 4);
-    }
-
-    #[test]
-    fn parse_test_6() {
-        let str1 = String::from("in num > 01");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 4);
     }
@@ -60,44 +46,20 @@ mod test {
     /// 测试 + 符号解析
     #[test]
     fn parse_test_8() {
-        let str1 = String::from(" + ");
+        let str1 = String::from(" + - *  /");
         let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 1);
-    }
-
-    /// 测试 + 符号解析
-    #[test]
-    fn parse_test_9() {
-        let str1 = String::from(" - ");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 1);
-    }
-
-    /// 测试 + 符号解析
-    #[test]
-    fn parse_test_10() {
-        let str1 = String::from(" * ");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 1);
-    }
-
-    /// 测试 + 符号解析
-    #[test]
-    fn parse_test_11() {
-        let str1 = String::from(" / ");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 1);
-        match tokens.peek() {
-            Option::Some(_token) => {
-                assert!(_token.text == "/");
-                assert_eq!(1, tokens.count());
-            }
-            _ => { panic!("parse_test_11: unexpected") }
-        }
+        assert!(tokens.data.len() == 4);
     }
 
     #[test]
     fn parse_test_12() {
+        let str1 = String::from("int num = 1 ");
+        let tokens = dfa_core::parse_to_tokens(str1);
+        assert!(tokens.data.len() == 4);
+    }
+
+    #[test]
+    fn parse_test_13() {
         let str1 = String::from(" ");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 0);

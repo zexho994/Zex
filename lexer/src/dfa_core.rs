@@ -40,6 +40,11 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
         return (token, DfaState::GT);
     }
 
+    if ch == '=' {
+        token._type = TokenType::EQ;
+        return (token, DfaState::EQ);
+    }
+
     if ch == '+' {
         token._type = TokenType::Plus;
         return (token, DfaState::Plus);
@@ -79,31 +84,17 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
 
     while i < s.chars().count() {
         match state {
-            DfaState::Initial => { // 遇到initial的时候，表示一个token已经解析完，跳出此次循环保存该token
-                break;
-            }
-            DfaState::Int1 => {
-                handle_res = state_int1_handle(i, s, &mut token);
-            }
-            DfaState::Int2 => {
-                handle_res = state_int2_handle(i, s, &mut token);
-            }
-            DfaState::Int3 => {
-                handle_res = state_int3_handle(i, s, &mut token);
-            }
-            DfaState::IntOK => {
-                break;
-            }
-            DfaState::Identifier => {
-                handle_res = state_identifier_handle(i, s, &mut token);
-            }
-            DfaState::GT => {
-                handle_res = state_gt_handle(i, s, &mut token);
-            }
-            DfaState::Number => {
-                handle_res = state_number_handle(i, s, &mut token);
-            }
+            // 遇到initial的时候，表示一个token已经解析完，跳出此次循环保存该token
+            DfaState::Initial => { break; }
+            DfaState::Int1 => { handle_res = state_int1_handle(i, s, &mut token); }
+            DfaState::Int2 => { handle_res = state_int2_handle(i, s, &mut token); }
+            DfaState::Int3 => { handle_res = state_int3_handle(i, s, &mut token); }
+            DfaState::IntOK => { break; }
+            DfaState::Identifier => { handle_res = state_identifier_handle(i, s, &mut token); }
+            DfaState::GT => { handle_res = state_gt_handle(i, s, &mut token); }
+            DfaState::Number => { handle_res = state_number_handle(i, s, &mut token); }
             DfaState::Plus | DfaState::Minux | DfaState::Star | DfaState::Slash => { handle_res = state_algorithm_handle(i); }
+            DfaState::EQ => { handle_res = state_eq_handle(i); }
             _ => { panic!("token type error!") }
         }
         i = handle_res.0;

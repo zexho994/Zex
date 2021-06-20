@@ -63,6 +63,12 @@ pub fn state_number_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaS
     }
 }
 
+/// 遇到算数运算符，已经是一个完整的token
+/// 直接返回Initial进行下一轮解析
 pub fn state_algorithm_handle(i: usize) -> (usize, DfaState) {
     (i, DfaState::Initial)
+}
+
+pub fn state_eq_handle(i: usize) -> (usize, DfaState) {
+    (i + 1, DfaState::Initial)
 }

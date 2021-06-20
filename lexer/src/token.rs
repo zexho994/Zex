@@ -4,25 +4,27 @@ use super::dfa_core;
 #[derive(Debug)]
 pub enum TokenType {
     // 空格类型
-    Blank = 0x1,
+    Blank,
     // 标识符类型
-    Identifier = 0x2,
+    Identifier,
     // 数字字面量类型
-    Number = 0x3,
+    Number,
+    // = 符号
+    EQ,
     // > 符号
-    GT = 0x4,
+    GT,
     // >= 符号
-    GE = 0x5,
+    GE,
     // int 关键字
-    Int = 0x6,
+    Int,
     // '+'
-    Plus = 0x7,
+    Plus,
     // '-'
-    Minux = 0x8,
+    Minux,
     // '*'
-    Star = 0x9,
+    Star,
     // '/'
-    Slash = 0xc,
+    Slash,
 }
 
 #[derive(Debug)]
