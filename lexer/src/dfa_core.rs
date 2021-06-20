@@ -7,7 +7,6 @@ pub fn parse_to_tokens(s: String) -> Tokens {
         let (token, state) = initial_to_other(i, s.as_str());
         i = parse_to_token(state, i + 1, s.as_str(), token, &mut tokens.data);
     }
-    println!("the tokens is {:?}", tokens);
     tokens
 }
 

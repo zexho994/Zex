@@ -1,8 +1,6 @@
 pub use lexer::token;
 
-mod parse;
-
-// pub use lexer::Tokens;
+pub mod parse;
 
 #[cfg(test)]
 mod tests {
@@ -17,6 +15,37 @@ mod tests {
                 assert_eq!(_tokens.count(), 0);
             }
             _ => { panic!("invoke_lexer failed") }
+        }
+    }
+
+    #[test]
+    fn parse_tokens_to_ast() {
+        let mut tokens = token::new_tokens(String::from("int a = 1 +  2 * 3"));
+        assert_eq!(tokens.count(), 8);
+        parse::parse_tokens_to_ast(&mut tokens);
+    }
+
+    #[test]
+    fn match_mul_expr() {
+        let mut tokens = token::new_tokens(String::from("2"));
+        parse::match_mul_expr(&mut tokens);
+    }
+
+    #[test]
+    fn ast(){
+        let mut tokens = token::new_tokens(String::from("int a = 1 +  2 * 3"));
+        let mut root = parse::new_ast_node(tokens.read().unwrap());
+        root.add_child(tokens.read().unwrap());
+        let c1 = root.get_child(0).unwrap();
+        c1.add_child(tokens.read().unwrap());
+        let c2 = c1.get_child(0).unwrap();
+        c2.add_child(tokens.read().unwrap());
+        match c2.get_child(0) {
+            Some(t) => {
+                 t.add_child(tokens.read().unwrap());
+                 println!("t is {:?}",t); 
+            }
+            _ => {panic!("ast failed")}
         }
     }
 }
