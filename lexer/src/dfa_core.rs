@@ -50,8 +50,8 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     }
 
     if ch == '-' {
-        token._type = TokenType::Minux;
-        return (token, DfaState::Minux);
+        token._type = TokenType::Minus;
+        return (token, DfaState::Minus);
     }
 
     if ch == '*' {
@@ -92,7 +92,7 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
             DfaState::Identifier => { handle_res = state_identifier_handle(i, s, &mut token); }
             DfaState::GT => { handle_res = state_gt_handle(i, s, &mut token); }
             DfaState::Number => { handle_res = state_number_handle(i, s, &mut token); }
-            DfaState::Plus | DfaState::Minux | DfaState::Star | DfaState::Slash => { handle_res = state_algorithm_handle(i); }
+            DfaState::Plus | DfaState::Minus | DfaState::Star | DfaState::Slash => { handle_res = state_algorithm_handle(i); }
             DfaState::EQ => { handle_res = state_eq_handle(i); }
             _ => { panic!("token type error!") }
         }

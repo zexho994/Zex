@@ -20,7 +20,7 @@ pub enum TokenType {
     // '+'
     Plus,
     // '-'
-    Minux,
+    Minus,
     // '*'
     Star,
     // '/'

@@ -25,7 +25,7 @@ pub enum DfaState {
     // '+'
     Plus,
     // '-'
-    Minux,
+    Minus,
     // '*'
     Star,
     // '/'
