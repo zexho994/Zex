@@ -41,11 +41,14 @@ pub fn parse_tokens_to_ast(mut tokens: Tokens) -> Option<AstNode> {
 /// ## 语法规则
 /// int {identifier} {eq} {expr}
 fn int_variable_declaration(tokens: &mut Tokens) -> Option<AstNode> {
-    let int = tokens.read().unwrap();
-    let id = tokens.read().unwrap();
-    let eq = tokens.read().unwrap();
+    let mut ast = new_ast_node(tokens.read().unwrap());
+    let child_id = new_ast_node(tokens.read().unwrap());
+    let child_eq = new_ast_node(tokens.read().unwrap());
+    ast.add_child(child_id);
+    ast.add_child(child_eq);
     // match add
-    match_add_expr(tokens)
+    ast.add_child(match_add_expr(tokens).unwrap());
+    Option::Some(ast)
 }
 
 /// ## BNF

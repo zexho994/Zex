@@ -24,6 +24,7 @@ mod tests {
     fn parse_tokens_to_ast() {
         let tokens = token::new_tokens(String::from("int a = 1 * 3"));
         let ast = parse::parse_tokens_to_ast(tokens);
+        println!("parse tokens to ast {:?}", ast);
     }
 
     #[test]
@@ -36,7 +37,7 @@ mod tests {
     #[test]
     fn match_mul_expr() {
         let mut tokens = token::new_tokens(String::from("2 * 3"));
-        let ast =  parse::match_mul_expr(&mut tokens);
+        let ast = parse::match_mul_expr(&mut tokens);
         println!("ast is -> {:?}", ast.unwrap());
     }
 
