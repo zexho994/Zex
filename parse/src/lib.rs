@@ -2,24 +2,11 @@ pub use lexer::token;
 
 pub mod ast_node_type;
 pub mod parse;
+pub mod ast_node;
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn invoke_lexer() {
-        let mut _tokens = token::new_tokens(String::from("a"));
-        match _tokens.read() {
-            Option::Some(_token) => {
-                assert_eq!(_token.text, "a");
-                assert_eq!(_tokens.count(), 0);
-            }
-            _ => {
-                panic!("invoke_lexer failed")
-            }
-        }
-    }
 
     #[test]
     fn parse_tokens_to_ast() {
@@ -34,6 +21,14 @@ mod tests {
         let ast = parse::parse_tokens_to_ast(&mut tokens);
         println!("ast is {:?}", ast)
     }
+
+    #[test]
+    fn parse_tokens_to_ast_2() {
+        let mut tokens = token::new_tokens(String::from("int a = 1 + 2 * 3 + 4 * 5"));
+        let ast = parse::parse_tokens_to_ast(&mut tokens);
+        println!("ast is {:?}", ast)
+    }
+
     #[test]
     fn match_add_expr() {
         let mut tokens = token::new_tokens(String::from("1 + 2 + 3"));
