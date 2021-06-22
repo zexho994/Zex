@@ -1,4 +1,5 @@
-enum AstNodeType {
+#[derive(Debug)]
+pub enum AstNodeType {
 	Program,        // 程序入口，根节点
 	IntDeclaration, // 整型变量声明
 	ExpressionStmt, // 表达式语句，即表达式后面跟个分号';'

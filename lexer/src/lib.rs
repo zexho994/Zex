@@ -1,7 +1,7 @@
-pub mod dfa_core;
 pub mod char_help;
-pub mod state_handing;
+pub mod dfa_core;
 pub mod dfa_state;
+pub mod state_handing;
 pub mod token;
 
 #[cfg(test)]
@@ -43,19 +43,27 @@ mod test {
         assert!(tokens.data.len() == 5);
     }
 
-    /// 测试 + 符号解析
-    #[test]
-    fn parse_test_8() {
-        let str1 = String::from(" + - *  /");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 4);
-    }
-
     #[test]
     fn parse_test_12() {
         let str1 = String::from("int num = 1 ");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 4);
+    }
+
+    #[test]
+    fn parse_test_11() {
+        let str1 = String::from("=");
+        let tokens = dfa_core::parse_to_tokens(str1);
+        assert!(tokens.data.len() == 1);
+        match tokens.peek() {
+            Some(t) => match t._type {
+                token::TokenType::Assignment => {
+                    println!("");
+                }
+                _ => panic!("token"),
+            },
+            None => panic!("parse test fail"),
+        }
     }
 
     #[test]
@@ -65,7 +73,9 @@ mod test {
         assert!(tokens.data.len() == 0);
         match tokens.peek() {
             Option::None => {}
-            _ => { panic!("parse_test_12 failure!") }
+            _ => {
+                panic!("parse_test_12 failure!")
+            }
         }
     }
 
@@ -79,7 +89,9 @@ mod test {
                 assert!(tokens.count() == 0);
                 assert_eq!(_token.text, "a");
             }
-            _ => { panic!("parse_test_12 failure!") }
+            _ => {
+                panic!("parse_test_12 failure!")
+            }
         }
     }
 
@@ -93,7 +105,9 @@ mod test {
                 assert!(tokens.count() == 0);
                 assert_eq!(_token.text, "a");
             }
-            _ => { panic!("parse_test_12 failure!") }
+            _ => {
+                panic!("parse_test_12 failure!")
+            }
         }
     }
 }

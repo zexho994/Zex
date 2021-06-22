@@ -1,5 +1,6 @@
 pub use lexer::token;
 
+pub mod ast_node_type;
 pub mod parse;
 
 #[cfg(test)]
@@ -22,34 +23,28 @@ mod tests {
 
     #[test]
     fn parse_tokens_to_ast() {
-        let tokens = token::new_tokens(String::from("int a = 1 * 3"));
-        let ast = parse::parse_tokens_to_ast(tokens);
-        println!("parse tokens to ast {:?}", ast);
+        let mut tokens = token::new_tokens(String::from("int a = 1 * 3"));
+        let ast = parse::parse_tokens_to_ast(&mut tokens);
+        println!("ast is {:?}", ast)
     }
 
     #[test]
+    fn parse_tokens_to_ast_1() {
+        let mut tokens = token::new_tokens(String::from("int a = 1 + 2 * 3"));
+        let ast = parse::parse_tokens_to_ast(&mut tokens);
+        println!("ast is {:?}", ast)
+    }
+    #[test]
     fn match_add_expr() {
-        let mut tokens = token::new_tokens(String::from("1 + 2 * 3"));
+        let mut tokens = token::new_tokens(String::from("1 + 2 + 3"));
         let ast = parse::match_add_expr(&mut tokens);
-        println!("ast is -> {:?}", ast.unwrap());
+        println!("ast is {:?}", ast)
     }
 
     #[test]
     fn match_mul_expr() {
-        let mut tokens = token::new_tokens(String::from("2 * 3"));
+        let mut tokens = token::new_tokens(String::from("1 * 2 * 3"));
         let ast = parse::match_mul_expr(&mut tokens);
-        println!("ast is -> {:?}", ast.unwrap());
-    }
-
-    #[test]
-    fn ast() {
-        let mut tokens = token::new_tokens(String::from("2 * 3"));
-        let mut root = parse::new_ast_node(tokens.read().unwrap());
-        match root.get_child(0) {
-            None => {}
-            _ => {
-                panic!("root get child should be None")
-            }
-        }
+        println!("ast is {:?}", ast)
     }
 }

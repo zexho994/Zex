@@ -40,7 +40,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     }
 
     if ch == '=' {
-        token._type = TokenType::EQ;
+        token._type = TokenType::Assignment;
         return (token, DfaState::EQ);
     }
 

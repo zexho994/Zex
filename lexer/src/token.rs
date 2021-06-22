@@ -2,6 +2,7 @@ use super::dfa_core;
 
 /// token 的类型枚举
 #[derive(Debug)]
+#[warn(unused_variables)]
 pub enum TokenType {
     // 空格类型
     Blank,
@@ -9,12 +10,14 @@ pub enum TokenType {
     Identifier,
     // 数字字面量类型
     Number,
-    // = 符号
+    // == 符号
     EQ,
     // > 符号
     GT,
     // >= 符号
     GE,
+    // =
+    Assignment,
     // int 关键字
     Int,
     // '+'
@@ -70,4 +73,3 @@ pub struct Token {
     pub _type: TokenType,
     pub text: String,
 }
-
