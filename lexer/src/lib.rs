@@ -16,20 +16,6 @@ mod test {
     }
 
     #[test]
-    fn parse_test_2() {
-        let str1 = String::from("num > = 0");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 4);
-    }
-
-    #[test]
-    fn parse_test_4() {
-        let str1 = String::from("int num >= 01");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 4);
-    }
-
-    #[test]
     fn parse_test_5() {
         let str1 = String::from("inte num > 01");
         let tokens = dfa_core::parse_to_tokens(str1);
@@ -83,22 +69,6 @@ mod test {
     fn tokens_read() {
         let str1 = String::from("a");
         let mut tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 1);
-        match tokens.read() {
-            Option::Some(_token) => {
-                assert!(tokens.count() == 0);
-                assert_eq!(_token.text, "a");
-            }
-            _ => {
-                panic!("parse_test_12 failure!")
-            }
-        }
-    }
-
-    #[test]
-    fn get_tokens() {
-        let str1 = String::from("a");
-        let mut tokens = token::new_tokens(str1);
         assert!(tokens.data.len() == 1);
         match tokens.read() {
             Option::Some(_token) => {

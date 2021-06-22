@@ -11,21 +11,21 @@ mod tests {
     #[test]
     fn parse_tokens_to_ast() {
         let mut tokens = token::new_tokens(String::from("int a = 1 * 3"));
-        let ast = parse::parse_tokens_to_ast(&mut tokens);
+        let ast = parse::parse_to_ast(&mut tokens);
         println!("ast is {:?}", ast)
     }
 
     #[test]
     fn parse_tokens_to_ast_1() {
         let mut tokens = token::new_tokens(String::from("int a = 1 + 2 * 3"));
-        let ast = parse::parse_tokens_to_ast(&mut tokens);
+        let ast = parse::parse_to_ast(&mut tokens);
         println!("ast is {:?}", ast)
     }
 
     #[test]
     fn parse_tokens_to_ast_2() {
         let mut tokens = token::new_tokens(String::from("int a = 1 + 2 * 3 + 4 * 5"));
-        let ast = parse::parse_tokens_to_ast(&mut tokens);
+        let ast = parse::parse_to_ast(&mut tokens);
         println!("ast is {:?}", ast)
     }
 

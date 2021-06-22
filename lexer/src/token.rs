@@ -43,6 +43,14 @@ impl Tokens {
         Option::Some(&self.data[0])
     }
 
+    pub fn check_peek(&self) -> Result<&Token, &str> {
+        if self.data.len() == 0 {
+            Result::Err("tokens count is 0")
+        } else {
+            Result::Ok(&self.data[0])
+        }
+    }
+
     pub fn read(&mut self) -> Option<Token> {
         if self.is_empty() {
             return Option::None;

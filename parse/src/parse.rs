@@ -4,11 +4,7 @@ use ast_node::*;
 
 use super::*;
 
-pub fn parse_tokens_to_ast(tokens: &mut Tokens) -> Option<AstNode> {
-    match_program(tokens)
-}
-
-fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn parse_to_ast(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_root = new_ast();
     match tokens.peek() {
         Some(t) => match t._type {
@@ -22,6 +18,7 @@ fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
     }
 }
 
+/// <intDeclare> :== int <id> <assignment> <expr>
 fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_node: AstNode;
 
