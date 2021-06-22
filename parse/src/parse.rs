@@ -6,15 +6,13 @@ use super::*;
 
 pub fn parse_to_ast(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_root = new_ast();
-    match tokens.peek() {
-        Some(t) => match t._type {
-            TokenType::Int => {
-                ast_root.add_child(match_int_declare(tokens).unwrap());
-                Option::Some(ast_root)
-            }
-            _ => panic!("match program failed"),
-        },
-        None => Some(ast_root),
+    tokens.check_peek().expect("Error parsing");
+    match tokens.peek().unwrap()._type {
+        TokenType::Int => {
+            ast_root.add_child(match_int_declare(tokens).unwrap());
+            Option::Some(ast_root)
+        }
+        _ => panic!("match program failed"),
     }
 }
 
@@ -23,36 +21,30 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_node: AstNode;
 
     // match 'int'
-    match tokens.peek() {
-        Some(_t) => match _t._type {
-            TokenType::Int => {
-                tokens.read();
-            }
-            _ => panic!("match int failed"),
-        },
-        None => return None,
+    tokens.check_peek().expect("Error match int");
+    match tokens.peek().unwrap()._type {
+        TokenType::Int => {
+            tokens.read();
+        }
+        _ => panic!("match int failed"),
     }
 
     // match id
-    match tokens.peek() {
-        Some(_t) => match _t._type {
-            TokenType::Identifier => {
-                ast_node = new_ast_node(AstNodeType::IntDeclaration, tokens.read().unwrap().text)
-            }
-            _ => panic!("match id failed"),
-        },
-        None => return None,
+    tokens.check_peek().expect("Error match id");
+    match tokens.peek().unwrap()._type {
+        TokenType::Identifier => {
+            ast_node = new_ast_node(AstNodeType::IntDeclaration, tokens.read().unwrap().text)
+        }
+        _ => panic!("match id failed"),
     }
 
     // match '='
-    match tokens.peek() {
-        Some(_t) => match _t._type {
-            TokenType::Assignment => {
-                tokens.read();
-            }
-            _ => panic!("match assignment failed"),
-        },
-        None => return None,
+    tokens.check_peek().expect("Error match =");
+    match tokens.peek().unwrap()._type {
+        TokenType::Assignment => {
+            tokens.read();
+        }
+        _ => panic!("match assignment failed"),
     }
 
     // match expr
