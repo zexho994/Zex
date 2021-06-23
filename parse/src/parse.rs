@@ -1,5 +1,6 @@
 use ast_node::*;
 use ast_node_type::*;
+use std::collections::HashMap;
 use token::*;
 
 use super::*;
@@ -14,32 +15,61 @@ pub fn parse_to_ast(tokens: &mut Tokens) -> i32 {
         _ => panic!("match program failed"),
     }
     println!("ast root: {:?}", ast_root);
-    calculate(&mut ast_root.get_child(0).unwrap())
+    let mut var_map: HashMap<String, i32> = HashMap::new();
+    calculate(&mut ast_root.get_child(0).unwrap(), &mut var_map)
 }
 
-pub fn calculate(ast: &mut AstNode) -> i32 {
+pub fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
     match ast._type {
         AstNodeType::IntDeclaration => {
-            calculate(ast.get_child(0).unwrap())
+            match var_map.contains_key(&ast._text) {
+                // 变量存在
+                true => {
+                    let old = *var_map.get(&ast._text).unwrap();
+                    let l = match ast.get_child(0) {
+                        Some(node) => calculate(node, var_map),
+                        None => 0,
+                    };
+                    let r = match ast.get_child(1) {
+                        Some(node) => calculate(node, var_map),
+                        None => 0,
+                    };
+                    var_map.insert(ast._text.as_str().to_string(), old + l + r);
+                    old + l + r
+                }
+                // 变量不存在
+                false => {
+                    let l = match ast.get_child(0) {
+                        Some(node) => calculate(node, var_map),
+                        None => 0,
+                    };
+                    let r = match ast.get_child(1) {
+                        Some(node) => calculate(node, var_map),
+                        None => 0,
+                    };
+                    var_map.insert(ast._text.as_str().to_string(), l + r);
+                    l + r
+                }
+            }
         }
         AstNodeType::Additive => {
             let l = match ast.get_child(0) {
-                Some(node) => calculate(node),
+                Some(node) => calculate(node, var_map),
                 None => 0,
             };
             let r = match ast.get_child(1) {
-                Some(node) => calculate(node),
+                Some(node) => calculate(node, var_map),
                 None => 0,
             };
             l + r
         }
         AstNodeType::Multiplicative => {
             let l = match ast.get_child(0) {
-                Some(node) => calculate(node),
+                Some(node) => calculate(node, var_map),
                 None => 0,
             };
             let r = match ast.get_child(1) {
-                Some(node) => calculate(node),
+                Some(node) => calculate(node, var_map),
                 None => 1,
             };
             l * r
