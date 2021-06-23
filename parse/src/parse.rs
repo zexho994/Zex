@@ -34,7 +34,15 @@ pub fn calculate(ast: &mut AstNode) -> i32 {
             l + r
         }
         AstNodeType::Multiplicative => {
-            calculate(ast.get_child(0).unwrap()) * calculate(ast.get_child(1).unwrap())
+            let l = match ast.get_child(0) {
+                Some(node) => calculate(node),
+                None => 0,
+            };
+            let r = match ast.get_child(1) {
+                Some(node) => calculate(node),
+                None => 1,
+            };
+            l * r
         }
         AstNodeType::IntLiteral => ast._text.parse().unwrap(),
         _ => panic!("calculate error, p is {:?}", ast),
