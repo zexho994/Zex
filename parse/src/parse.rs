@@ -1,18 +1,43 @@
+use ast_node::*;
 use ast_node_type::*;
 use token::*;
-use ast_node::*;
 
 use super::*;
 
-pub fn parse_to_ast(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn parse_to_ast(tokens: &mut Tokens) -> i32 {
     let mut ast_root = new_ast();
     tokens.check_peek().expect("Error parsing");
     match tokens.peek().unwrap()._type {
         TokenType::Int => {
             ast_root.add_child(match_int_declare(tokens).unwrap());
-            Option::Some(ast_root)
         }
         _ => panic!("match program failed"),
+    }
+    println!("ast root: {:?}", ast_root);
+    calculate(&mut ast_root.get_child(0).unwrap())
+}
+
+pub fn calculate(ast: &mut AstNode) -> i32 {
+    match ast._type {
+        AstNodeType::IntDeclaration => {
+            calculate(ast.get_child(0).unwrap())
+        }
+        AstNodeType::Additive => {
+            let l = match ast.get_child(0) {
+                Some(node) => calculate(node),
+                None => 0,
+            };
+            let r = match ast.get_child(1) {
+                Some(node) => calculate(node),
+                None => 0,
+            };
+            l + r
+        }
+        AstNodeType::Multiplicative => {
+            calculate(ast.get_child(0).unwrap()) * calculate(ast.get_child(1).unwrap())
+        }
+        AstNodeType::IntLiteral => ast._text.parse().unwrap(),
+        _ => panic!("calculate error, p is {:?}", ast),
     }
 }
 
@@ -116,7 +141,7 @@ pub fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
     let node: AstNode;
     match tokens.peek() {
         Some(t1) => match t1._type {
-            TokenType::Number => {
+            TokenType::IntLiteral => {
                 let t2 = tokens.read().unwrap();
                 node = new_ast_node(AstNodeType::IntLiteral, t2.text);
             }

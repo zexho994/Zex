@@ -9,7 +9,7 @@ pub enum TokenType {
     // 标识符类型
     Identifier,
     // 数字字面量类型
-    Number,
+    IntLiteral,
     // == 符号
     EQ,
     // > 符号

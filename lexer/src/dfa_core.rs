@@ -30,7 +30,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     }
 
     if char_is_digit(ch) {
-        token._type = TokenType::Number;
+        token._type = TokenType::IntLiteral;
         return (token, DfaState::Number);
     }
 
