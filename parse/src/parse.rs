@@ -19,7 +19,8 @@ pub fn parse_to_ast(tokens: &mut Tokens) -> i32 {
     calculate(&mut ast_root.get_child(0).unwrap(), &mut var_map)
 }
 
-pub fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
+/// 计算Ast的值
+fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
     match ast._type {
         AstNodeType::IntDeclaration => {
             match var_map.contains_key(&ast._text) {
@@ -79,7 +80,7 @@ pub fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
     }
 }
 
-/// <intDeclare> :== int <id> <assignment> <expr>
+/// <intDeclare> :== int <id> <assignment> <expr> ';' ;
 fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_node: AstNode;
 
@@ -119,6 +120,13 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         None => return Option::Some(ast_node),
     }
 
+    match tokens.read() {
+        Some(_t) => match _t._type {
+            TokenType::SemiColon => {}
+            _ => panic!(""),
+        },
+        None => panic!("missing ';' at intDeclare"),
+    }
     Option::Some(ast_node)
 }
 
@@ -139,6 +147,9 @@ pub fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
                         }
                         None => panic!("match add expr failed, the child2 it not be null"),
                     }
+                }
+                TokenType::SemiColon => {
+                    break;
                 }
                 _ => panic!("match add expr failed,_t1 is {:?}", t1),
             },
@@ -166,7 +177,10 @@ pub fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
                         None => panic!("match mul expr error"),
                     }
                 }
-                _ => break,
+                TokenType::Plus | TokenType::SemiColon => {
+                    break;
+                }
+                _ => panic!("match mul expr error,t1 is {:?}", t1),
             },
             None => break,
         }

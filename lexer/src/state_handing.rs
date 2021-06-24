@@ -1,5 +1,9 @@
 use super::{char_help::*, dfa_state::*, token::*};
 
+/// if  
+///     int 第二个字符为n => 继续验证第三个字符n
+/// else
+///     为一个标识符i 
 pub fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'n' {
@@ -71,4 +75,8 @@ pub fn state_algorithm_handle(i: usize) -> (usize, DfaState) {
 
 pub fn state_eq_handle(i: usize) -> (usize, DfaState) {
     (i + 1, DfaState::Initial)
+}
+
+pub fn state_semicolon_handle(i: usize) -> (usize, DfaState) {
+    (i,DfaState::SemiColon)
 }
