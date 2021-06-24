@@ -64,6 +64,11 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
         return (token, DfaState::Slash);
     }
 
+    if ch == ';' {
+        token._type = TokenType::SemiColon;
+        return (token, DfaState::SemiColon);
+    }
+
     panic!("initial to other error");
 }
 
@@ -84,11 +89,10 @@ fn parse_to_token(mut state: DfaState, mut i: usize, s: &str, mut token: Token, 
     while i < s.chars().count() {
         match state {
             // 遇到initial的时候，表示一个token已经解析完，跳出此次循环保存该token
-            DfaState::Initial => { break; }
+            DfaState::Initial | DfaState::IntOK | DfaState::SemiColon => { break; }
             DfaState::Int1 => { handle_res = state_int1_handle(i, s, &mut token); }
             DfaState::Int2 => { handle_res = state_int2_handle(i, s, &mut token); }
             DfaState::Int3 => { handle_res = state_int3_handle(i, s, &mut token); }
-            DfaState::IntOK => { break; }
             DfaState::Identifier => { handle_res = state_identifier_handle(i, s, &mut token); }
             DfaState::GT => { handle_res = state_gt_handle(i, s, &mut token); }
             DfaState::Number => { handle_res = state_number_handle(i, s, &mut token); }

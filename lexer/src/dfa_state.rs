@@ -1,7 +1,10 @@
 /// 有限状态机的状态枚举类
 #[derive(Debug)]
 pub enum DfaState {
+    /// 空格
     Blank,
+    /// ;
+    SemiColon,
     /// 初始状态
     Initial,
     /// 字面量状态,数字

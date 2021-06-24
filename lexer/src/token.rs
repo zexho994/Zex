@@ -28,6 +28,8 @@ pub enum TokenType {
     Star,
     // '/'
     Slash,
+    // ;
+    SemiColon,
 }
 
 #[derive(Debug)]

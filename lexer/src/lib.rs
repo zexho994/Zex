@@ -10,34 +10,34 @@ mod test {
 
     #[test]
     fn parse_test_1() {
-        let str1 = String::from("age >= 15");
-        let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 3);
-    }
-
-    #[test]
-    fn parse_test_5() {
-        let str1 = String::from("inte num > 01");
+        let str1 = String::from("age >= 15 ;");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 4);
     }
 
     #[test]
-    fn parse_test_7() {
-        let str1 = String::from("i int num > 01");
+    fn parse_test_5() {
+        let str1 = String::from("inte num > 01;");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 5);
     }
 
     #[test]
-    fn parse_test_12() {
-        let str1 = String::from("int num = 1 ");
+    fn parse_test_7() {
+        let str1 = String::from("i int num > 01;");
         let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 4);
+        assert!(tokens.data.len() == 6);
     }
 
     #[test]
-    fn parse_test_11() {
+    fn parse_test_12() {
+        let str1 = String::from("int num = 1; ");
+        let tokens = dfa_core::parse_to_tokens(str1);
+        assert!(tokens.data.len() == 5);
+    }
+
+    #[test]
+    fn assignment() {
         let str1 = String::from("=");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 1);
@@ -46,7 +46,23 @@ mod test {
                 token::TokenType::Assignment => {
                     println!("");
                 }
-                _ => panic!("token"),
+                _ => panic!("token is not an Assignment"),
+            },
+            None => panic!("parse test fail"),
+        }
+    }
+    
+    #[test]
+    fn SemiColon(){
+        let str1 = String::from(";");
+        let tokens = dfa_core::parse_to_tokens(str1);
+        assert!(tokens.data.len() == 1);
+        match tokens.peek() {
+            Some(t) => match t._type {
+                token::TokenType::SemiColon => {
+                    println!("");
+                }
+                _ => panic!("token is not a SemiColon"),
             },
             None => panic!("parse test fail"),
         }
