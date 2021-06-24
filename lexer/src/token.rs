@@ -35,9 +35,15 @@ pub enum TokenType {
 #[derive(Debug)]
 pub struct Tokens {
     pub data: Vec<Token>,
+    pub pos: usize,
 }
 
 impl Tokens {
+    pub fn add_token(&mut self, t: Token) {
+        self.pos += 1;
+        self.data.push(t);
+    }
+
     pub fn get_child_idx(&self, idx: usize) -> Option<&Token> {
         if idx >= self.count() {
             None
@@ -45,7 +51,6 @@ impl Tokens {
             Option::Some(&self.data[idx])
         }
     }
-    
     pub fn peek(&self) -> Option<&Token> {
         if self.data.len() == 0 {
             return Option::None;
