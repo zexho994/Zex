@@ -24,9 +24,13 @@ mod test {
 
     #[test]
     fn parse_test_7() {
-        let str1 = String::from("i int num > 01;");
-        let tokens = dfa_core::parse_to_tokens(str1);
+        let s = String::from("i int num > 01;");
+        let tokens = dfa_core::parse_to_tokens(s.as_str().to_string());
         assert!(tokens.data.len() == 6);
+        match tokens.get_child_idx(1).unwrap()._type {
+            token::TokenType::Int => {}
+            _ => panic!("parse s = {} failed", s),
+        }
     }
 
     #[test]
@@ -51,9 +55,8 @@ mod test {
             None => panic!("parse test fail"),
         }
     }
-    
     #[test]
-    fn SemiColon(){
+    fn SemiColon() {
         let str1 = String::from(";");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 1);

@@ -38,6 +38,14 @@ pub struct Tokens {
 }
 
 impl Tokens {
+    pub fn get_child_idx(&self, idx: usize) -> Option<&Token> {
+        if idx >= self.count() {
+            None
+        } else {
+            Option::Some(&self.data[idx])
+        }
+    }
+    
     pub fn peek(&self) -> Option<&Token> {
         if self.data.len() == 0 {
             return Option::None;
