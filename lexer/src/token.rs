@@ -40,7 +40,6 @@ pub struct Tokens {
 
 impl Tokens {
     pub fn add_token(&mut self, t: Token) {
-        self.pos += 1;
         self.data.push(t);
     }
 
@@ -51,30 +50,28 @@ impl Tokens {
             Option::Some(&self.data[idx])
         }
     }
+
     pub fn peek(&self) -> Option<&Token> {
-        if self.data.len() == 0 {
-            return Option::None;
+        if self.pos == self.count() {
+            return None;
         }
-        Option::Some(&self.data[0])
+        Option::Some(&self.data[self.pos])
     }
 
-    pub fn check_peek(&self) -> Result<&Token, &str> {
-        if self.data.len() == 0 {
-            Result::Err("tokens count is 0")
-        } else {
-            Result::Ok(&self.data[0])
+    pub fn read(&mut self) -> Option<&mut Token> {
+        if self.pos == self.count() {
+            return None;
         }
-    }
-
-    pub fn read(&mut self) -> Option<Token> {
-        if self.is_empty() {
-            return Option::None;
-        }
-        Option::Some(self.data.remove(0))
+        self.pos += 1;
+        self.data.get_mut(self.pos - 1)
     }
 
     pub fn count(&self) -> usize {
         self.data.len()
+    }
+
+    pub fn position(&self) -> usize {
+        self.pos
     }
 
     /// 判断token.data的元素数量是否为0

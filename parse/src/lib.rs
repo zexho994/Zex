@@ -57,7 +57,7 @@ mod tests {
     // #[ignore]
     fn match_mul_expr() {
         let mut tokens = token::new_tokens(String::from("1 * 2 * 3;"));
-        let ast = parse::match_mul_expr(&mut tokens);
+        let ast = parse::match_mul_expr(&mut tokens).unwrap();
         println!("ast is {:?}", ast)
     }
 }

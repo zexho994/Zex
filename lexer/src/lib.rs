@@ -12,7 +12,7 @@ mod test {
     fn parse_test_1() {
         let str1 = String::from("age >= 15 ;");
         let tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 4);
+        assert_eq!(tokens.count(), 4)
     }
 
     #[test]
@@ -87,16 +87,15 @@ mod test {
     #[test]
     fn tokens_read() {
         let str1 = String::from("a");
-        let mut tokens = dfa_core::parse_to_tokens(str1);
-        assert!(tokens.data.len() == 1);
-        match tokens.read() {
-            Option::Some(_token) => {
-                assert!(tokens.count() == 0);
-                assert_eq!(_token.text, "a");
-            }
-            _ => {
-                panic!("parse_test_12 failure!")
-            }
+        let mut tokens = dfa_core::parse_to_tokens(str1.clone());
+        assert!(tokens.count() == 1);
+        let ot = tokens.read();
+        match ot {
+            Some(t) => match t._type {
+                token::TokenType::Identifier => {}
+                _ => panic!("token type mismatch, type is {:?}", t),
+            },
+            None => panic!("token missing"),
         }
     }
 }

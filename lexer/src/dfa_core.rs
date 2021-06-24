@@ -2,7 +2,10 @@ use super::{char_help::*, dfa_state::*, state_handing::*, token::*};
 
 pub fn parse_to_tokens(s: String) -> Tokens {
     let mut i: usize = 0;
-    let mut tokens: Tokens = Tokens { data: Vec::new(),pos: 0 };
+    let mut tokens = Tokens {
+        data: Vec::new(),
+        pos: 0,
+    };
     while i < s.chars().count() {
         let (token, state) = initial_to_other(i, s.as_str());
         i = parse_to_token(state, i + 1, s.as_str(), token, &mut tokens);
