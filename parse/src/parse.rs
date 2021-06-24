@@ -5,18 +5,28 @@ use token::*;
 
 use super::*;
 
-pub fn parse_to_ast(tokens: &mut Tokens) -> i32 {
+/// <program -> <statement>+ ;
+/// <statement> -> <intDeclare> | <exprStm> | <assignmentStm> ;
+/// <intDeclare> -> int <id> <assignment> <expr> ';' ;
+/// <exprStm> -> <addExpr>
+/// <assignmentStm> -> <id> <assignment> <exprStm>
+/// <id> -> ([a-z][A-Z])* ;
+/// <addExpr> -> <mulExpr> | <mulExpr> '+' <addExpr> ;
+/// <mulExpr> -> <primary> | <primary> '*' <mulExpr> ;
+/// <primary> -> <id> | <intLiteral>
+pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
     let mut ast_root = new_ast();
     tokens.check_peek().expect("Error parsing");
-    match tokens.peek().unwrap()._type {
-        TokenType::Int => {
-            ast_root.add_child(match_int_declare(tokens).unwrap());
-        }
-        _ => panic!("match program failed"),
+    while tokens.count() > 0 {
+        ast_root.add_child(
+            match_int_declare(tokens)
+                .or(match_assignment(tokens).or(match_exprStm(tokens)))
+                .unwrap(),
+        );
     }
     println!("ast root: {:?}", ast_root);
     let mut var_map: HashMap<String, i32> = HashMap::new();
-    calculate(&mut ast_root.get_child(0).unwrap(), &mut var_map)
+    Option::Some(calculate(&mut ast_root.get_child(0).unwrap(), &mut var_map))
 }
 
 /// 计算Ast的值
@@ -80,7 +90,7 @@ fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
     }
 }
 
-/// <intDeclare> :== int <id> <assignment> <expr> ';' ;
+/// <intDeclare> ::= int <id> <assignment> <expr> ';' ;
 fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_node: AstNode;
 
@@ -128,6 +138,14 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         None => panic!("missing ';' at intDeclare"),
     }
     Option::Some(ast_node)
+}
+
+fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
+    None
+}
+
+fn match_exprStm(tokens: &mut Tokens) -> Option<AstNode> {
+    None
 }
 
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>

@@ -12,21 +12,21 @@ mod tests {
     fn parse_tokens_to_ast_3() {
         let mut tokens = token::new_tokens(String::from("int a = 1 + 3 + 0 + 5 + 1;"));
         let res = parse::parse_to_ast(&mut tokens);
-        assert_eq!(res, 10)
+        assert_eq!(res.unwrap(), 10)
     }
 
     #[test]
     fn parse_tokens_to_ast_4() {
         let mut tokens = token::new_tokens(String::from("int a = 1 * 2 * 3 * 4;"));
         let res = parse::parse_to_ast(&mut tokens);
-        assert_eq!(res, 24)
+        assert_eq!(res.unwrap(), 24)
     }
 
     #[test]
     fn parse_tokens_to_ast_5() {
         let mut tokens = token::new_tokens(String::from("int a = 1 * 2 + 3 * 4 + 2;"));
         let res = parse::parse_to_ast(&mut tokens);
-        assert_eq!(res, 16)
+        assert_eq!(res.unwrap(), 16)
     }
 
     #[test]
