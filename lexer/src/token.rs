@@ -74,6 +74,13 @@ impl Tokens {
         self.pos
     }
 
+    pub fn set_position(&mut self, p: usize) {
+        if p >= self.count() {
+            panic!("set position error, p is more than count")
+        }
+        self.pos = p;
+    }
+
     /// 判断token.data的元素数量是否为0
     fn is_empty(&self) -> bool {
         if self.data.len() == 0 {

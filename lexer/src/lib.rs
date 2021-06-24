@@ -98,4 +98,14 @@ mod test {
             None => panic!("token missing"),
         }
     }
+    #[test]
+    fn tokens_set_position() {
+        let str1 = String::from("int num = 1; ");
+        let mut tokens = dfa_core::parse_to_tokens(str1);
+        assert!(tokens.position() == 0);
+        tokens.set_position(1);
+        assert!(tokens.position() == 1);
+        tokens.set_position(4);
+        assert!(tokens.position() == 4);
+    }
 }
