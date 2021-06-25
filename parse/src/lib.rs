@@ -65,7 +65,6 @@ mod tests {
         println!("\n==> parse str {}", s);
         let mut tokens = token::new_tokens(s);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
-        println!("ast is {}", res);
         assert_eq!(res, 6)
     }
 
@@ -75,26 +74,25 @@ mod tests {
         println!("\n==> parse str {}", s);
         let mut tokens = token::new_tokens(s);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
-        println!("ast is {}", res);
         assert_eq!(res, 16)
     }
-    
+
     #[test]
     fn match_express_stm() {
-        let s = String::from("1 + 1 + 2;");
+        let s = String::from("10 + 1 + 2;");
         println!("\n==> parse str {}", s);
         let mut tokens = token::new_tokens(s);
-        let ast = parse::match_expr_stm(&mut tokens).unwrap();
-        println!("ast is {:?}", ast);
+        let res = parse::parse_to_ast(&mut tokens).unwrap();
+        assert_eq!(res, 13)
     }
 
     #[test]
     fn multi_program() {
-        let str = String::from("int a = 1;a = 2; a + 1 + 2;");
+        let str = String::from("int a = 1;a = 2; 1 + 2;");
         println!("\n==> parse str {}", str);
         let mut tokens = token::new_tokens(str);
-        let ast = parse::parse_to_ast(&mut tokens).unwrap();
-        println!("ast is {:?}", ast);
+        let res = parse::parse_to_ast(&mut tokens).unwrap();
+        assert_eq!(res,3)
     }
 
     #[test]

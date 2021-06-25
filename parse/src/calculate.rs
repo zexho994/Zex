@@ -16,7 +16,9 @@ pub fn calculate_prog(ast_root: &mut AstNode) -> Option<i32> {
 			AstNodeType::AssignmentStmt => {
 				output = calculate_assignment(stmt, &mut var_map);
 			}
-			AstNodeType::ExpressionStmt => {}
+			AstNodeType::ExpressionStmt => {
+				output = calculate_expression_stmt(stmt, &mut var_map);
+			}
 			_ => panic!("not impl more type"),
 		}
 	}
@@ -51,6 +53,18 @@ fn calculate_assignment(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -
 		None => 0,
 	};
 	var_map.insert(id, l + r);
+	l + r
+}
+
+fn calculate_expression_stmt(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
+	let l = match ast.get_child(0) {
+		Some(node) => calculate_sum(node, var_map),
+		None => 0,
+	};
+	let r = match ast.get_child(1) {
+		Some(node) => calculate_sum(node, var_map),
+		None => 0,
+	};
 	l + r
 }
 

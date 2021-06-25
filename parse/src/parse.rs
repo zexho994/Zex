@@ -47,9 +47,7 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
                 tokens.read();
             }
             _ => return None,
-            // _ => panic!("match int declaration error,tokens: {:?}", tokens),
         },
-        // None => return None,
         None => panic!("match int declaration error,tokens: {:?}", tokens),
     }
 
@@ -64,7 +62,6 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
             }
             _ => panic!("match id failed"),
         },
-        // None => return None,
         None => panic!("match int declaration error,tokens: {:?}", tokens),
     }
 
@@ -75,7 +72,6 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
                 tokens.read();
             }
             _ => {
-                // 因为之前read()了,现在需要回溯归位
                 tokens.set_position(pos_cached);
                 return None;
             }
@@ -89,11 +85,9 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
             Some(t) => ast_node.add_child(t),
             None => return Option::Some(ast_node),
         },
-        // None => return Option::Some(ast_node),
         None => panic!("match int declaration error,tokens: {:?}", tokens),
     }
 
-    // println!("match int declaration, tokens: {:?}", tokens);
     match tokens.read().unwrap()._type {
         TokenType::SemiColon => {}
         _ => panic!(""),
