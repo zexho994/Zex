@@ -3,6 +3,7 @@ pub use lexer::token;
 pub mod ast_node;
 pub mod ast_node_type;
 pub mod parse;
+pub mod calculate;
 
 #[cfg(test)]
 mod tests {
