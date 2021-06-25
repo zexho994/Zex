@@ -93,6 +93,7 @@ fn calculate_sum(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 			l * r
 		}
 		AstNodeType::IntLiteral => ast._text.parse().unwrap(),
+		AstNodeType::Identifier => *var_map.get(&ast._text).unwrap(),
 		_ => panic!("calculate error, p is {:?}", ast),
 	}
 }

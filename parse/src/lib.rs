@@ -88,11 +88,11 @@ mod tests {
 
     #[test]
     fn multi_program() {
-        let str = String::from("int a = 1;a = 2; 1 + 2;");
+        let str = String::from("int a = 1;a = 2; a + 2;");
         println!("\n==> parse str {}", str);
         let mut tokens = token::new_tokens(str);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
-        assert_eq!(res,3)
+        assert_eq!(res, 4)
     }
 
     #[test]
