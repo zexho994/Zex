@@ -6,9 +6,9 @@ use token::*;
 use super::*;
 
 /// <program -> <statement>+ ;
-/// <statement> -> <intDeclare> | <exprStm> | <assignmentStm> ;
+/// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm> ;
 /// <intDeclare> -> int <id> <assignment> <expr> ';' ;
-/// <exprStm> -> <addExpr>
+/// <expressionStm> -> <addExpr>
 /// <assignmentStm> -> <id> <assignment> <exprStm>
 /// <id> -> ([a-z][A-Z])* ;
 /// <addExpr> -> <mulExpr> | <mulExpr> '+' <addExpr> ;
@@ -33,12 +33,28 @@ pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
         ast_root.add_child(c.unwrap());
     }
     println!("====> ast root: {:?}", ast_root);
+    calculate_prog(&mut ast_root)
+}
+
+fn calculate_prog(ast_root: &mut AstNode) -> Option<i32> {
     let mut var_map: HashMap<String, i32> = HashMap::new();
-    Option::Some(calculate(&mut ast_root.get_child(0).unwrap(), &mut var_map))
+    let output: i32 = 0;
+    for stmt in ast_root._child.iter_mut() {
+        // 根据不同的type进行不同的计算
+        match stmt._type {
+            AstNodeType::IntDeclaration => {
+                calculate_int_declare(stmt, &mut var_map);
+            }
+            AstNodeType::AssignmentStmt => {}
+            AstNodeType::ExpressionStmt => {}
+            _ => panic!("not impl more type"),
+        }
+    }
+    Option::Some(output)
 }
 
 /// 计算Ast的值
-fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
+fn calculate_int_declare(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
     match ast._type {
         AstNodeType::IntDeclaration => {
             match var_map.contains_key(&ast._text) {
@@ -46,11 +62,11 @@ fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
                 true => {
                     let old = *var_map.get(&ast._text).unwrap();
                     let l = match ast.get_child(0) {
-                        Some(node) => calculate(node, var_map),
+                        Some(node) => calculate_int_declare(node, var_map),
                         None => 0,
                     };
                     let r = match ast.get_child(1) {
-                        Some(node) => calculate(node, var_map),
+                        Some(node) => calculate_int_declare(node, var_map),
                         None => 0,
                     };
                     var_map.insert(ast._text.as_str().to_string(), old + l + r);
@@ -59,11 +75,11 @@ fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
                 // 变量不存在
                 false => {
                     let l = match ast.get_child(0) {
-                        Some(node) => calculate(node, var_map),
+                        Some(node) => calculate_int_declare(node, var_map),
                         None => 0,
                     };
                     let r = match ast.get_child(1) {
-                        Some(node) => calculate(node, var_map),
+                        Some(node) => calculate_int_declare(node, var_map),
                         None => 0,
                     };
                     var_map.insert(ast._text.as_str().to_string(), l + r);
@@ -73,22 +89,22 @@ fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
         }
         AstNodeType::Additive => {
             let l = match ast.get_child(0) {
-                Some(node) => calculate(node, var_map),
+                Some(node) => calculate_int_declare(node, var_map),
                 None => 0,
             };
             let r = match ast.get_child(1) {
-                Some(node) => calculate(node, var_map),
+                Some(node) => calculate_int_declare(node, var_map),
                 None => 0,
             };
             l + r
         }
         AstNodeType::Multiplicative => {
             let l = match ast.get_child(0) {
-                Some(node) => calculate(node, var_map),
+                Some(node) => calculate_int_declare(node, var_map),
                 None => 0,
             };
             let r = match ast.get_child(1) {
-                Some(node) => calculate(node, var_map),
+                Some(node) => calculate_int_declare(node, var_map),
                 None => 1,
             };
             l * r

@@ -16,7 +16,18 @@ mod tests {
         assert_eq!(9, tokens.count());
         let ast = parse::parse_to_ast(&mut tokens);
         println!("==> parse done. ast = {:?}", ast);
-        assert_eq!(ast.unwrap(), 5)
+        // assert_eq!(ast.unwrap(), 5)
+    }
+
+    #[test]
+    fn parse_to_ast2() {
+        let s = String::from("int a = 1 + 3 + 1 + 3 + 10;");
+        println!("\n==> parse str {}", s);
+        let mut tokens = token::new_tokens(s);
+        assert_eq!(13, tokens.count());
+        let ast = parse::parse_to_ast(&mut tokens);
+        println!("==> parse done. ast = {:?}", ast);
+        // assert_eq!(ast.unwrap(), 18)
     }
 
     #[test]
