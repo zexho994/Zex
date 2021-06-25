@@ -13,7 +13,9 @@ pub fn calculate_prog(ast_root: &mut AstNode) -> Option<i32> {
 			AstNodeType::IntDeclaration => {
 				output = calculate_int_declare(stmt, &mut var_map);
 			}
-			AstNodeType::AssignmentStmt => {}
+			AstNodeType::AssignmentStmt => {
+				output = calculate_assignment(stmt, &mut var_map);
+			}
 			AstNodeType::ExpressionStmt => {}
 			_ => panic!("not impl more type"),
 		}
@@ -21,7 +23,7 @@ pub fn calculate_prog(ast_root: &mut AstNode) -> Option<i32> {
 	Option::Some(output)
 }
 
-/// 计算Ast的值
+/// 计算int声明语句中的值变量的值
 fn calculate_int_declare(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 	let id = ast._text.clone();
 	let old = *var_map.get(&id).or(Option::Some(&0)).unwrap();
@@ -35,6 +37,21 @@ fn calculate_int_declare(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) 
 	};
 	var_map.insert(id, old + l + r);
 	old + l + r
+}
+
+/// 计算赋值语句中变量的值
+fn calculate_assignment(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
+	let id = ast._text.clone();
+	let l = match ast.get_child(0) {
+		Some(node) => calculate_sum(node, var_map),
+		None => 0,
+	};
+	let r = match ast.get_child(1) {
+		Some(node) => calculate_sum(node, var_map),
+		None => 0,
+	};
+	var_map.insert(id, l + r);
+	l + r
 }
 
 fn calculate_sum(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
@@ -65,10 +82,3 @@ fn calculate_sum(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 		_ => panic!("calculate error, p is {:?}", ast),
 	}
 }
-
-///
-// fn calculate_assignment(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
-// 	let id = ast._text;
-// }
-
-fn calculate_additive(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) {}

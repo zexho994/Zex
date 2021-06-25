@@ -2,8 +2,8 @@ pub use lexer::token;
 
 pub mod ast_node;
 pub mod ast_node_type;
-pub mod parse;
 pub mod calculate;
+pub mod parse;
 
 #[cfg(test)]
 mod tests {
@@ -50,14 +50,35 @@ mod tests {
     }
 
     #[test]
-    fn match_assignment_expr() {
-        let s = String::from("i = i + 2;");
+    fn match_assignment_expr1() {
+        let s = String::from("i = 1 + 2;");
         println!("\n==> parse str {}", s);
         let mut tokens = token::new_tokens(s);
-        let ast = parse::match_assignment(&mut tokens).unwrap();
-        println!("ast is {:?}", ast);
+        let res = parse::parse_to_ast(&mut tokens).unwrap();
+        println!("ast is {}", res);
+        assert_eq!(res, 3)
     }
 
+    #[test]
+    fn match_assignment_expr2() {
+        let s = String::from("i = 2 * 3 ;");
+        println!("\n==> parse str {}", s);
+        let mut tokens = token::new_tokens(s);
+        let res = parse::parse_to_ast(&mut tokens).unwrap();
+        println!("ast is {}", res);
+        assert_eq!(res, 6)
+    }
+
+    #[test]
+    fn match_assignment_expr3() {
+        let s = String::from("i = 10 + 2 * 3 ;");
+        println!("\n==> parse str {}", s);
+        let mut tokens = token::new_tokens(s);
+        let res = parse::parse_to_ast(&mut tokens).unwrap();
+        println!("ast is {}", res);
+        assert_eq!(res, 16)
+    }
+    
     #[test]
     fn match_express_stm() {
         let s = String::from("1 + 1 + 2;");
