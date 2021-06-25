@@ -71,25 +71,21 @@ fn calculate_expression_stmt(ast: &mut AstNode, var_map: &mut HashMap<String, i3
 fn calculate_sum(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 	match ast._type {
 		AstNodeType::Additive => {
-			let l = match ast.get_child(0) {
-				Some(node) => calculate_sum(node, var_map),
-				None => 0,
-			};
-			let r = match ast.get_child(1) {
-				Some(node) => calculate_sum(node, var_map),
-				None => 0,
-			};
+			let l = ast
+				.get_child(0)
+				.map_or_else(|| 0, |v| calculate_sum(v, var_map));
+			let r = ast
+				.get_child(1)
+				.map_or_else(|| 0, |v| calculate_sum(v, var_map));
 			l + r
 		}
 		AstNodeType::Multiplicative => {
-			let l = match ast.get_child(0) {
-				Some(node) => calculate_sum(node, var_map),
-				None => 1,
-			};
-			let r = match ast.get_child(1) {
-				Some(node) => calculate_sum(node, var_map),
-				None => 1,
-			};
+			let l = ast
+				.get_child(0)
+				.map_or_else(|| 1, |v| calculate_sum(v, var_map));
+			let r = ast
+				.get_child(1)
+				.map_or_else(|| 1, |v| calculate_sum(v, var_map));
 			l * r
 		}
 		AstNodeType::IntLiteral => ast._text.parse().unwrap(),
