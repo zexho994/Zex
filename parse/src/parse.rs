@@ -34,54 +34,60 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_node: AstNode;
     let pos_cached = tokens.position();
 
-    match tokens.peek() {
-        Some(p) => match p._type {
-            TokenType::Int => {
-                tokens.read();
-            }
-            _ => return None,
-        },
-        None => panic!("match int declaration error,tokens: {:?}", tokens),
+    // match 'int'
+    if tokens.peek().is_none() {
+        panic!("match int declaration error,tokens: {:?}", tokens);
+    }
+    match tokens.peek().unwrap()._type {
+        TokenType::Int => {
+            tokens.read();
+        }
+        _ => return None,
     }
 
-    match tokens.peek() {
-        Some(p) => match p._type {
-            TokenType::Identifier => {
-                ast_node = new_ast_node(
-                    AstNodeType::IntDeclaration,
-                    tokens.read().unwrap().text.clone(),
-                )
-            }
-            _ => panic!("match id failed"),
-        },
-        None => panic!("match int declaration error,tokens: {:?}", tokens),
+    // match <id>
+    if tokens.peek().is_none() {
+        panic!("match int declaration error,tokens: {:?}", tokens);
+    }
+    match tokens.peek().unwrap()._type {
+        TokenType::Identifier => {
+            ast_node = new_ast_node(
+                AstNodeType::IntDeclaration,
+                tokens.read().unwrap().text.clone(),
+            )
+        }
+        _ => panic!("match id failed"),
     }
 
-    match tokens.peek() {
-        Some(p) => match p._type {
-            TokenType::Assignment => {
-                tokens.read();
-            }
-            _ => {
-                tokens.set_position(pos_cached);
-                return None;
-            }
-        },
-        None => panic!("match assignment failed"),
+    // match <assignment>
+    if tokens.peek().is_none() {
+        panic!("match int declaration error,tokens: {:?}", tokens);
+    }
+    match tokens.peek().unwrap()._type {
+        TokenType::Assignment => {
+            tokens.read();
+        }
+        _ => {
+            tokens.set_position(pos_cached);
+            return None;
+        }
     }
 
-    match tokens.peek() {
-        Some(_t) => match match_add_expr(tokens) {
-            Some(t) => ast_node.add_child(t),
-            None => return Option::Some(ast_node),
-        },
-        None => panic!("match int declaration error,tokens: {:?}", tokens),
+    // match <addExpr>
+    if tokens.peek().is_none() {
+        panic!("match int declaration error,tokens: {:?}", tokens);
+    }
+    match match_add_expr(tokens) {
+        Some(t) => ast_node.add_child(t),
+        None => return Option::Some(ast_node),
     }
 
+    // match semicolon
     match tokens.read().unwrap()._type {
         TokenType::SemiColon => {}
         _ => panic!(""),
     }
+
     Option::Some(ast_node)
 }
 
