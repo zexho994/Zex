@@ -32,7 +32,7 @@ pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
         }
         ast_root.add_child(c.unwrap());
     }
-    println!("ast root: {:?}", ast_root);
+    println!("====> ast root: {:?}", ast_root);
     let mut var_map: HashMap<String, i32> = HashMap::new();
     Option::Some(calculate(&mut ast_root.get_child(0).unwrap(), &mut var_map))
 }
@@ -174,17 +174,31 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     let pos_cached = tokens.position();
 
     // match id
-    match tokens.read().unwrap()._type {
-        TokenType::Identifier => {
-            ast_node = new_ast_node(
-                AstNodeType::AssignmentStmt,
-                tokens.read().unwrap().text.clone(),
-            );
-        }
-        _ => {
+    match tokens.read() {
+        Some(t) => match t._type {
+            TokenType::Identifier => {
+                ast_node = new_ast_node(AstNodeType::AssignmentStmt, t.text.clone());
+            }
+            _ => {
+                tokens.set_position(pos_cached);
+                return None;
+            }
+        },
+        None => {
             tokens.set_position(pos_cached);
             return None;
         }
+    }
+
+    match tokens.read() {
+        Some(t) => match t._type {
+            TokenType::Assignment => {}
+            _ => {
+                tokens.set_position(pos_cached);
+                return None;
+            }
+        },
+        None => panic!("match assignment failed"),
     }
 
     ast_node.add_child(match_add_expr(tokens).unwrap());
@@ -192,12 +206,9 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     // match ";"
     match tokens.read().unwrap()._type {
         TokenType::SemiColon => {}
-        _ => {
-            // 因为之前read()了,现在需要回溯归位
-            tokens.set_position(pos_cached);
-            return None;
-        }
+        _ => panic!("match semicolon failed"),
     }
+
     Option::Some(ast_node)
 }
 
