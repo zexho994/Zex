@@ -10,7 +10,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn parse_to_ast() {
+    fn parse_to_ast1() {
         let s = String::from("int a = 1 + 3 + 1;");
         println!("\n==> parse str {}", s);
         let mut tokens = token::new_tokens(s);
@@ -32,31 +32,12 @@ mod tests {
     }
 
     #[test]
-    fn match_add_expr() {
-        let s = String::from("1 + 2 + 3");
-        println!("\n==> parse str {}", s);
-        let mut tokens = token::new_tokens(s);
-        let ast = parse::match_add_expr(&mut tokens);
-        println!("ast is {:?}", ast)
-    }
-
-    #[test]
-    fn match_mul_expr() {
-        let s = String::from("1 * 2 * 3");
-        println!("\n==> parse str {}", s);
-        let mut tokens = token::new_tokens(s);
-        let ast = parse::match_mul_expr(&mut tokens).unwrap();
-        println!("ast is {:?}", ast)
-    }
-
-    #[test]
     fn match_assignment_expr1() {
-        let s = String::from("i = 1 + 2;");
+        let s = String::from("i = 1 + 5;");
         println!("\n==> parse str {}", s);
         let mut tokens = token::new_tokens(s);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
-        println!("ast is {}", res);
-        assert_eq!(res, 3)
+        assert_eq!(res, 6)
     }
 
     #[test]
@@ -96,8 +77,30 @@ mod tests {
     }
 
     #[test]
-    fn map_or_test() {
-        let n: Option<&str> = None;
-        assert!(n.map_or(10, |_| 5) == 10);
+    fn test_or() {
+        let x = Some(1);
+        let y = Some(2);
+        let z = Some(3);
+        assert_eq!(x.or(y).or(z), Some(1));
+        assert_eq!(y.or(z).or(x), Some(2));
+        assert_eq!(z.or(x).or(y), Some(3));
+    }
+
+    fn test_or_fn() {
+        // assert_eq!(get(0).or(get(1)).unwrap(), "x".to_string());
+        assert_eq!(get(1).or(get(2)).unwrap(), "x".to_string());
+    }
+
+    fn get(n: usize) -> Option<String> {
+        println!("invoke get fn");
+        if n == 1 {
+            Some("x".to_string())
+        } else if n == 2 {
+            Some("y".to_string())
+        } else if n == 3 {
+            Some("z".to_string())
+        } else {
+            None
+        }
     }
 }

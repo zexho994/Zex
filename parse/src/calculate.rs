@@ -73,19 +73,19 @@ fn calculate_sum(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 		AstNodeType::Additive => {
 			let l = ast
 				.get_child(0)
-				.map_or_else(|| 0, |v| calculate_sum(v, var_map));
+				.map_or(0, |v| calculate_sum(v, var_map));
 			let r = ast
 				.get_child(1)
-				.map_or_else(|| 0, |v| calculate_sum(v, var_map));
+				.map_or(0, |v| calculate_sum(v, var_map));
 			l + r
 		}
 		AstNodeType::Multiplicative => {
 			let l = ast
 				.get_child(0)
-				.map_or_else(|| 1, |v| calculate_sum(v, var_map));
+				.map_or(1, |v| calculate_sum(v, var_map));
 			let r = ast
 				.get_child(1)
-				.map_or_else(|| 1, |v| calculate_sum(v, var_map));
+				.map_or(1, |v| calculate_sum(v, var_map));
 			l * r
 		}
 		AstNodeType::IntLiteral => ast._text.parse().unwrap(),

@@ -17,30 +17,23 @@ pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
     let mut ast_root = new_ast();
     while tokens.pos < tokens.count() {
         let mut c = match_int_declare(tokens);
-        match c {
-            None => {
-                c = match_assignment(tokens);
-                match c {
-                    None => {
-                        c = match_expr_stm(tokens);
-                    }
-                    Some(_) => {}
-                }
-            }
-            Some(_) => {}
+        if c.is_none() {
+            c = match_assignment(tokens);
+        }
+        if c.is_none() {
+            c = match_expr_stm(tokens);
         }
         ast_root.add_child(c.unwrap());
     }
-    println!("====> ast root: {:?}", ast_root);
     calculate::calculate_prog(&mut ast_root)
 }
 
 /// <intDeclare> ::= int <id> <assignment> <expr> ';' ;
-pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
+fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
+    println!("match int declare, tokens: {:?}", tokens);
     let mut ast_node: AstNode;
     let pos_cached = tokens.position();
 
-    // match 'int'
     match tokens.peek() {
         Some(p) => match p._type {
             TokenType::Int => {
@@ -51,7 +44,6 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         None => panic!("match int declaration error,tokens: {:?}", tokens),
     }
 
-    // match id
     match tokens.peek() {
         Some(p) => match p._type {
             TokenType::Identifier => {
@@ -65,7 +57,6 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         None => panic!("match int declaration error,tokens: {:?}", tokens),
     }
 
-    // match '='
     match tokens.peek() {
         Some(p) => match p._type {
             TokenType::Assignment => {
@@ -79,7 +70,6 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         None => panic!("match assignment failed"),
     }
 
-    // match expr
     match tokens.peek() {
         Some(_t) => match match_add_expr(tokens) {
             Some(t) => ast_node.add_child(t),
@@ -100,7 +90,11 @@ pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
 /// a = 1 + 1 * 2;
 ///
 /// todo: a += 1; a -= 1; a*= 1, a /= 1;
-pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
+fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
+    if tokens.pos == tokens.count() {
+        return None;
+    }
+    println!("match assignment, tokens: {:?}", tokens);
     let mut ast_node: AstNode;
     let pos_cached = tokens.position();
 
@@ -134,7 +128,6 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
 
     ast_node.add_child(match_add_expr(tokens).unwrap());
 
-    // match ";"
     match tokens.read().unwrap()._type {
         TokenType::SemiColon => {}
         _ => panic!("match semicolon failed"),
@@ -144,10 +137,10 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <exprStm> ::= <addExpr>
-pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
+fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
+    println!("match expression statement, tokens: {:?}", tokens);
     let mut ast_node = new_ast_node(AstNodeType::ExpressionStmt, "".to_string());
     ast_node.add_child(match_add_expr(tokens).unwrap());
-    // println!("match int declaration, tokens: {:?}", tokens);
     match tokens.read().unwrap()._type {
         TokenType::SemiColon => Option::Some(ast_node),
         _ => panic!("match expr stm error, token should be semicolon"),
@@ -155,8 +148,7 @@ pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
-pub fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
-    // println!("match add expr, tokens: {:?}", tokens);
+fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
     let mut child = match_mul_expr(tokens).unwrap();
     loop {
         match tokens.peek() {
@@ -185,8 +177,7 @@ pub fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
-pub fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
-    // println!("match mul expr, tokens: {:?}",tokens);
+fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
     let mut child = match_primary(tokens).unwrap();
     loop {
         match tokens.peek() {
@@ -215,8 +206,7 @@ pub fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <primary> ::= int | Identifier
-pub fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
-    // println!("====> match primary, tokens: {:?}", tokens);
+fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
     let node: AstNode;
     match tokens.peek() {
         Some(t1) => match t1._type {
