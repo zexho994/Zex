@@ -16,12 +16,22 @@ use super::*;
 /// <primary> -> <id> | <intLiteral>
 pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
     let mut ast_root = new_ast();
-    // ast_root.add_child(
-    //     match_int_declare(tokens)
-    //         .or(match_assignment(tokens).or(match_exprStm(tokens)))
-    //         .unwrap(),
-    // );
-    ast_root.add_child(match_int_declare(tokens).unwrap());
+    while tokens.pos < tokens.count() {
+        let mut c = match_int_declare(tokens);
+        match c {
+            None => {
+                c = match_assignment(tokens);
+                match c {
+                    None => {
+                        c = match_expr_stm(tokens);
+                    }
+                    Some(_) => {}
+                }
+            }
+            Some(_) => {}
+        }
+        ast_root.add_child(c.unwrap());
+    }
     println!("ast root: {:?}", ast_root);
     let mut var_map: HashMap<String, i32> = HashMap::new();
     Option::Some(calculate(&mut ast_root.get_child(0).unwrap(), &mut var_map))
@@ -89,8 +99,9 @@ fn calculate(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 }
 
 /// <intDeclare> ::= int <id> <assignment> <expr> ';' ;
-fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_node: AstNode;
+    let pos_cached = tokens.position();
 
     // match 'int'
     match tokens.peek() {
@@ -98,8 +109,8 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
             TokenType::Int => {
                 tokens.read();
             }
-            // _ => return None,
-            _ => panic!("match int declaration error,tokens: {:?}", tokens),
+            _ => return None,
+            // _ => panic!("match int declaration error,tokens: {:?}", tokens),
         },
         // None => return None,
         None => panic!("match int declaration error,tokens: {:?}", tokens),
@@ -126,7 +137,11 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
             TokenType::Assignment => {
                 tokens.read();
             }
-            _ => panic!("match assignment failed"),
+            _ => {
+                // 因为之前read()了,现在需要回溯归位
+                tokens.set_position(pos_cached);
+                return None;
+            }
         },
         None => panic!("match assignment failed"),
     }
@@ -141,13 +156,10 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         None => panic!("match int declaration error,tokens: {:?}", tokens),
     }
 
-    println!("match int declaration, tokens: {:?}", tokens);
-    match tokens.read() {
-        Some(_t) => match _t._type {
-            TokenType::SemiColon => {}
-            _ => panic!(""),
-        },
-        None => panic!("missing ';' at intDeclare"),
+    // println!("match int declaration, tokens: {:?}", tokens);
+    match tokens.read().unwrap()._type {
+        TokenType::SemiColon => {}
+        _ => panic!(""),
     }
     Option::Some(ast_node)
 }
@@ -157,12 +169,46 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
 /// a = 1 + 1 * 2;
 ///
 /// todo: a += 1; a -= 1; a*= 1, a /= 1;
-fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
-    None
+pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
+    let mut ast_node: AstNode;
+    let pos_cached = tokens.position();
+
+    // match id
+    match tokens.read().unwrap()._type {
+        TokenType::Identifier => {
+            ast_node = new_ast_node(
+                AstNodeType::IntDeclaration,
+                tokens.read().unwrap().text.clone(),
+            );
+        }
+        _ => {
+            tokens.set_position(pos_cached);
+            return None;
+        }
+    }
+
+    ast_node.add_child(match_add_expr(tokens).unwrap());
+
+    // match ";"
+    match tokens.read().unwrap()._type {
+        TokenType::SemiColon => {}
+        _ => {
+            // 因为之前read()了,现在需要回溯归位
+            tokens.set_position(pos_cached);
+            return None;
+        }
+    }
+    Option::Some(ast_node)
 }
 
-fn match_exprStm(tokens: &mut Tokens) -> Option<AstNode> {
-    None
+/// <exprStm> ::= <addExpr>
+pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
+    let expr = match_add_expr(tokens);
+    // println!("match int declaration, tokens: {:?}", tokens);
+    match tokens.read().unwrap()._type {
+        TokenType::SemiColon => expr,
+        _ => panic!("match expr stm error, token should be semicolon"),
+    }
 }
 
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
