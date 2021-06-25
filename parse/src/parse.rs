@@ -177,7 +177,7 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     match tokens.read().unwrap()._type {
         TokenType::Identifier => {
             ast_node = new_ast_node(
-                AstNodeType::IntDeclaration,
+                AstNodeType::AssignmentStmt,
                 tokens.read().unwrap().text.clone(),
             );
         }
@@ -203,10 +203,11 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <exprStm> ::= <addExpr>
 pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
-    let expr = match_add_expr(tokens);
+    let mut ast_node = new_ast_node(AstNodeType::ExpressionStmt, "".to_string());
+    ast_node.add_child(match_add_expr(tokens).unwrap());
     // println!("match int declaration, tokens: {:?}", tokens);
     match tokens.read().unwrap()._type {
-        TokenType::SemiColon => expr,
+        TokenType::SemiColon => Option::Some(ast_node),
         _ => panic!("match expr stm error, token should be semicolon"),
     }
 }
