@@ -80,15 +80,6 @@ impl Tokens {
         }
         self.pos = p;
     }
-
-    /// 判断token.data的元素数量是否为0
-    fn is_empty(&self) -> bool {
-        if self.data.len() == 0 {
-            true
-        } else {
-            false
-        }
-    }
 }
 
 pub fn new_tokens(text: String) -> Tokens {

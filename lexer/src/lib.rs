@@ -35,8 +35,9 @@ mod test {
 
     #[test]
     fn parse_test_12() {
-        let str1 = String::from("int num = 1; ");
+        let str1 = String::from("int num=1; ");
         let tokens = dfa_core::parse_to_tokens(str1);
+        // println!("tokens is {:?}", tokens);
         assert!(tokens.data.len() == 5);
     }
 
@@ -100,7 +101,7 @@ mod test {
     }
     #[test]
     fn tokens_set_position() {
-        let str1 = String::from("int num = 1; ");
+        let str1 = String::from("int num=1; ");
         let mut tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.position() == 0);
         tokens.set_position(1);

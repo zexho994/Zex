@@ -8,7 +8,7 @@ pub fn parse_to_tokens(s: String) -> Tokens {
     };
     while i < s.chars().count() {
         let (token, state) = initial_to_other(i, s.as_str());
-        i = parse_to_token(state, i + 1, s.as_str(), token, &mut tokens);
+        i = lexing(state, i + 1, s.as_str(), token, &mut tokens);
     }
     tokens
 }
@@ -84,7 +84,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
 /// ## 解析说明:
 /// - parse int keyword:  int_1 -> int_2 -> int_3 -> int_ok
 ///
-fn parse_to_token(
+fn lexing(
     mut state: DfaState,
     mut i: usize,
     s: &str,

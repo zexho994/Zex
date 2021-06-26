@@ -28,7 +28,6 @@ pub fn calculate_prog(ast_root: &mut AstNode, var_map: &mut HashMap<String, i32>
 /// 计算int声明语句中的值变量的值
 fn calculate_int_declare(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 	let id = ast._text.clone();
-	let old = *var_map.get(&id).or(Option::Some(&0)).unwrap();
 	let l = match ast.get_child(0) {
 		Some(node) => calculate_sum(node, var_map),
 		None => 0,
@@ -37,8 +36,8 @@ fn calculate_int_declare(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) 
 		Some(node) => calculate_sum(node, var_map),
 		None => 0,
 	};
-	var_map.insert(id, old + l + r);
-	old + l + r
+	var_map.insert(id, l + r);
+	l + r
 }
 
 /// 计算赋值语句中变量的值

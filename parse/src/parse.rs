@@ -163,26 +163,26 @@ fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
 fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
     let mut child = match_mul_expr(tokens).unwrap();
     loop {
-        match tokens.peek() {
-            Some(t1) => match t1._type {
-                TokenType::Plus => {
-                    tokens.read().unwrap(); // t3 = '+'
-                    match match_add_expr(tokens) {
-                        Some(t2) => {
-                            let mut r = new_ast_node(AstNodeType::Additive, String::from("+"));
-                            r.add_child(child);
-                            r.add_child(t2);
-                            child = r;
-                        }
-                        None => panic!("match add expr failed, the child2 it not be null"),
+        if tokens.peek().is_none() {
+            break;
+        }
+        match tokens.peek().unwrap()._type {
+            TokenType::Plus => {
+                tokens.read();
+                match match_add_expr(tokens) {
+                    Some(t2) => {
+                        let mut r = new_ast_node(AstNodeType::Additive, String::from("+"));
+                        r.add_child(child);
+                        r.add_child(t2);
+                        child = r;
                     }
+                    None => panic!("match add expr failed, the child2 it not be null"),
                 }
-                TokenType::SemiColon => {
-                    break;
-                }
-                _ => panic!("match add expr failed,_t1 is {:?}", t1),
-            },
-            None => break,
+            }
+            TokenType::SemiColon => {
+                break;
+            }
+            _ => panic!("match add expr failed,tokens is {:?}", tokens),
         }
     }
     Option::Some(child)
@@ -192,26 +192,26 @@ fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
 fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
     let mut child = match_primary(tokens).unwrap();
     loop {
-        match tokens.peek() {
-            Some(t1) => match t1._type {
-                TokenType::Star => {
-                    tokens.read().unwrap();
-                    match match_primary(tokens) {
-                        Some(t2) => {
-                            let mut r = new_ast_node(AstNodeType::Multiplicative, "*".to_string());
-                            r.add_child(child);
-                            r.add_child(t2);
-                            child = r;
-                        }
-                        None => panic!("match mul expr error"),
+        if tokens.peek().is_none() {
+            break;
+        }
+        match tokens.peek().unwrap()._type {
+            TokenType::Star => {
+                tokens.read().unwrap();
+                match match_primary(tokens) {
+                    Some(t2) => {
+                        let mut r = new_ast_node(AstNodeType::Multiplicative, "*".to_string());
+                        r.add_child(child);
+                        r.add_child(t2);
+                        child = r;
                     }
+                    None => panic!("match mul expr error"),
                 }
-                TokenType::Plus | TokenType::SemiColon => {
-                    break;
-                }
-                _ => panic!("match mul expr error,t1 is {:?}", t1),
-            },
-            None => break,
+            }
+            TokenType::Plus | TokenType::SemiColon => {
+                break;
+            }
+            _ => panic!("match mul expr error,tokens: {:?}", tokens),
         }
     }
     Option::Some(child)

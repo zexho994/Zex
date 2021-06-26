@@ -4,13 +4,13 @@ use std::collections::HashMap;
 use std::io::stdin;
 use std::io::stdout;
 use std::io::Write;
-use std::process;
 
 fn main() {
     let mut var_map: HashMap<String, i32> = HashMap::new();
+    println!("=> 输入执行语句，以分号；结束.");
     loop {
         print!(">");
-        stdout().flush();
+        stdout().flush().expect("flush error!");
         let mut input = String::new();
         stdin().read_line(&mut input).unwrap();
         input = input.trim().to_string();

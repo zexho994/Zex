@@ -74,7 +74,7 @@ pub fn state_algorithm_handle(i: usize) -> (usize, DfaState) {
 }
 
 pub fn state_eq_handle(i: usize) -> (usize, DfaState) {
-    (i + 1, DfaState::Initial)
+    (i, DfaState::Initial)
 }
 
 pub fn state_semicolon_handle(i: usize) -> (usize, DfaState) {
