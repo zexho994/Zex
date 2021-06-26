@@ -2,6 +2,7 @@ use super::*;
 use ast_node::*;
 use ast_node_type::*;
 use calculate;
+use std::collections::HashMap;
 use token::*;
 
 /// <program -> <statement>+ ;
@@ -14,6 +15,11 @@ use token::*;
 /// <mulExpr> -> <primary> | <primary> '*' <mulExpr> ;
 /// <primary> -> <id> | <intLiteral>
 pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
+    let mut var_map: HashMap<String, i32> = HashMap::new();
+    parse_tokens(tokens, &mut var_map)
+}
+
+pub fn parse_tokens(tokens: &mut Tokens, var_map: &mut HashMap<String, i32>) -> Option<i32> {
     let mut ast_root = new_ast();
     while tokens.pos < tokens.count() {
         let mut c = match_int_declare(tokens);
@@ -25,12 +31,12 @@ pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
         }
         ast_root.add_child(c.unwrap());
     }
-    calculate::calculate_prog(&mut ast_root)
+    calculate::calculate_prog(&mut ast_root, var_map)
 }
 
 /// <intDeclare> ::= int <id> <assignment> <expr> ';' ;
 fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match int declare, tokens: {:?}", tokens);
+    // println!("match int declare, tokens: {:?}", tokens);
     let mut ast_node: AstNode;
     let pos_cached = tokens.position();
 
@@ -100,7 +106,7 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     if tokens.pos == tokens.count() {
         return None;
     }
-    println!("match assignment, tokens: {:?}", tokens);
+    // println!("match assignment, tokens: {:?}", tokens);
     let mut ast_node: AstNode;
     let pos_cached = tokens.position();
 
@@ -144,7 +150,7 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <exprStm> ::= <addExpr>
 fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match expression statement, tokens: {:?}", tokens);
+    // println!("match expression statement, tokens: {:?}", tokens);
     let mut ast_node = new_ast_node(AstNodeType::ExpressionStmt, "".to_string());
     ast_node.add_child(match_add_expr(tokens).unwrap());
     match tokens.read().unwrap()._type {

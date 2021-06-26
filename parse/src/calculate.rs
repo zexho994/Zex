@@ -4,20 +4,20 @@ use ast_node_type::*;
 use std::collections::HashMap;
 
 /// 执行program，支持表达式计算
-pub fn calculate_prog(ast_root: &mut AstNode) -> Option<i32> {
-	let mut var_map: HashMap<String, i32> = HashMap::new();
+pub fn calculate_prog(ast_root: &mut AstNode, var_map: &mut HashMap<String, i32>) -> Option<i32> {
+	// let mut var_map: HashMap<String, i32> = HashMap::new();
 	let mut output: i32 = 0;
 	for stmt in ast_root._child.iter_mut() {
 		// 根据不同的type进行不同的计算
 		match stmt._type {
 			AstNodeType::IntDeclaration => {
-				output = calculate_int_declare(stmt, &mut var_map);
+				output = calculate_int_declare(stmt, var_map);
 			}
 			AstNodeType::AssignmentStmt => {
-				output = calculate_assignment(stmt, &mut var_map);
+				output = calculate_assignment(stmt, var_map);
 			}
 			AstNodeType::ExpressionStmt => {
-				output = calculate_expression_stmt(stmt, &mut var_map);
+				output = calculate_expression_stmt(stmt, var_map);
 			}
 			_ => panic!("not impl more type"),
 		}
@@ -71,21 +71,13 @@ fn calculate_expression_stmt(ast: &mut AstNode, var_map: &mut HashMap<String, i3
 fn calculate_sum(ast: &mut AstNode, var_map: &mut HashMap<String, i32>) -> i32 {
 	match ast._type {
 		AstNodeType::Additive => {
-			let l = ast
-				.get_child(0)
-				.map_or(0, |v| calculate_sum(v, var_map));
-			let r = ast
-				.get_child(1)
-				.map_or(0, |v| calculate_sum(v, var_map));
+			let l = ast.get_child(0).map_or(0, |v| calculate_sum(v, var_map));
+			let r = ast.get_child(1).map_or(0, |v| calculate_sum(v, var_map));
 			l + r
 		}
 		AstNodeType::Multiplicative => {
-			let l = ast
-				.get_child(0)
-				.map_or(1, |v| calculate_sum(v, var_map));
-			let r = ast
-				.get_child(1)
-				.map_or(1, |v| calculate_sum(v, var_map));
+			let l = ast.get_child(0).map_or(1, |v| calculate_sum(v, var_map));
+			let r = ast.get_child(1).map_or(1, |v| calculate_sum(v, var_map));
 			l * r
 		}
 		AstNodeType::IntLiteral => ast._text.parse().unwrap(),
