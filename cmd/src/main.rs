@@ -19,15 +19,15 @@ fn main() {
             Arg::with_name("mode")
                 .short("m")
                 .long("mode")
-                .value_name("input")
-                .help("使用什么模式启动程序")
+                .value_name("MODE")
+                .help("Select which mode to boot")
                 .takes_value(true),
         )
         .arg(
             Arg::with_name("path")
                 .short("p")
                 .long("path")
-                .value_name("path")
+                .value_name("PATH")
                 .help("zex's file read path")
                 .takes_value(true),
         )
@@ -35,7 +35,7 @@ fn main() {
             Arg::with_name("file")
                 .short("f")
                 .long("file")
-                .value_name("file name")
+                .value_name("FILE NAME")
                 .help("the file name of zex from <path>")
                 .takes_value(true),
         )
