@@ -3,14 +3,28 @@ use super::{char_help::*, dfa_state::*, token::*};
 /// if  
 ///     int 第二个字符为n => 继续验证第三个字符n
 /// else
-///     为一个标识符i 
-pub fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+///     为一个标识符i
+pub fn state_i_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'n' {
         token.text.push(ch);
         (i + 1, DfaState::Int2)
+    } else if ch == 'f' {
+        token.text.push(ch);
+        (i + 1, DfaState::If2)
     } else {
-        token._type = TokenType::Identifier;
+        (i, DfaState::Identifier)
+    }
+}
+
+// 'i' -> 'if',最后需要讲过ifOk判断为‘ ’，才能确定是if
+pub fn state_if2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    println!("state if2 handle ch is {}", ch);
+    if ch == ' ' {
+        token._type = TokenType::IF;
+        (i + 1, DfaState::Initial)
+    } else {
         (i, DfaState::Identifier)
     }
 }
@@ -18,7 +32,6 @@ pub fn state_int1_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
 pub fn state_int2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch != 't' {
-        token._type = TokenType::Identifier;
         (i, DfaState::Identifier)
     } else {
         token.text.push(ch);
@@ -29,9 +42,9 @@ pub fn state_int2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
 pub fn state_int3_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if char_is_blank(ch) {
-        (i + 1, DfaState::IntOK)
+        token._type = TokenType::Int;
+        (i + 1, DfaState::Initial)
     } else {
-        token._type = TokenType::Identifier;
         (i, DfaState::Identifier)
     }
 }
@@ -78,5 +91,5 @@ pub fn state_eq_handle(i: usize) -> (usize, DfaState) {
 }
 
 pub fn state_semicolon_handle(i: usize) -> (usize, DfaState) {
-    (i,DfaState::SemiColon)
+    (i, DfaState::SemiColon)
 }

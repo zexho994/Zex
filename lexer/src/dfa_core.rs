@@ -27,11 +27,10 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
     token.text.push(ch);
 
     if char_is_alpha(ch) {
+        token._type = TokenType::Identifier;
         return if ch == 'i' {
-            token._type = TokenType::Int;
-            (token, DfaState::Int1)
+            (token, DfaState::I)
         } else {
-            token._type = TokenType::Identifier;
             (token, DfaState::Identifier)
         };
     }
@@ -105,11 +104,14 @@ fn lexing(
     while i < s.chars().count() {
         match state {
             // 遇到initial的时候，表示一个token已经解析完，跳出此次循环保存该token
-            DfaState::Initial | DfaState::IntOK | DfaState::SemiColon => {
+            DfaState::Initial | DfaState::SemiColon => {
                 break;
             }
-            DfaState::Int1 => {
-                handle_res = state_int1_handle(i, s, &mut token);
+            DfaState::I => {
+                handle_res = state_i_handle(i, s, &mut token);
+            }
+            DfaState::If2 => {
+                handle_res = state_if2_handle(i, s, &mut token);
             }
             DfaState::Int2 => {
                 handle_res = state_int2_handle(i, s, &mut token);

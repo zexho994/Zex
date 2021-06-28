@@ -24,11 +24,16 @@ mod test {
 
     #[test]
     fn parse_test_7() {
-        let s = String::from("i int num > 01;");
+        let s = String::from("i int if num > 01;");
         let tokens = dfa_core::parse_to_tokens(s.as_str().to_string());
-        assert!(tokens.data.len() == 6);
+        println!("tokens {:?}", tokens);
+        assert!(tokens.data.len() == 7);
         match tokens.get_child_idx(1).unwrap()._type {
             token::TokenType::Int => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(2).unwrap()._type {
+            token::TokenType::IF => {}
             _ => panic!("parse s = {} failed", s),
         }
     }
@@ -37,7 +42,7 @@ mod test {
     fn parse_test_12() {
         let str1 = String::from("int num=1; ");
         let tokens = dfa_core::parse_to_tokens(str1);
-        // println!("tokens is {:?}", tokens);
+        println!("tokens is {:?}", tokens);
         assert!(tokens.data.len() == 5);
     }
 

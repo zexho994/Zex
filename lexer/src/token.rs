@@ -30,6 +30,8 @@ pub enum TokenType {
     Slash,
     // ;
     SemiColon,
+    // if
+    IF,
 }
 
 #[derive(Debug)]

@@ -19,14 +19,12 @@ pub enum DfaState {
     GT,
     /// 大于等于状态
     GE,
-    /// int_1的状态.首字母为'i'的情况
-    Int1,
+    /// 首字母为 'i'
+    I,
     /// int_2的状态.int_1后字母为'n'
     Int2,
     /// int_3的状态.int_2后字母为't'
     Int3,
-    /// int_ok 的状态.int_3后字符为空格
-    IntOK,
     // '+'
     Plus,
     // '-'
@@ -35,4 +33,6 @@ pub enum DfaState {
     Star,
     // '/'
     Slash,
+    // 'if '
+    If2,
 }
