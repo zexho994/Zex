@@ -10,3 +10,4 @@ edition = "2018"
 clap = "2"
 parse = { path = "../parse",version = "0.1.0"}
 lexer = { path = "../lexer",version = "0.1.0"}
+# structopt = { version = "0.3", default-features = false }
