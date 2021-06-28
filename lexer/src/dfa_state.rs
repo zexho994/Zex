@@ -1,6 +1,8 @@
 /// 有限状态机的状态枚举类
 #[derive(Debug)]
 pub enum DfaState {
+    /// 换行符
+    EOF,
     /// 空格
     Blank,
     /// ;

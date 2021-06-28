@@ -20,6 +20,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
         _type: TokenType::Blank,
         text: String::from(""),
     };
+
     if char_is_blank(ch) {
         return (token, DfaState::Blank);
     }
@@ -75,7 +76,8 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
         return (token, DfaState::SemiColon);
     }
 
-    panic!("initial to other error");
+    (token, DfaState::EOF)
+    // panic!("initial to other error,ch = a{}a", ch);
 }
 
 /// # parse_to_token ()
@@ -94,7 +96,7 @@ fn lexing(
     let mut handle_res: (usize, DfaState);
 
     match state {
-        DfaState::Blank => {
+        DfaState::Blank | DfaState::EOF => {
             return i;
         }
         _ => {}

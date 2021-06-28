@@ -10,7 +10,10 @@ use std::io::Read;
 use std::io::Write;
 use std::path::Path;
 
+const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
+
 fn main() {
+    // 配置cmd命令
     let matches = App::new("Zex Program")
         .version("1.0")
         .author("zouzhihao@gmail.com")
@@ -40,11 +43,13 @@ fn main() {
                 .takes_value(true),
         )
         .get_matches();
+
+    // 解析启动参数
     let mode = matches.value_of("mode").unwrap_or("input");
-    let path = matches
-        .value_of("path")
-        .unwrap_or("/Users/zexho/Github/Zex/sample");
+    let path = matches.value_of("path").unwrap_or(DEFAULT_PATH);
     let file = matches.value_of("file").unwrap_or("");
+
+    // 选择启动模式
     if mode == "input" {
         input_mode();
     } else if mode == "file" {
@@ -52,6 +57,7 @@ fn main() {
     }
 }
 
+/// 手动输入模式
 fn input_mode() {
     println!("=> 手动输入执行语句，以分号；结束.");
     let mut var_map: HashMap<String, i32> = HashMap::new();
@@ -70,6 +76,7 @@ fn input_mode() {
     }
 }
 
+/// 读取文件解析模式
 fn file_mode(p: &str, n: &str) {
     let mut full_path = String::from(p);
     full_path.push_str("/");
@@ -82,6 +89,12 @@ fn file_mode(p: &str, n: &str) {
     let mut content = String::new();
     match file.read_to_string(&mut content) {
         Err(err) => panic!("couldn't read {},err {}", full_path, err),
-        Ok(_) => println!("{}", content),
+        Ok(_) => println!("\n==> input:\n{}", content),
     }
+
+    // 解析读取的文件
+    let mut var_map: HashMap<String, i32> = HashMap::new();
+    let mut tokens = token::new_tokens(content.trim().to_string());
+    let num = parse::parse_tokens(&mut tokens, &mut var_map);
+    println!("\n==> output:\n{}", num.unwrap());
 }
