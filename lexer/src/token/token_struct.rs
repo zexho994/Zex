@@ -1,6 +1,12 @@
 use super::token_type::*;
 
 #[derive(Debug)]
+pub struct Token {
+	pub _type: TokenType,
+	pub text: String,
+}
+
+#[derive(Debug)]
 pub struct Tokens {
 	pub data: Vec<Token>,
 	pub pos: usize,
@@ -48,10 +54,4 @@ impl Tokens {
 		}
 		self.pos = p;
 	}
-}
-
-#[derive(Debug)]
-pub struct Token {
-	pub _type: TokenType,
-	pub text: String,
 }

@@ -3,21 +3,8 @@ use super::{
     dfa::dfa_state::*, dfa::dfa_state_handing::*, token::token_struct::*, utils::char_help::*,
 };
 
-pub fn parse_to_tokens(s: String) -> Tokens {
-    let mut i: usize = 0;
-    let mut tokens = Tokens {
-        data: Vec::new(),
-        pos: 0,
-    };
-    while i < s.chars().count() {
-        let (token, state) = initial_to_other(i, s.as_str());
-        i = lexing(state, i + 1, s.as_str(), token, &mut tokens);
-    }
-    tokens
-}
-
-/// 第一阶段，由Initial状态转化成其他状态
-fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
+/// 获取初始dfa状态
+pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     let mut token = Token {
         _type: TokenType::Blank,
@@ -28,6 +15,9 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
         return (token, DfaState::Blank);
     }
     token.text.push(ch);
+
+    if ch == '{' {}
+    if ch == '}' {}
 
     if char_is_alpha(ch) {
         token._type = TokenType::Identifier;
@@ -87,8 +77,7 @@ fn initial_to_other(i: usize, s: &str) -> (Token, DfaState) {
 /// ##
 /// ## 解析说明:
 /// - parse int keyword:  int_1 -> int_2 -> int_3 -> int_ok
-///
-fn lexing(
+pub fn get_full_token(
     mut state: DfaState,
     mut i: usize,
     s: &str,

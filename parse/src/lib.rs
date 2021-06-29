@@ -1,4 +1,3 @@
-pub use lexer::*;
 
 pub mod ast_node;
 pub mod ast_node_type;
@@ -13,7 +12,7 @@ mod tests {
     fn parse_to_ast1() {
         let s = String::from("int a = 1 + 3 + 1;");
         println!("\n==> parse str {}", s);
-        let mut tokens = dfa_core::parse_to_tokens(s);
+        let mut tokens = lexer::lexing(s);
         assert_eq!(9, tokens.count());
         let ast = parse::parse_to_ast(&mut tokens);
         println!("==> parse done. ast = {:?}", ast);
@@ -24,7 +23,7 @@ mod tests {
     fn parse_to_ast2() {
         let s = String::from("int a = 2 * 3 + 1 + 3 * 10;");
         println!("\n==> parse str {}", s);
-        let mut tokens = dfa_core::parse_to_tokens(s);
+        let mut tokens = lexer::lexing(s);
         assert_eq!(13, tokens.count());
         let ast = parse::parse_to_ast(&mut tokens);
         println!("==> parse done. ast = {:?}", ast);
@@ -35,7 +34,7 @@ mod tests {
     fn match_assignment_expr1() {
         let s = String::from("i = 1 + 5;");
         println!("\n==> parse str {}", s);
-        let mut tokens = dfa_core::parse_to_tokens(s);
+        let mut tokens = lexer::lexing(s);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
         assert_eq!(res, 6)
     }
@@ -44,7 +43,7 @@ mod tests {
     fn match_assignment_expr2() {
         let s = String::from("i = 2 * 3 ;");
         println!("\n==> parse str {}", s);
-        let mut tokens = dfa_core::parse_to_tokens(s);
+        let mut tokens = lexer::lexing(s);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
         assert_eq!(res, 6)
     }
@@ -53,7 +52,7 @@ mod tests {
     fn match_assignment_expr3() {
         let s = String::from("i = 10 + 2 * 3 ;");
         println!("\n==> parse str {}", s);
-        let mut tokens = dfa_core::parse_to_tokens(s);
+        let mut tokens = lexer::lexing(s);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
         assert_eq!(res, 16)
     }
@@ -62,7 +61,7 @@ mod tests {
     fn match_express_stm() {
         let s = String::from("10 + 1 + 2;");
         println!("\n==> parse str {}", s);
-        let mut tokens = dfa_core::parse_to_tokens(s);
+        let mut tokens = lexer::lexing(s);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
         assert_eq!(res, 13)
     }
@@ -71,7 +70,7 @@ mod tests {
     fn multi_program() {
         let str = String::from("int a = 1;a = 2; a + 2;");
         println!("\n==> parse str {}", str);
-        let mut tokens = dfa_core::parse_to_tokens(str);
+        let mut tokens = lexer::lexing(str);
         let res = parse::parse_to_ast(&mut tokens).unwrap();
         assert_eq!(res, 4)
     }
