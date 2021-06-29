@@ -7,6 +7,16 @@ pub struct AstNode {
     pub _child: Vec<AstNode>,
 }
 
+impl Default for AstNode {
+    fn default() -> AstNode {
+        AstNode {
+            _text: "".to_string(),
+            _type: AstNodeType::None,
+            _child: Vec::new(),
+        }
+    }
+}
+
 pub fn new_ast() -> AstNode {
     AstNode {
         _child: Vec::new(),

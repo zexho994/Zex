@@ -5,8 +5,10 @@ use calculate;
 use lexer::token::{token_struct::*, token_type::*};
 use std::collections::HashMap;
 
-/// <program -> <statement>+ ;
-/// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm> | { <statement>? } ;
+/// <program> -> <statements> ;
+/// <statements> ::= <blockStm> | <statement> | <statement> <statements>
+/// <blockStm> ::= { <statements> }
+/// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm>
 /// <intDeclare> -> int <id> <assignment> <expr> ';' ;
 /// <expressionStm> -> <addExpr>
 /// <assignmentStm> -> <id> <assignment> <exprStm>
@@ -14,9 +16,61 @@ use std::collections::HashMap;
 /// <addExpr> -> <mulExpr> | <mulExpr> '+' <addExpr> ;
 /// <mulExpr> -> <primary> | <primary> '*' <mulExpr> ;
 /// <primary> -> <id> | <intLiteral>
-pub fn parse_to_ast(tokens: &mut Tokens) -> Option<i32> {
-    let mut var_map: HashMap<String, i32> = HashMap::new();
-    parse_tokens(tokens, &mut var_map)
+pub fn parsing(tokens: &mut Tokens) -> Option<AstNode> {
+    println!("parsing tokens:{:?} -> AST", tokens);
+    match_program(tokens)
+}
+
+/// <program> ::= <statements> ;
+fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
+    let mut ast_root = new_ast();
+    ast_root.add_child(match_statements(tokens).unwrap());
+    Option::Some(ast_root)
+}
+
+/// <statements> ::= <blockStm> | <statement> | <statement> <statements>
+fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
+    let mut ast_node = AstNode {
+        _type: AstNodeType::Statements,
+        ..Default::default()
+    };
+    while tokens.peek().is_some() {
+        println!("match statement");
+        if let Some(node) = match_block_statement(tokens) {
+            ast_node.add_child(node);
+            continue;
+        }
+        if let Some(node) = match_statement(tokens) {
+            ast_node.add_child(node);
+            continue;
+        }
+    }
+
+    Option::Some(ast_node)
+}
+
+/// <blockStm> ::= { <statements> }
+fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
+    if let TokenType::LeftBrace = tokens.peek().unwrap()._type {
+        let mut ast_node = AstNode {
+            _type: AstNodeType::BlockStmt,
+            ..Default::default()
+        };
+
+        if let Some(node) = match_statements(tokens) {
+            ast_node.add_child(node);
+        }
+
+        Option::Some(ast_node)
+    } else {
+        None
+    }
+}
+
+/// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm>
+fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
+    tokens.read();
+    None
 }
 
 pub fn parse_tokens(tokens: &mut Tokens, var_map: &mut HashMap<String, i32>) -> Option<i32> {

@@ -1,6 +1,9 @@
 #[derive(Debug)]
 pub enum AstNodeType {
+    None,
     Program,        // 程序入口，根节点
+    Statements,
+    BlockStmt,
     IntDeclaration, // 整型变量声明
     ExpressionStmt, // 表达式语句，即表达式后面跟个分号';'
     AssignmentStmt, // 赋值语句
