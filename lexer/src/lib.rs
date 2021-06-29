@@ -1,7 +1,6 @@
 pub mod char_help;
 pub mod dfa;
 pub mod dfa_core;
-pub mod dfa_state;
 pub mod token;
 use crate::token::token_type::TokenType;
 

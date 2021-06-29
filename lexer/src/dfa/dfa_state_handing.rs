@@ -1,4 +1,5 @@
-use super::super::{char_help::*, dfa_state::*, token::token_struct::*, token::token_type::*};
+use super::super::{char_help::*, token::token_struct::*, token::token_type::*};
+use super::dfa_state::*;
 
 /// if  
 ///     int 第二个字符为n => 继续验证第三个字符n
