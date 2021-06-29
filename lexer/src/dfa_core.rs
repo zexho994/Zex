@@ -1,4 +1,7 @@
-use super::{char_help::*, dfa_state::*, state_handing::*, token::token_type::*,token::token_struct::*};
+use super::{
+    char_help::*, dfa::dfa_state_handing::*, dfa_state::*, token::token_struct::*,
+    token::token_type::*,
+};
 
 pub fn parse_to_tokens(s: String) -> Tokens {
     let mut i: usize = 0;

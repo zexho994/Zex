@@ -1,9 +1,9 @@
 pub mod char_help;
+pub mod dfa;
 pub mod dfa_core;
 pub mod dfa_state;
-pub mod state_handing;
 pub mod token;
-use token::token_type::TokenType;
+use crate::token::token_type::TokenType;
 
 #[cfg(test)]
 mod test {
@@ -62,8 +62,9 @@ mod test {
             None => panic!("parse test fail"),
         }
     }
+
     #[test]
-    fn SemiColon() {
+    fn semi_colon() {
         let str1 = String::from(";");
         let tokens = dfa_core::parse_to_tokens(str1);
         assert!(tokens.data.len() == 1);
