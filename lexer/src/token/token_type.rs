@@ -30,4 +30,8 @@ pub enum TokenType {
     SemiColon,
     // if
     IF,
+    // {
+    LeftBrace,
+    // }
+    RightBrace,
 }
