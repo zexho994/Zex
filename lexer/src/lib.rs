@@ -1,7 +1,7 @@
-pub mod char_help;
 pub mod dfa;
 pub mod dfa_core;
 pub mod token;
+pub mod utils;
 use crate::token::token_type::TokenType;
 
 #[cfg(test)]

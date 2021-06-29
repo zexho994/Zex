@@ -1,4 +1,4 @@
-use super::super::{char_help::*, token::token_struct::*, token::token_type::*};
+use super::super::{token::token_struct::*, token::token_type::*, utils::char_help::*};
 use super::dfa_state::*;
 
 /// if  
