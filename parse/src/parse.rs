@@ -3,7 +3,7 @@ use ast_node::*;
 use ast_node_type::*;
 use calculate;
 use std::collections::HashMap;
-use token::*;
+use token::{token_struct::*, token_type::*};
 
 /// <program -> <statement>+ ;
 /// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm> ;

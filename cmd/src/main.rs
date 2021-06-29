@@ -1,6 +1,6 @@
 use clap::App;
 use clap::Arg;
-use lexer::token;
+use lexer::dfa_core;
 use parse::parse;
 use std::collections::HashMap;
 use std::fs::File;
@@ -70,7 +70,7 @@ fn input_mode() {
         if input == "exit" {
             break;
         }
-        let mut tokens = token::new_tokens(input.to_string());
+        let mut tokens = dfa_core::parse_to_tokens(input.to_string());
         let num = parse::parse_tokens(&mut tokens, &mut var_map);
         println!("{}", num.unwrap());
     }
@@ -94,7 +94,7 @@ fn file_mode(p: &str, n: &str) {
 
     // 解析读取的文件
     let mut var_map: HashMap<String, i32> = HashMap::new();
-    let mut tokens = token::new_tokens(content.trim().to_string());
+    let mut tokens = dfa_core::parse_to_tokens(content.trim().to_string());
     let num = parse::parse_tokens(&mut tokens, &mut var_map);
     println!("\n==> output:\n{}", num.unwrap());
 }

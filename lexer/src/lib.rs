@@ -3,6 +3,7 @@ pub mod dfa_core;
 pub mod dfa_state;
 pub mod state_handing;
 pub mod token;
+use token::token_type::TokenType;
 
 #[cfg(test)]
 mod test {
@@ -29,11 +30,11 @@ mod test {
         println!("tokens {:?}", tokens);
         assert!(tokens.data.len() == 7);
         match tokens.get_child_idx(1).unwrap()._type {
-            token::TokenType::Int => {}
+            TokenType::Int => {}
             _ => panic!("parse s = {} failed", s),
         }
         match tokens.get_child_idx(2).unwrap()._type {
-            token::TokenType::IF => {}
+            TokenType::IF => {}
             _ => panic!("parse s = {} failed", s),
         }
     }
@@ -53,7 +54,7 @@ mod test {
         assert!(tokens.data.len() == 1);
         match tokens.peek() {
             Some(t) => match t._type {
-                token::TokenType::Assignment => {
+                TokenType::Assignment => {
                     println!("");
                 }
                 _ => panic!("token is not an Assignment"),
@@ -68,7 +69,7 @@ mod test {
         assert!(tokens.data.len() == 1);
         match tokens.peek() {
             Some(t) => match t._type {
-                token::TokenType::SemiColon => {
+                TokenType::SemiColon => {
                     println!("");
                 }
                 _ => panic!("token is not a SemiColon"),
@@ -98,7 +99,7 @@ mod test {
         let ot = tokens.read();
         match ot {
             Some(t) => match t._type {
-                token::TokenType::Identifier => {}
+                TokenType::Identifier => {}
                 _ => panic!("token type mismatch, type is {:?}", t),
             },
             None => panic!("token missing"),
