@@ -50,7 +50,7 @@ fn main() {
         .get_matches();
 
     // 解析启动参数
-    let mode = matches.value_of("mode").unwrap_or("input");
+    let mode = matches.value_of("mode").unwrap_or("file");
     let path = matches.value_of("path").unwrap_or(DEFAULT_PATH);
     let file = matches.value_of("file").unwrap_or("");
     let out = matches.value_of("output").unwrap_or("");

@@ -34,4 +34,6 @@ pub enum TokenType {
     LeftBrace,
     // }
     RightBrace,
+    // echo 
+    Echo,
 }
