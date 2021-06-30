@@ -57,6 +57,7 @@ fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
             ..Default::default()
         };
 
+        tokens.read();
         if let Some(node) = match_statements(tokens) {
             ast_node.add_child(node);
         }
@@ -69,8 +70,22 @@ fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm>
 fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
-    tokens.read();
-    None
+    let mut ast_node: AstNode = AstNode {
+        _type: AstNodeType::Statement,
+        ..Default::default()
+    };
+
+    if let Some(node) = match_int_declare(tokens) {
+        ast_node.add_child(node);
+    } else if let Some(node) = match_expr_stm(tokens) {
+        ast_node.add_child(node);
+    } else if let Some(node) = match_assignment(tokens) {
+        ast_node.add_child(node);
+    } else {
+        panic!("match statement error, tokens is {:?}", tokens);
+    }
+
+    Option::Some(ast_node)
 }
 
 pub fn parse_tokens(tokens: &mut Tokens, var_map: &mut HashMap<String, i32>) -> Option<i32> {
