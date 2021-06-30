@@ -1,6 +1,5 @@
 use clap::App;
 use clap::Arg;
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::stdin;
 use std::io::stdout;
@@ -40,25 +39,33 @@ fn main() {
                 .help("the file name of zex from <path>")
                 .takes_value(true),
         )
+        .arg(
+            Arg::with_name("output")
+                .short("o")
+                .long("out")
+                .value_name("output")
+                .help("print data info , be type out -token or -ast or -all")
+                .takes_value(true),
+        )
         .get_matches();
 
     // 解析启动参数
     let mode = matches.value_of("mode").unwrap_or("input");
     let path = matches.value_of("path").unwrap_or(DEFAULT_PATH);
     let file = matches.value_of("file").unwrap_or("");
+    let out = matches.value_of("output").unwrap_or("");
 
     // 选择启动模式
     if mode == "input" {
         input_mode();
     } else if mode == "file" {
-        file_mode(path, file);
+        file_mode(path, file, out);
     }
 }
 
 /// 手动输入模式
 fn input_mode() {
     println!("=> 手动输入执行语句，以分号；结束.");
-    let mut var_map: HashMap<String, i32> = HashMap::new();
     loop {
         print!(">");
         stdout().flush().expect("flush error!");
@@ -75,7 +82,7 @@ fn input_mode() {
 }
 
 /// 读取文件解析模式
-fn file_mode(p: &str, n: &str) {
+fn file_mode(p: &str, n: &str, out: &str) {
     let mut full_path = String::from(p);
     full_path.push_str("/");
     full_path.push_str(n);
@@ -90,9 +97,17 @@ fn file_mode(p: &str, n: &str) {
         Ok(_) => println!("\n==> input:\n{}", content),
     }
 
-    // 解析读取的文件
-    // let mut var_map: HashMap<String, i32> = HashMap::new();
+    // lexing
     let mut tokens = lexer::lexing(content.trim().to_string());
-    parse::parsing(&mut tokens);
-    // println!("\n==> output:\n{}", num.unwrap());
+    if out == "token" || out == "all" {
+        println!("\n----- output token-----");
+        println!("{:?}", tokens);
+    }
+
+    // parsing
+    let ast = parse::parsing(&mut tokens);
+    if out == "ast" || out == "all" {
+        println!("\n----- output ast-----");
+        println!("{:?}", ast.unwrap());
+    }
 }

@@ -123,6 +123,6 @@ mod tests {
 /// <mulExpr> -> <primary> | <primary> '*' <mulExpr> ;
 /// <primary> -> <id> | <intLiteral>
 pub fn parsing(tokens: &mut lexer::token::token_struct::Tokens) -> Option<ast_node::AstNode> {
-    println!("parsing tokens:{:?} -> AST", tokens);
+    // println!("parsing tokens:{:?} -> AST", tokens);
     parse_flow::match_program(tokens)
 }

@@ -1,9 +1,7 @@
 use super::*;
 use ast_node::*;
 use ast_node_type::*;
-use calculate;
 use lexer::token::{token_struct::*, token_type::*};
-use std::collections::HashMap;
 
 /// <program> ::= <statements> ;
 pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
