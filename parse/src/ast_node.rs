@@ -7,6 +7,7 @@ pub struct AstNode {
     pub _child: Vec<AstNode>,
 }
 
+/// 设置默认构造参数
 impl Default for AstNode {
     fn default() -> AstNode {
         AstNode {

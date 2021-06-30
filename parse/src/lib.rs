@@ -18,6 +18,14 @@ mod tests {
         // assert_eq!(ast.unwrap(), 5)
     }
 
+    #[test]
+    fn parse_block_stmt() {
+        let s = String::from("{ int a = 1 + 3 + 1; }");
+        let mut tokens = lexer::lexing(s);
+        let ast = parsing(&mut tokens);
+        println!("\n==> parse str to ast , ast is {:?}", ast);
+    }
+
     // #[test]
     // fn parse_to_ast2() {
     //     let s = String::from("int a = 2 * 3 + 1 + 3 * 10;");
