@@ -5,24 +5,8 @@ use calculate;
 use lexer::token::{token_struct::*, token_type::*};
 use std::collections::HashMap;
 
-/// <program> -> <statements> ;
-/// <statements> ::= <blockStm> | <statement> | <statement> <statements>
-/// <blockStm> ::= { <statements> }
-/// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm>
-/// <intDeclare> -> int <id> <assignment> <expr> ';' ;
-/// <expressionStm> -> <addExpr>
-/// <assignmentStm> -> <id> <assignment> <exprStm>
-/// <id> -> ([a-z][A-Z])* ;
-/// <addExpr> -> <mulExpr> | <mulExpr> '+' <addExpr> ;
-/// <mulExpr> -> <primary> | <primary> '*' <mulExpr> ;
-/// <primary> -> <id> | <intLiteral>
-pub fn parsing(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("parsing tokens:{:?} -> AST", tokens);
-    match_program(tokens)
-}
-
 /// <program> ::= <statements> ;
-fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_root = new_ast();
     ast_root.add_child(match_statements(tokens).unwrap());
     Option::Some(ast_root)
@@ -35,7 +19,6 @@ fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
         ..Default::default()
     };
     while tokens.peek().is_some() {
-        println!("match statement");
         if let Some(node) = match_block_statement(tokens) {
             ast_node.add_child(node);
             continue;

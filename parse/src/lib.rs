@@ -1,8 +1,7 @@
-
 pub mod ast_node;
 pub mod ast_node_type;
 pub mod calculate;
-pub mod parse;
+pub mod parse_flow;
 
 #[cfg(test)]
 mod tests {
@@ -14,7 +13,7 @@ mod tests {
         println!("\n==> parse str {}", s);
         let mut tokens = lexer::lexing(s);
         assert_eq!(9, tokens.count());
-        let ast = parse::parsing(&mut tokens);
+        let ast = parsing(&mut tokens);
         println!("==> parse done. ast = {:?}", ast);
         // assert_eq!(ast.unwrap(), 5)
     }
@@ -102,4 +101,20 @@ mod tests {
             None
         }
     }
+}
+
+/// <program> -> <statements> ;
+/// <statements> ::= <blockStm> | <statement> | <statement> <statements>
+/// <blockStm> ::= { <statements> }
+/// <statement> -> <intDeclare> | <expressionStm> | <assignmentStm>
+/// <intDeclare> -> int <id> <assignment> <expr> ';' ;
+/// <expressionStm> -> <addExpr>
+/// <assignmentStm> -> <id> <assignment> <exprStm>
+/// <id> -> ([a-z][A-Z])* ;
+/// <addExpr> -> <mulExpr> | <mulExpr> '+' <addExpr> ;
+/// <mulExpr> -> <primary> | <primary> '*' <mulExpr> ;
+/// <primary> -> <id> | <intLiteral>
+pub fn parsing(tokens: &mut lexer::token::token_struct::Tokens) -> Option<ast_node::AstNode> {
+    println!("parsing tokens:{:?} -> AST", tokens);
+    parse_flow::match_program(tokens)
 }
