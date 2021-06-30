@@ -85,14 +85,12 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
     let mut ast_node: AstNode;
     let pos_cached = tokens.position();
 
-    // match 'int'
     if let TokenType::Int = tokens.peek().unwrap()._type {
         tokens.read();
     } else {
         return None;
     }
 
-    // match <id>
     if let TokenType::Identifier = tokens.peek().unwrap()._type {
         ast_node = new_ast_node(
             AstNodeType::IntDeclaration,
@@ -103,7 +101,6 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         return None;
     }
 
-    // match <assignment>
     if let TokenType::Assignment = tokens.peek().unwrap()._type {
         tokens.read();
     } else {
@@ -114,7 +111,6 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         panic!("match int declaration error,tokens: {:?}", tokens);
     }
 
-    // match <addExpr>
     if tokens.peek().is_none() {
         panic!("match int declaration error,tokens: {:?}", tokens);
     }
@@ -123,7 +119,6 @@ fn match_int_declare(tokens: &mut Tokens) -> Option<AstNode> {
         None => return Option::Some(ast_node),
     }
 
-    // match semicolon
     match tokens.read().unwrap()._type {
         TokenType::SemiColon => {}
         _ => panic!(""),
