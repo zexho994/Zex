@@ -1,7 +1,7 @@
 #[derive(Debug)]
 pub enum AstNodeType {
     None,
-    Program,        // 程序入口，根节点
+    Program, // 程序入口，根节点
     Statements,
     Statement,
     BlockStmt,
@@ -13,4 +13,11 @@ pub enum AstNodeType {
     Additive,       // 加法表达式
     Identifier,     // 标识符
     IntLiteral,     // 整型字面量
+
+    VarDeclare,
+
+    AssignmentSymbol, // 赋值符号
+
+    // type
+    Int,
 }
