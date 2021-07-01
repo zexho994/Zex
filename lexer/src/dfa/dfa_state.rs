@@ -35,4 +35,12 @@ pub enum DfaState {
     Slash,
     // 'if '
     If2,
+    // 'e'
+    E,
+    // 'ec'
+    EC,
+    // 'ech'
+    ECH,
+    // 'echo'
+    ECHO,
 }

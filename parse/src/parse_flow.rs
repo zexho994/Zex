@@ -96,7 +96,6 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
     if !match_semicolon(tokens) {
         panic!("match statement,要以分号结束");
     }
-    
     Option::Some(ast_node)
 }
 

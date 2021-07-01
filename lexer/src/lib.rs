@@ -12,10 +12,10 @@ mod test {
 
     #[test]
     fn lexing_flow() {
-        let s = String::from("i int if num > 01; {}");
+        let s = String::from("i int if num > 01; {} echo ");
         let tokens = lexing(s.as_str().to_string());
         println!("tokens {:?}", tokens);
-        assert!(tokens.data.len() == 9);
+        assert!(tokens.data.len() == 10);
         match tokens.get_child_idx(0).unwrap()._type {
             TokenType::Identifier => {}
             _ => panic!("parse s = {} failed", s),
@@ -50,6 +50,10 @@ mod test {
         }
         match tokens.get_child_idx(8).unwrap()._type {
             TokenType::RightBrace => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(9).unwrap()._type {
+            TokenType::Echo => {}
             _ => panic!("parse s = {} failed", s),
         }
     }

@@ -29,6 +29,8 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
         token._type = TokenType::Identifier;
         return if ch == 'i' {
             (token, DfaState::I)
+        } else if ch == 'e' {
+            (token, DfaState::E)
         } else {
             (token, DfaState::Identifier)
         };
@@ -107,6 +109,18 @@ pub fn get_full_token(
             }
             DfaState::I => {
                 handle_res = state_i_handle(i, s, &mut token);
+            }
+            DfaState::E => {
+                handle_res = state_e_handle(i, s, &mut token);
+            }
+            DfaState::EC => {
+                handle_res = state_ec_handle(i, s, &mut token);
+            }
+            DfaState::ECH => {
+                handle_res = state_ech_handle(i, s, &mut token);
+            }
+            DfaState::ECHO => {
+                handle_res = state_echo_handle(i, s, &mut token);
             }
             DfaState::If2 => {
                 handle_res = state_if2_handle(i, s, &mut token);

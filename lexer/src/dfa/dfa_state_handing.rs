@@ -18,6 +18,46 @@ pub fn state_i_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState)
     }
 }
 
+pub fn state_e_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 'c' {
+        token.text.push(ch);
+        (i + 1, DfaState::EC)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+
+pub fn state_ec_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 'h' {
+        token.text.push(ch);
+        (i + 1, DfaState::ECH)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+
+pub fn state_ech_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 'o' {
+        token.text.push(ch);
+        (i + 1, DfaState::ECHO)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+
+pub fn state_echo_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == ' ' {
+        token._type = TokenType::Echo;
+        (i + 1, DfaState::Initial)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+
 // 'i' -> 'if',最后需要讲过ifOk判断为‘ ’，才能确定是if
 pub fn state_if2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
