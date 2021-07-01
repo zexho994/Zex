@@ -24,6 +24,15 @@ mod tests {
         let ast = parsing(&mut tokens);
         println!("\n==> parse str to ast , ast is {:?}", ast);
     }
+
+    #[test]
+    fn parse_echo() {
+        let s = String::from("echo 1;echo a;");
+        println!("\n===> parse assignment {}", s);
+        let mut tokens = lexer::lexing(s.clone());
+        let ast = parsing(&mut tokens);
+        println!("\n==> parse str to ast , ast is {:?}", ast);
+    }
 }
 
 /// // 程序入口
@@ -36,7 +45,7 @@ mod tests {
 /// <blockStm> ::= { <statements> }
 ///
 /// // 语句类型：分配声明语句，表达式语句，赋值语句
-/// <statement> ::=  <declare> | <expressionStm> | <assignmentStm> ;
+/// <statement> ::=  <echo> | <declare> | <expressionStm> | <assignmentStm> ;
 ///
 /// // 声明语句现在提供变量声明，以后还有方法声明、类声明
 /// <declare> ::= <varDeclare>
@@ -68,6 +77,8 @@ mod tests {
 /// <id> ::= ([a-z][A-Z])*
 ///
 /// <intLiteral> ::= [1-9][0-9]*
+///
+/// <echo> ::= echo <id> | echo <intLiteral>
 pub fn parsing(tokens: &mut lexer::token::token_struct::Tokens) -> Option<ast_node::AstNode> {
     parse_flow::match_program(tokens)
 }

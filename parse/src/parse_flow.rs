@@ -83,7 +83,8 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
         ..Default::default()
     };
 
-    if let Some(node) = match_declare(tokens) {
+    if let Some(_) = match_echo(tokens) {
+    } else if let Some(node) = match_declare(tokens) {
         ast_node.add_child(node);
     } else if let Some(node) = match_expr_stm(tokens) {
         ast_node.add_child(node);
@@ -97,6 +98,25 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
         panic!("match statement,要以分号结束");
     }
     Option::Some(ast_node)
+}
+
+/// <echo> ::= echo ( <id> | <intLiteral> )
+fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
+    if let TokenType::Echo = tokens.peek().unwrap()._type {
+        tokens.read();
+        let t = tokens.peek();
+        match tokens.peek().unwrap()._type {
+            TokenType::Identifier => println!("\necho {}", match_id(tokens).unwrap()._text),
+            TokenType::IntLiteral => println!("\necho {}", match_internal(tokens).unwrap()._text),
+            _ => panic!("match echo error, token = {:?} ", t),
+        }
+    } else {
+        return None;
+    }
+
+    Option::Some(AstNode {
+        ..Default::default()
+    })
 }
 
 /// todo 声明语句现在提供变量声明，以后还有方法声明、类声明
@@ -167,6 +187,19 @@ fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
         let t = tokens.read().unwrap();
         return Option::Some(AstNode {
             _type: AstNodeType::Identifier,
+            _text: t.text.clone(),
+            ..Default::default()
+        });
+    }
+    None
+}
+
+fn match_internal(tokens: &mut Tokens) -> Option<AstNode> {
+    println!("match internal");
+    if let TokenType::IntLiteral = tokens.peek().unwrap()._type {
+        let t = tokens.read().unwrap();
+        return Option::Some(AstNode {
+            _type: AstNodeType::IntLiteral,
             _text: t.text.clone(),
             ..Default::default()
         });
