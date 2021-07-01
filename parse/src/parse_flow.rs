@@ -72,6 +72,11 @@ fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
 /// 语句类型：分配声明语句，表达式语句，赋值语句
 /// <statement> ::= <declare> | <expressionStm> | <assignmentStm>
 fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
+    println!(
+        "match statement, token is {:?}, pos is {}",
+        tokens.peek(),
+        tokens.pos
+    );
     let mut ast_node: AstNode = AstNode {
         _type: AstNodeType::Statement,
         ..Default::default()
@@ -135,7 +140,7 @@ fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
             panic!("match var declare error, assignment 符号后面expr stm 不能为空");
         }
     }
-    
+
     if !match_semicolon(tokens) {
         panic!("match var declare error, expr stm后面以分号;结尾");
     }
@@ -231,9 +236,6 @@ fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
     } else {
         return None;
     }
-    if !match_semicolon(tokens) {
-        return None;
-    }
     Some(ast_node)
 }
 
@@ -307,7 +309,11 @@ fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <primary> ::= int | Identifier
 fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match primary");
+    println!(
+        "match primary, token: {:?}, pos is {}",
+        tokens.peek(),
+        tokens.pos
+    );
     let node: AstNode;
     match tokens.peek() {
         Some(t1) => match t1._type {
@@ -327,6 +333,11 @@ fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 fn match_semicolon(tokens: &mut Tokens) -> bool {
+    println!(
+        "match semicolon, token is {:?}, pos is {}",
+        tokens.peek(),
+        tokens.pos
+    );
     if let TokenType::SemiColon = tokens.peek().unwrap()._type {
         tokens.read();
         true
