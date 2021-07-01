@@ -77,6 +77,7 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
         tokens.peek(),
         tokens.pos
     );
+
     let mut ast_node: AstNode = AstNode {
         _type: AstNodeType::Statement,
         ..Default::default()
@@ -84,23 +85,23 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
 
     if let Some(node) = match_declare(tokens) {
         ast_node.add_child(node);
-        return Option::Some(ast_node);
+    } else if let Some(node) = match_expr_stm(tokens) {
+        ast_node.add_child(node);
+    } else if let Some(node) = match_assignment_stm(tokens) {
+        ast_node.add_child(node);
+    } else {
+        panic!("match statement error, tokens is {:?}", tokens);
     }
 
-    if let Some(node) = match_expr_stm(tokens) {
-        ast_node.add_child(node);
-        return Option::Some(ast_node);
+    if !match_semicolon(tokens) {
+        panic!("match statement,要以分号结束");
     }
-
-    if let Some(node) = match_assignment_stm(tokens) {
-        ast_node.add_child(node);
-        return Option::Some(ast_node);
-    }
-    panic!("match statement error, tokens is {:?}", tokens);
+    
+    Option::Some(ast_node)
 }
 
 /// todo 声明语句现在提供变量声明，以后还有方法声明、类声明
-/// <declare> ::= <varDeclare>
+/// <declare> ::= <varDeclare> ;
 fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
     println!("match declare");
     let pos = tokens.position();
@@ -113,7 +114,7 @@ fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
     }
 }
 
-/// <varDeclare> ::= <type> <id> <assign> <exprStm> ; | <type> <id> ;
+/// <varDeclare> ::= <type> <id> <assign> <exprStm> | <type> <id>
 fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
     println!("match var declare");
     let mut node = AstNode {
@@ -139,10 +140,6 @@ fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
         } else {
             panic!("match var declare error, assignment 符号后面expr stm 不能为空");
         }
-    }
-
-    if !match_semicolon(tokens) {
-        panic!("match var declare error, expr stm后面以分号;结尾");
     }
 
     return Some(node);
@@ -219,7 +216,6 @@ fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
     }
 
     node.add_child(match_add_expr(tokens).unwrap());
-    if let TokenType::SemiColon = tokens.read().unwrap()._type {}
 
     Option::Some(node)
 }

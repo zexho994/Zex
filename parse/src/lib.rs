@@ -19,12 +19,11 @@ mod tests {
     #[test]
     fn parse_assignment() {
         let s = String::from("int a;");
-        println!("\n===> parse assignment {}",s);
+        println!("\n===> parse assignment {}", s);
         let mut tokens = lexer::lexing(s.clone());
         let ast = parsing(&mut tokens);
         println!("\n==> parse str to ast , ast is {:?}", ast);
     }
-
 }
 
 /// // 程序入口
@@ -37,13 +36,13 @@ mod tests {
 /// <blockStm> ::= { <statements> }
 ///
 /// // 语句类型：分配声明语句，表达式语句，赋值语句
-/// <statement> ::=  <declare> | <expressionStm> | <assignmentStm>
+/// <statement> ::=  <declare> | <expressionStm> | <assignmentStm> ;
 ///
 /// // 声明语句现在提供变量声明，以后还有方法声明、类声明
 /// <declare> ::= <varDeclare>
 ///
 /// // 变量声明有两种，有无初始化
-/// <varDeclare> ::= <varDefine> | <varDefine> <aggignment> <expressionStm>
+/// <varDeclare> ::= <varDefine> | <varDefine> <assignment> <expressionStm>
 ///
 /// // 变量定义
 /// <varDefine> ::= <type> <id>
