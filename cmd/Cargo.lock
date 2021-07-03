@@ -50,6 +50,7 @@ dependencies = [
  "clap",
  "lexer",
  "parse",
+ "semantic",
 ]
 
 [[package]]
@@ -76,6 +77,14 @@ name = "parse"
 version = "0.1.0"
 dependencies = [
  "lexer",
+]
+
+[[package]]
+name = "semantic"
+version = "0.1.0"
+dependencies = [
+ "lexer",
+ "parse",
 ]
 
 [[package]]

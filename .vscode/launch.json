@@ -9,7 +9,9 @@
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceRoot}/cmd/target/debug/cmd",
-            "args": [],
+            "args": [
+                "-m file","-f/echo/echo_int.zex"
+            ],
             "cwd": "${workspaceRoot}",
         }
     ]

@@ -46,4 +46,8 @@ impl AstNode {
     pub fn add_child(&mut self, child: AstNode) {
         self._child.push(child);
     }
+
+    pub fn print_ast(&self) {
+        // let stack = Vec::new();
+    }
 }

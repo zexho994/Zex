@@ -84,7 +84,6 @@ fn input_mode() {
 /// 读取文件解析模式
 fn file_mode(p: &str, n: &str, out: &str) {
     let mut full_path = String::from(p);
-    full_path.push_str("/");
     full_path.push_str(n);
     let path = Path::new(full_path.as_str());
     let mut file = match File::open(path) {
@@ -105,9 +104,12 @@ fn file_mode(p: &str, n: &str, out: &str) {
     }
 
     // parsing
-    let ast = parse::parsing(&mut tokens);
+    let ast = parse::parsing(&mut tokens).unwrap();
     if out == "ast" || out == "all" {
         println!("\n----- output ast-----");
-        println!("{:?}", ast.unwrap());
+        println!("{:?}", ast);
     }
+
+    // semantic
+    semantic::semantic(ast);
 }
