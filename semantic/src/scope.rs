@@ -36,6 +36,7 @@ pub struct Scope {
 	pub scope_name: String,
 	// 1.全局，2临时
 	pub scope_type: u8,
+	pub scope_parent: Option<String>,
 	pub scope_children: HashMap<String, Scope>,
 }
 
@@ -45,15 +46,17 @@ impl Scope {
 			scope_seq: 0,
 			scope_name: "scope_global_".to_string(),
 			scope_type: 1,
+			scope_parent: Option::None,
 			scope_children: HashMap::new(),
 		}
 	}
 
-	pub fn new_local() -> Scope {
+	pub fn new_local(parent_name: String) -> Scope {
 		Scope {
 			scope_seq: 0,
 			scope_name: "scope_local_".to_string(),
 			scope_type: 2,
+			scope_parent: Some(parent_name),
 			scope_children: HashMap::new(),
 		}
 	}
