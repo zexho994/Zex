@@ -1,5 +1,5 @@
 {
-	// "rust-client.enableMultiProjectSetup": false,
+	// "rust-client.enableMultiProjectSetup": true,
 	"rust-client.rustupPath": "$HOME/.cargo/bin/rustup",
 	// "rust-client.channel": "nightly"
 }
