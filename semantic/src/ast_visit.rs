@@ -15,6 +15,7 @@ pub fn visit_program(ast_node: &mut AstNode) {
 	let global_scope = Scope::new_global();
 	scope_stack.push(global_scope);
 
+	visit_block_statement(ast_node, &mut scope_stack);
 	visit_statements(ast_node, &mut scope_stack);
 
 	// 退出全局域
@@ -32,7 +33,10 @@ fn visit_block_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let block_scope: Scope = Scope::new_local(top);
 	scope_stack.push(block_scope);
 
-	// println!("{:?}", top)
+	println!(
+		"visit block statement, stack is {:?}",
+		scope_stack.current().unwrap()
+	);
 }
 
 fn visit_statement(ast_node: &mut AstNode) {}

@@ -7,8 +7,8 @@ use parse::*;
 mod tests {
     use super::*;
     #[test]
-    fn it_works() {
-        let str = "int i = 1 + 1;";
+    fn visit_block_statement() {
+        let str = "{int i = 1 + 1;}";
         let mut tokens = lexer::lexing(str.to_string());
         let ast = parse::parsing(&mut tokens);
         println!("ast is {:?}", ast);
