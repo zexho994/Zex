@@ -31,7 +31,7 @@ fn visit_statements(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 				visit_block_statement(child, scope_stack);
 			}
 			AstNodeType::Statement => {
-				visit_statements(child, scope_stack);
+				visit_statement(child, scope_stack);
 			}
 			_ => {}
 		}
@@ -50,11 +50,51 @@ fn visit_block_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	scope_stack.pop();
 }
 
-fn visit_statement(ast_node: &mut AstNode) {
+fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_visit_info("visit statement");
+
+	for child in ast_node._child.iter_mut() {
+		match child._type {
+			AstNodeType::AssignmentStmt => {}
+			AstNodeType::VarDeclareStmt => {
+				visit_var_declare_stmt(child, scope_stack);
+			}
+			AstNodeType::ExpressionStmt => {}
+			_ => panic!("visit statement error"),
+		}
+	}
 }
 
-fn visit_assignment(ast_node: &mut AstNode, scope_stack: &ScopeStack) {}
+/// ### varDeclareStmt结构
+/// type, id, assignment, expressionStm
+///
+/// ## 变量声明语句检查规则
+/// 1. 变量的作用域存在本scope中
+/// 2. 合法scope中不能有重名变量
+///    2.1. 本scope中不能有
+///    2.2. 递归向上的所有scope中都不能有
+///
+/// ```text
+/// int a = 1;
+/// {
+/// 	int a = 2;  //error,上级域中已经有a
+/// 	int b = 2;  
+/// }
+/// int b = 3;   //success,块中的b已经失效了
+/// ```
+fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+	print_visit_info("visit var declare stmt");
+	let current_scope = scope_stack.current().unwrap();
+	let var_type = ast_node.get_child(0).unwrap();
+	let var_id = ast_node.get_child_text(1).unwrap();
+	let var_assign = ast_node.get_child(2);
+	let var_exprStm = ast_node.get_child(3);
+
+	// 检查本scope
+	if current_scope.has_variable(var_id.clone()) {}
+
+	// 检查上级scope
+}
 
 fn print_visit_info(msg: &str) {
 	println!("[info][ast_visit]: {}", msg);

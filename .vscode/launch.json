@@ -10,7 +10,8 @@
             "request": "launch",
             "program": "${workspaceRoot}/cmd/target/debug/cmd",
             "args": [
-                "-mfile","-f/echo/echo_int.zex"
+                "-mfile",
+                "-f/block/block1.zex",
             ],
             "cwd": "${workspaceRoot}",
         }

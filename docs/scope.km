@@ -1,0 +1,85 @@
+{
+    "root": {
+        "data": {
+            "id": "cclzsyxmv9k0",
+            "created": 1625568115565,
+            "text": "语义分析"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "cclzt1dun340",
+                    "created": 1625568120899,
+                    "text": "目的",
+                    "layout_mind_offset": {
+                        "x": -45,
+                        "y": -1
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cclztad9f3k0",
+                            "created": 1625568140455,
+                            "text": "变量引用消解"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cclztkzr5y00",
+                            "created": 1625568163583,
+                            "text": "类型名称的消解"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cclzueaa8a80",
+                    "created": 1625568227346,
+                    "text": "使用到的模式"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cclzuk8a0js0",
+                            "created": 1625568240285,
+                            "text": "Visitor Pattern "
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cclzwarz75k0",
+                    "created": 1625568376437,
+                    "text": "变量引用的消解"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cclzwshceco0",
+                            "created": 1625568414976,
+                            "text": "将变量和定义关联起来，消除不确定性"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cclzx69d7mg0",
+                            "created": 1625568444970,
+                            "text": "为Ast中所有变量类型对象添加变量属性的信息"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
