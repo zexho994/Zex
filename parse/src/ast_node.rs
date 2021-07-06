@@ -43,6 +43,14 @@ impl AstNode {
         };
     }
 
+    pub fn get_child_text(&mut self, i: usize) -> Option<String> {
+        return if self._child.len() <= i {
+            None
+        } else {
+            Option::Some(self._child.get(i).unwrap()._text.clone())
+        };
+    }
+
     pub fn add_child(&mut self, child: AstNode) {
         self._child.push(child);
     }
