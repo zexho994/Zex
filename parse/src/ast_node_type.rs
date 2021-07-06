@@ -5,7 +5,7 @@ pub enum AstNodeType {
     Statements,
     Statement,
     BlockStmt,
-    IntDeclaration, // 整型变量声明
+    VarDeclareStmt, //变量声明
     ExpressionStmt, // 表达式语句，即表达式后面跟个分号';'
     AssignmentStmt, // 赋值语句
     Primary,        // 基础表达式
@@ -13,8 +13,6 @@ pub enum AstNodeType {
     Additive,       // 加法表达式
     Identifier,     // 标识符
     IntLiteral,     // 整型字面量
-
-    VarDeclare,
 
     AssignmentSymbol, // 赋值符号
 
