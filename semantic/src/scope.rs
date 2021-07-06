@@ -28,7 +28,7 @@ impl ScopeStack {
 
 	pub fn current(&mut self) -> Option<&mut Scope> {
 		let len = self.stack.len();
-		self.stack.get_mut(len-1)
+		self.stack.get_mut(len - 1)
 	}
 }
 
@@ -40,6 +40,7 @@ pub struct Scope {
 	pub scope_type: u8,
 	pub scope_parent: Option<String>,
 	pub scope_children: HashMap<String, Scope>,
+	pub scope_variable_table: HashMap<String, String>,
 }
 
 impl Scope {
@@ -50,6 +51,7 @@ impl Scope {
 			scope_type: 1,
 			scope_parent: Option::None,
 			scope_children: HashMap::new(),
+			scope_variable_table: HashMap::new(),
 		}
 	}
 
@@ -60,6 +62,11 @@ impl Scope {
 			scope_type: 2,
 			scope_parent: Option::Some(parent),
 			scope_children: HashMap::new(),
+			scope_variable_table: HashMap::new(),
 		}
+	}
+
+	pub fn has_variable(&self, k: String) -> bool {
+		self.scope_variable_table.contains_key(&k)
 	}
 }

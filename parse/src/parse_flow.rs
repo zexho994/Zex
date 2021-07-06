@@ -137,7 +137,7 @@ fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
 fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
     println!("match var declare");
     let mut node = AstNode {
-        _type: AstNodeType::VarDeclare,
+        _type: AstNodeType::VarDeclareStmt,
         ..Default::default()
     };
     if let Some(t) = match_type(tokens) {
