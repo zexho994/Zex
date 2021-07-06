@@ -30,6 +30,15 @@ impl ScopeStack {
 		let len = self.stack.len();
 		self.stack.get_mut(len - 1)
 	}
+
+	pub fn find_scope(&self, scope_name: &str) -> Option<&Scope> {
+		for scope in self.stack.iter() {
+			if scope.scope_name == scope_name {
+				return Option::Some(scope);
+			}
+		}
+		None
+	}
 }
 
 #[derive(Debug)]
@@ -66,7 +75,18 @@ impl Scope {
 		}
 	}
 
+	pub fn push_variable(&mut self, k: String) {
+		self.scope_variable_table.insert(k.clone(), k.clone());
+	}
+
 	pub fn has_variable(&self, k: String) -> bool {
 		self.scope_variable_table.contains_key(&k)
+	}
+
+	pub fn parent_scope_name(&self) -> Option<String> {
+		match &self.scope_parent {
+			Some(p) => Option::Some(p.clone()),
+			None => None,
+		}
 	}
 }

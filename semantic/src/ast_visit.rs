@@ -45,7 +45,7 @@ fn visit_block_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let block_scope: Scope = Scope::new_local(pre_scope.scope_name.clone());
 	scope_stack.push(block_scope);
 
-	visit_statements(ast_node, scope_stack);
+	visit_statements(ast_node.get_child(0).unwrap(), scope_stack);
 
 	scope_stack.pop();
 }
@@ -84,18 +84,36 @@ fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// ```
 fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_visit_info("visit var declare stmt");
-	let current_scope = scope_stack.current().unwrap();
-	let var_type = ast_node.get_child(0).unwrap();
-	let var_id = ast_node.get_child_text(1).unwrap();
-	let var_assign = ast_node.get_child(2);
-	let var_exprStm = ast_node.get_child(3);
+	let var_id: String;
+	let mut parent_name: Option<String> = None;
 
-	// 检查本scope
-	if current_scope.has_variable(var_id.clone()) {}
+	{
+		let current_scope = scope_stack.current().unwrap();
+		var_id = ast_node.get_child_text(1).unwrap();
+		if current_scope.has_variable(var_id.clone()) {
+			panic_visit_info("变量重复声明")
+		}
+		parent_name = current_scope.parent_scope_name();
+	}
 
-	// 检查上级scope
+	while parent_name.is_some() {
+		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
+		if scope.has_variable(var_id.clone()) {
+			panic_visit_info("变量重复声明")
+		}
+		parent_name = scope.parent_scope_name();
+	}
+
+	{
+		let current_scope = scope_stack.current().unwrap();
+		current_scope.push_variable(var_id);
+	}
 }
 
 fn print_visit_info(msg: &str) {
 	println!("[info][ast_visit]: {}", msg);
+}
+
+fn panic_visit_info(msg: &str) {
+	panic!("[error][ast_visit] {}", msg);
 }
