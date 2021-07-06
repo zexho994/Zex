@@ -1,8 +1,7 @@
 use super::ast_node::AstNode;
+use super::ast_node_type::AstNodeType;
 use super::scope::Scope;
 use super::scope::ScopeStack;
-use std::cell::RefCell;
-use std::rc::Rc;
 
 // 1. 创建全局域
 // 2. 处理流程
@@ -15,8 +14,9 @@ pub fn visit_program(ast_node: &mut AstNode) {
 	let global_scope = Scope::new_global();
 	scope_stack.push(global_scope);
 
-	visit_block_statement(ast_node, &mut scope_stack);
-	visit_statements(ast_node, &mut scope_stack);
+	for child in ast_node._child.iter_mut() {
+		visit_statements(child, &mut scope_stack);
+	}
 
 	// 退出全局域
 	scope_stack.pop();
@@ -24,22 +24,35 @@ pub fn visit_program(ast_node: &mut AstNode) {
 
 fn visit_statements(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_visit_info("visit statements");
+
+	for child in ast_node._child.iter_mut() {
+		match child._type {
+			AstNodeType::BlockStmt => {
+				visit_block_statement(child, scope_stack);
+			}
+			AstNodeType::Statement => {
+				visit_statements(child, scope_stack);
+			}
+			_ => {}
+		}
+	}
 }
 
 /// block域的父域是上一层域
 fn visit_block_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_visit_info("visit block statement");
-	let top: &mut Rc<RefCell<Scope>> = scope_stack.current().unwrap();
-	let block_scope: Scope = Scope::new_local(top);
+	let pre_scope = scope_stack.current().unwrap();
+	let block_scope: Scope = Scope::new_local(pre_scope.scope_name.clone());
 	scope_stack.push(block_scope);
 
-	println!(
-		"visit block statement, stack is {:?}",
-		scope_stack.current().unwrap()
-	);
+	visit_statements(ast_node, scope_stack);
+
+	scope_stack.pop();
 }
 
-fn visit_statement(ast_node: &mut AstNode) {}
+fn visit_statement(ast_node: &mut AstNode) {
+	print_visit_info("visit statement");
+}
 
 fn visit_assignment(ast_node: &mut AstNode, scope_stack: &ScopeStack) {}
 

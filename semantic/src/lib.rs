@@ -10,16 +10,8 @@ mod tests {
     fn visit_block_statement() {
         let str = "{int i = 1 + 1;}";
         let mut tokens = lexer::lexing(str.to_string());
-        let ast = parse::parsing(&mut tokens);
-        println!("ast is {:?}", ast);
-    }
-
-    #[test]
-    fn calculate() {
-        let str = "int i;";
-        let mut tokens = lexer::lexing(str.to_string());
-        let mut ast = parse::parsing(&mut tokens).unwrap();
-        ast_visit::visit_program(&mut ast);
+        let ast = parse::parsing(&mut tokens).unwrap();
+        semantic(ast);
     }
 }
 
