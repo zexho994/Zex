@@ -1,5 +1,7 @@
 pub mod ast_visit;
 pub mod scope;
+pub mod symbol;
+
 use crate::ast_node::AstNode;
 use parse::*;
 

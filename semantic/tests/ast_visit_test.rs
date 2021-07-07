@@ -2,8 +2,9 @@ pub use parse::*;
 pub use semantic::*;
 
 #[test]
-fn visit_block_stmt() {
-	let s = String::from("{ int a = 1 ; }");
+#[ignore]
+fn repeat_declare() {
+	let s = String::from("int a = 1;{ int a = 1 ; }");
 	let mut tokens = lexer::lexing(s);
 	let ast = parsing(&mut tokens).unwrap();
 	semantic(ast);
@@ -19,7 +20,7 @@ fn visit_block_stmt() {
 /// {int a = 1;}  // failure,a已经声明
 ///
 #[test]
-fn repeat_declare() {
+fn visit_block_stmt() {
 	let s = String::from("{int a = 1;} { int a = 1 ; } int a = 1;");
 	let mut tokens = lexer::lexing(s);
 	let ast = parsing(&mut tokens).unwrap();

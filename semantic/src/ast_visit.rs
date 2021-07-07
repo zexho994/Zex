@@ -2,6 +2,7 @@ use super::ast_node::AstNode;
 use super::ast_node_type::AstNodeType;
 use super::scope::Scope;
 use super::scope::ScopeStack;
+use super::symbol::*;
 
 // 1. 创建全局域
 // 2. 处理流程
@@ -91,7 +92,7 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 	{
 		let current_scope = scope_stack.current().unwrap();
 		var_id = ast_node.get_child_text(1).unwrap();
-		if current_scope.has_variable(var_id.clone()) {
+		if current_scope.current_has_variable(var_id.clone()) {
 			panic_visit_info("变量重复声明")
 		}
 		parent_name = current_scope.parent_scope_name();
@@ -100,15 +101,16 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 	// 在所有父域中查找
 	while parent_name.is_some() {
 		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
-		if scope.has_variable(var_id.clone()) {
+		if scope.current_has_variable(var_id.clone()) {
 			panic_visit_info("变量重复声明")
 		}
 		parent_name = scope.parent_scope_name();
 	}
 
-	// 添加变量到本域
+	// 添加变量到本域符号表中
 	let current_scope = scope_stack.current().unwrap();
-	current_scope.push_variable(var_id);
+	let variable = Symbol::new(var_id, symbol_type_variable, None);
+	current_scope.push_variable(variable);
 }
 
 fn print_visit_info(msg: &str) {

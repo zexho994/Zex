@@ -1,3 +1,4 @@
+use super::symbol::*;
 use std::collections::HashMap;
 
 #[derive(Debug)]
@@ -49,7 +50,7 @@ pub struct Scope {
 	pub scope_type: u8,
 	pub scope_parent: Option<String>,
 	pub scope_children: HashMap<String, Scope>,
-	pub scope_variable_table: HashMap<String, String>,
+	pub symbol_table: HashMap<String, Symbol>,
 }
 
 impl Scope {
@@ -60,7 +61,7 @@ impl Scope {
 			scope_type: 1,
 			scope_parent: Option::None,
 			scope_children: HashMap::new(),
-			scope_variable_table: HashMap::new(),
+			symbol_table: HashMap::new(),
 		}
 	}
 
@@ -71,16 +72,16 @@ impl Scope {
 			scope_type: 2,
 			scope_parent: Option::Some(parent),
 			scope_children: HashMap::new(),
-			scope_variable_table: HashMap::new(),
+			symbol_table: HashMap::new(),
 		}
 	}
 
-	pub fn push_variable(&mut self, k: String) {
-		self.scope_variable_table.insert(k.clone(), k.clone());
+	pub fn push_variable(&mut self, symbol: Symbol) {
+		self.symbol_table.insert(symbol.getSymbolName(), symbol);
 	}
 
-	pub fn has_variable(&self, k: String) -> bool {
-		self.scope_variable_table.contains_key(&k)
+	pub fn current_has_variable(&self, k: String) -> bool {
+		self.symbol_table.contains_key(&k)
 	}
 
 	pub fn parent_scope_name(&self) -> Option<String> {
