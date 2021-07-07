@@ -52,6 +52,11 @@ pub struct Scope {
 	pub scope_children: HashMap<String, Scope>,
 	pub symbol_table: HashMap<String, Symbol>,
 }
+const DEFAULT_SEQ: u8 = 0;
+const GLOBAL_SCOPE: u8 = 1;
+const LOCAL_SCOPE: u8 = 2;
+const DEFAULT_GLOBAL_NAME: &str = "scope_global_";
+const DEFAULT_LOCAL_NAME: &str = "scope_local_";
 
 impl Scope {
 	pub fn new_global() -> Scope {
@@ -76,11 +81,11 @@ impl Scope {
 		}
 	}
 
-	pub fn push_variable(&mut self, symbol: Symbol) {
-		self.symbol_table.insert(symbol.getSymbolName(), symbol);
+	pub fn push_symbol(&mut self, symbol: Symbol) {
+		self.symbol_table.insert(symbol.get_symbol_name(), symbol);
 	}
 
-	pub fn current_has_variable(&self, k: String) -> bool {
+	pub fn current_has_symbol(&self, k: String) -> bool {
 		self.symbol_table.contains_key(&k)
 	}
 

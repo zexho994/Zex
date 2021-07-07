@@ -35,7 +35,15 @@ pub fn new_ast_node(t: AstNodeType, s: String) -> AstNode {
 }
 
 impl AstNode {
-    pub fn get_child(&mut self, i: usize) -> Option<&mut AstNode> {
+    pub fn get_child(&self, i: usize) -> Option<&AstNode> {
+        return if self._child.len() <= i {
+            None
+        } else {
+            self._child.get(i)
+        };
+    }
+
+    pub fn get_child_mut(&mut self, i: usize) -> Option<&mut AstNode> {
         return if self._child.len() <= i {
             None
         } else {

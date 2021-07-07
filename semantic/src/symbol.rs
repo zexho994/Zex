@@ -1,3 +1,5 @@
+use parse::ast_node::AstNode;
+
 pub const symbol_type_variable: u8 = 1;
 pub const symbol_type_function: u8 = 2;
 
@@ -16,12 +18,12 @@ pub struct Symbol {
 	symbol_name: String,
 	/// 符号类型
 	symbol_type: u8,
-	/// 符号值
-	symbol_val: Option<i32>,
+	/// 符号值,存储AstNode对象
+	symbol_val: Option<AstNode>,
 }
 
 impl Symbol {
-	pub fn new(n: String, t: u8, v: Option<i32>) -> Symbol {
+	pub fn new(n: String, t: u8, v: Option<AstNode>) -> Symbol {
 		Symbol {
 			symbol_name: n,
 			symbol_type: t,
@@ -29,7 +31,11 @@ impl Symbol {
 		}
 	}
 
-	pub fn getSymbolName(&self) -> String {
+	pub fn get_symbol_name(&self) -> String {
 		self.symbol_name.clone()
+	}
+
+	pub fn set_symbol_value(&mut self, v: Option<AstNode>) {
+		self.symbol_val = v;
 	}
 }
