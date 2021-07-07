@@ -1,6 +1,7 @@
 extern crate semantic;
 
 use semantic::scope::*;
+use semantic::semantic;
 
 #[test]
 fn scope_stack_push() {
@@ -22,4 +23,12 @@ fn scope_stack_push() {
 		}
 		None => panic!("current获取失败"),
 	}
+}
+
+#[test]
+fn visit_block_statement() {
+	let str = "{int i = 1 + 1;}";
+	let mut tokens = lexer::lexing(str.to_string());
+	let ast = parse::parsing(&mut tokens).unwrap();
+	semantic(ast);
 }
