@@ -87,6 +87,7 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 	let var_id: String;
 	let mut parent_name: Option<String> = None;
 
+	// 在本域中查找
 	{
 		let current_scope = scope_stack.current().unwrap();
 		var_id = ast_node.get_child_text(1).unwrap();
@@ -96,6 +97,7 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 		parent_name = current_scope.parent_scope_name();
 	}
 
+	// 在所有父域中查找
 	while parent_name.is_some() {
 		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
 		if scope.has_variable(var_id.clone()) {
@@ -104,10 +106,9 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 		parent_name = scope.parent_scope_name();
 	}
 
-	{
-		let current_scope = scope_stack.current().unwrap();
-		current_scope.push_variable(var_id);
-	}
+	// 添加变量到本域
+	let current_scope = scope_stack.current().unwrap();
+	current_scope.push_variable(var_id);
 }
 
 fn print_visit_info(msg: &str) {
