@@ -303,13 +303,16 @@ fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
 fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match mul expr");
+    let pos = tokens.position();
+    println!("match mul expr, pos is {:?}", pos);
     let mut child: AstNode;
+
     if let Some(n) = match_primary(tokens) {
         child = n;
     } else {
         return None;
     }
+
     loop {
         if tokens.peek().is_none() {
             break;
@@ -329,7 +332,10 @@ fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
             TokenType::Plus | TokenType::SemiColon | TokenType::RightBrace => {
                 break;
             }
-            _ => panic!("match mul expr error,token: {:?}", tokens.peek()),
+            _ => {
+                tokens.set_position(pos);
+                return None;
+            }
         }
     }
     Option::Some(child)
