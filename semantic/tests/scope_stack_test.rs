@@ -1,6 +1,7 @@
 extern crate semantic;
 
 use semantic::scope::*;
+use semantic::scope_stack::*;
 use semantic::semantic;
 
 #[test]

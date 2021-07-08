@@ -1,7 +1,7 @@
 use super::ast_node::AstNode;
 use super::ast_node_type::AstNodeType;
 use super::scope::Scope;
-use super::scope::ScopeStack;
+use super::scope_stack::ScopeStack;
 use super::symbol::*;
 
 // 1. 创建全局域
