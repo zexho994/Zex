@@ -35,6 +35,11 @@ pub fn new_ast_node(t: AstNodeType, s: String) -> AstNode {
 }
 
 impl AstNode {
+    /// 移除一个子节点，转移所有权给调用者
+    pub fn remove_child(&mut self, i: usize) -> AstNode {
+        self._child.remove(i)
+    }
+
     pub fn get_child(&self, i: usize) -> Option<&AstNode> {
         return if self._child.len() <= i {
             None

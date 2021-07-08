@@ -1,9 +1,15 @@
 use super::symbol::*;
 use std::collections::HashMap;
 
+/// 存储Scope的栈
+/// - 在进入一个作用域的时候，执行push，压入新的Scope
+/// - 在退出一个作用域的时候,执行pop,弹出顶部的Scope
+///
+/// current() 表示栈顶，也等同于当前域
 #[derive(Debug)]
 pub struct ScopeStack {
-	pub seq: u16,
+	pub seq: u8,
+	//  直接管理生命周期，在pop时候就可以直接进行引用回收了
 	pub stack: Vec<Scope>,
 }
 
@@ -32,8 +38,8 @@ impl ScopeStack {
 		self.stack.get_mut(len - 1)
 	}
 
-	pub fn find_scope(&self, scope_name: &str) -> Option<&Scope> {
-		for scope in self.stack.iter() {
+	pub fn find_scope(&mut self, scope_name: &str) -> Option<&mut Scope> {
+		for scope in self.stack.iter_mut() {
 			if scope.scope_name == scope_name {
 				return Option::Some(scope);
 			}
@@ -44,26 +50,29 @@ impl ScopeStack {
 
 #[derive(Debug)]
 pub struct Scope {
-	pub scope_seq: u16,
+	pub scope_seq: u8,
 	pub scope_name: String,
 	// 1.全局，2临时
 	pub scope_type: u8,
 	pub scope_parent: Option<String>,
 	pub scope_children: HashMap<String, Scope>,
-	pub symbol_table: HashMap<String, Symbol>,
+	// 符号表，存储此域下所有符号,K:符号名,V:符号对象
+	pub symbol_table: HashMap<String, Option<Symbol>>,
 }
+
+// 默认的序号为0，实际的序号在stack push时候才会赋值
 const DEFAULT_SEQ: u8 = 0;
-const GLOBAL_SCOPE: u8 = 1;
-const LOCAL_SCOPE: u8 = 2;
+const GLOBAL_SCOPE_TYPE: u8 = 1;
+const LOCAL_SCOPE_TYPE: u8 = 2;
 const DEFAULT_GLOBAL_NAME: &str = "scope_global_";
 const DEFAULT_LOCAL_NAME: &str = "scope_local_";
 
 impl Scope {
 	pub fn new_global() -> Scope {
 		Scope {
-			scope_seq: 0,
-			scope_name: "scope_global_".to_string(),
-			scope_type: 1,
+			scope_seq: DEFAULT_SEQ,
+			scope_name: DEFAULT_GLOBAL_NAME.to_string(),
+			scope_type: GLOBAL_SCOPE_TYPE,
 			scope_parent: Option::None,
 			scope_children: HashMap::new(),
 			symbol_table: HashMap::new(),
@@ -72,21 +81,27 @@ impl Scope {
 
 	pub fn new_local(parent: String) -> Scope {
 		Scope {
-			scope_seq: 0,
-			scope_name: "scope_local_".to_string(),
-			scope_type: 2,
+			scope_seq: DEFAULT_SEQ,
+			scope_name: DEFAULT_LOCAL_NAME.to_string(),
+			scope_type: LOCAL_SCOPE_TYPE,
 			scope_parent: Option::Some(parent),
 			scope_children: HashMap::new(),
 			symbol_table: HashMap::new(),
 		}
 	}
 
+	// 压入一个符号
 	pub fn push_symbol(&mut self, symbol: Symbol) {
-		self.symbol_table.insert(symbol.get_symbol_name(), symbol);
+		self.symbol_table
+			.insert(symbol.get_symbol_name(), Option::Some(symbol));
 	}
 
 	pub fn current_has_symbol(&self, k: String) -> bool {
 		self.symbol_table.contains_key(&k)
+	}
+
+	pub fn update_symbol_val(&mut self, var_name: String, var_val: Option<Symbol>) {
+		self.symbol_table.insert(var_name, var_val);
 	}
 
 	pub fn parent_scope_name(&self) -> Option<String> {

@@ -23,7 +23,7 @@ pub fn visit_program(ast_node: &mut AstNode) {
 	scope_stack.pop();
 }
 
-fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack:  mut ScopeStack) {
+fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_visit_info("visit statements");
 
 	for child in ast_node._child.iter_mut() {
@@ -113,9 +113,8 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 
 	// 添加变量到本域符号表中
 	let current_scope = scope_stack.current().unwrap();
-	let val_node_ref = ast_node.get_child(2).unwrap();
-	let val_node = Option::Some(*val_node_ref);
-	let variable = Symbol::new(var_id, symbol_type_variable, val_node);
+	let ast_node = ast_node.remove_child(2);
+	let variable = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
 	current_scope.push_symbol(variable);
 }
 
@@ -147,7 +146,7 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 		// 获取父域
 		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
 		// 当前域中是否存在该变量
-		if scope.current_has_variable(var_id.clone()) {
+		if scope.current_has_symbol(var_id.clone()) {
 			// 更新
 			scope.update_symbol_val(var_id.clone(), None);
 		}

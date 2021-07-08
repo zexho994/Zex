@@ -1,7 +1,7 @@
 use parse::ast_node::AstNode;
 
-pub const symbol_type_variable: u8 = 1;
-pub const symbol_type_function: u8 = 2;
+pub const SYMBOL_TYPE_VARIABLE: u8 = 1;
+pub const SYMBOL_TYPE_FUNCTION: u8 = 2;
 
 /// 符号可以是变量，函数，方法
 ///
