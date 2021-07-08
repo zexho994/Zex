@@ -164,7 +164,7 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// 如果要输出的是其他类型，需要进行计算,计算规则:
 /// - Identifier: 从本域开始向超查找，找到对应变量，然后进行求值计算
 /// - ExpressionStmt: todo
-fn visit_echo(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
+fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let target = ast_node.get_child(0).unwrap();
 
 	match target._type {

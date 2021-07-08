@@ -208,19 +208,6 @@ fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
     None
 }
 
-fn match_internal(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match internal");
-    if let TokenType::IntLiteral = tokens.peek().unwrap()._type {
-        let t = tokens.read().unwrap();
-        return Option::Some(AstNode {
-            _type: AstNodeType::IntLiteral,
-            _text: t.text.clone(),
-            ..Default::default()
-        });
-    }
-    None
-}
-
 fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     println!("match assignment");
     match tokens.peek().unwrap()._type {

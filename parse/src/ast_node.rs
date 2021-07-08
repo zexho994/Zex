@@ -88,3 +88,35 @@ impl AstNode {
         // let stack = Vec::new();
     }
 }
+
+trait Calculate {
+    // 计算节点的值
+    // 如果节点为additive，遍历求值
+    fn calculate(&self) -> Option<u32>;
+    fn calculate_add(&self) -> u32;
+    fn calculate_expr(&self) -> u32;
+}
+
+impl Calculate for AstNode {
+    fn calculate(&self) -> Option<u32> {
+        match self._type {
+            AstNodeType::ExpressionStmt => {
+                self.calculate_expr();
+            }
+            AstNodeType::Additive => {
+                self.calculate_add();
+            }
+            _ => panic!("Does not support {:?}", self),
+        }
+
+        None
+    }
+
+    fn calculate_expr(&self) -> u32 {
+        0
+    }
+
+    fn calculate_add(&self) -> u32 {
+        0
+    }
+}
