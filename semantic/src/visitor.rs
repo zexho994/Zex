@@ -8,7 +8,7 @@ use super::symbol::*;
 // 2. 处理流程
 // 3. 保存，退出
 pub fn visit_program(ast_node: &mut AstNode) {
-	print_visit_info("visit program");
+	print_info("visit program");
 	// 创建作用域栈
 	let mut scope_stack = ScopeStack::new();
 	// 创建全局域
@@ -24,7 +24,7 @@ pub fn visit_program(ast_node: &mut AstNode) {
 }
 
 fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
-	print_visit_info("visit statements");
+	print_info("visit statements");
 
 	for child in ast_node._child.iter_mut() {
 		match child._type {
@@ -41,7 +41,7 @@ fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut S
 
 /// block域的父域是上一层域
 fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
-	print_visit_info("visit block statement");
+	print_info("visit block statement");
 	let pre_scope = scope_stack.current().unwrap();
 	let block_scope: Scope = Scope::new_local(pre_scope.scope_name.clone());
 	scope_stack.push(block_scope);
@@ -52,10 +52,13 @@ fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &
 }
 
 fn visit_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
-	print_visit_info("visit statement");
+	print_info("visit statement");
 
 	for child in ast_node._child.iter_mut() {
 		match child._type {
+			AstNodeType::Echo => {
+				visit_echo(child, scope_stack);
+			}
 			AstNodeType::VarDeclareStmt => {
 				visit_var_declare_stmt(child, scope_stack);
 			}
@@ -88,7 +91,7 @@ fn visit_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut Sc
 /// ```
 ///
 fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
-	print_visit_info("visit var declare stmt");
+	print_info("visit var declare stmt");
 	let var_id: String;
 	let mut parent_name: Option<String> = None;
 
@@ -97,7 +100,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 		let current_scope = scope_stack.current().unwrap();
 		var_id = ast_node.get_child_text(1).unwrap();
 		if current_scope.current_has_symbol(var_id.clone()) {
-			panic_visit_info("变量重复声明")
+			print_panic("变量重复声明")
 		}
 		parent_name = current_scope.parent_scope_name();
 	}
@@ -106,7 +109,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 	while parent_name.is_some() {
 		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
 		if scope.current_has_symbol(var_id.clone()) {
-			panic_visit_info("变量重复声明")
+			print_panic("变量重复声明")
 		}
 		parent_name = scope.parent_scope_name();
 	}
@@ -123,7 +126,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 /// 2. 更新变量的值
 ///
 fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	print_visit_info("visit var declare stmt");
+	print_info("visit var declare stmt");
 	let var_id: String = ast_node.get_child_text(0).unwrap();
 	let mut parent_name: Option<String> = scope_stack.current().unwrap().parent_scope_name();
 
@@ -154,10 +157,37 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	}
 }
 
-fn print_visit_info(msg: &str) {
+/// echo hack
+/// 获取要输出的节点，计算值
+/// 要输出的值必需在合法作用域中，且在合法生命周期内
+/// 如果要输出的字面值类型，直接打印即可
+/// 如果要输出的是其他类型，需要进行计算,计算规则:
+/// - Identifier: 从本域开始向超查找，找到对应变量，然后进行求值计算
+/// - ExpressionStmt: todo
+fn visit_echo(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
+	let target = ast_node.get_child(0).unwrap();
+
+	match target._type {
+		AstNodeType::Identifier => {}
+		AstNodeType::IntLiteral => {
+			println!("{}", target._text.clone());
+		}
+		_ => print_panic_extend("todo", target),
+	}
+}
+
+fn print_info(msg: &str) {
 	println!("[info][ast_visit]: {}", msg);
 }
 
-fn panic_visit_info(msg: &str) {
+// fn print_info_extend<T: std::fmt::Debug>(msg: &str, t: &T) {
+// 	println!("[info][ast_visit]: {},t = {:?}", msg, t);
+// }
+
+fn print_panic(msg: &str) {
 	panic!("[error][ast_visit] {}", msg);
+}
+
+fn print_panic_extend<T: std::fmt::Debug>(msg: &str, t: &T) {
+	panic!("[error][ast_visit] {}, t = {:?}", msg, t);
 }

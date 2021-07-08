@@ -20,7 +20,7 @@ fn repeat_declare() {
 /// {int a = 1;}  // failure. 因为a已经声明
 ///
 #[test]
-fn visit_block_stmt() {
+fn visit_test() {
 	let s = String::from(
 		"{
 			int a = 1;
@@ -30,6 +30,7 @@ fn visit_block_stmt() {
 		 }
 		 int a = 1;
 		 a = 2;
+		 echo 1;
 		",
 	);
 	let mut tokens = lexer::lexing(s);
