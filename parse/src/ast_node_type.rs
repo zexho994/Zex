@@ -13,6 +13,7 @@ pub enum AstNodeType {
     Additive,       // 加法表达式
     Identifier,     // 标识符
     IntLiteral,     // 整型字面量
+    Echo,
 
     AssignmentSymbol, // 赋值符号
 

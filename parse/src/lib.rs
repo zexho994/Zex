@@ -17,7 +17,7 @@ mod tests {
 
     #[test]
     fn parse_assignment() {
-        let s = String::from("int a;a=1;");
+        let s = String::from("int a;a=1;echo a;");
         println!("\n===> parse assignment {}", s);
         let mut tokens = lexer::lexing(s.clone());
         let ast = parsing(&mut tokens);

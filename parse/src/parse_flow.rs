@@ -83,7 +83,8 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
         ..Default::default()
     };
 
-    if let Some(_) = match_echo(tokens) {
+    if let Some(node) = match_echo(tokens) {
+        ast_node.add_child(node);
     } else if let Some(node) = match_declare(tokens) {
         ast_node.add_child(node);
     } else if let Some(node) = match_expr_stm(tokens) {
@@ -104,19 +105,32 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
 fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
     if let TokenType::Echo = tokens.peek().unwrap()._type {
         tokens.read();
-        let t = tokens.peek();
+        let mut node = AstNode {
+            _type: AstNodeType::Echo,
+            ..Default::default()
+        };
         match tokens.peek().unwrap()._type {
-            TokenType::Identifier => println!("\necho {}", match_id(tokens).unwrap()._text),
-            TokenType::IntLiteral => println!("\necho {}", match_internal(tokens).unwrap()._text),
-            _ => panic!("match echo error, token = {:?} ", t),
+            TokenType::Identifier => {
+                let t = tokens.read().unwrap();
+                let child = AstNode::new_id_node(t.text.clone());
+                node.add_child(child);
+            }
+            TokenType::IntLiteral => {
+                let t = tokens.read().unwrap();
+                let child = AstNode::new_intliter_node(t.text.clone());
+                node.add_child(child);
+            }
+            _ => panic!(
+                "echo error, token is {:?}, pos is {}",
+                tokens.peek(),
+                tokens.position()
+            ),
         }
-    } else {
-        return None;
+
+        return Option::Some(node);
     }
 
-    Option::Some(AstNode {
-        ..Default::default()
-    })
+    None
 }
 
 /// todo 声明语句现在提供变量声明，以后还有方法声明、类声明
