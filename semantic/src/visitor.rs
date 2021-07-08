@@ -23,6 +23,7 @@ pub fn visit_program(ast_node: &mut AstNode) {
 	scope_stack.pop();
 }
 
+/// ast_node type = AstNodeType::Statements
 fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit statements");
 
@@ -39,6 +40,7 @@ fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut S
 	}
 }
 
+/// ast_node type = AstNodeType::BlockStmt
 /// block域的父域是上一层域
 fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit block statement");
@@ -51,6 +53,13 @@ fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &
 	scope_stack.pop();
 }
 
+/// ast_node type = AstNodeType::Statement
+///
+/// statement 的类型
+/// 1. echo 语句
+/// 2. varDeclareStmt 声明语句
+/// 3. assignmentStmt 赋值语句
+/// 4. expressionStmt 表达式语句
 fn visit_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit statement");
 
@@ -121,6 +130,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 	current_scope.push_symbol(variable);
 }
 
+/// ast_node type = AstNodeType::AssignmentStmt
 /// 赋值语句将更新已有的变量值:
 /// 1. 确保变量已经声明
 /// 2. 更新变量的值
@@ -128,12 +138,16 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit var declare stmt");
 	let var_id: String = ast_node.get_child_text(0).unwrap();
+	let expr_node = ast_node.remove_child(2);
 	let mut parent_name: Option<String> = scope_stack.current().unwrap().parent_scope_name();
 
 	// 在本域中查找
-	let current_scope = scope_stack.current().unwrap();
+	let mut current_scope = scope_stack.current().unwrap();
 	if current_scope.current_has_symbol(var_id.clone()) {
-		current_scope.update_symbol_val(var_id.clone(), None)
+		let mut symbol = current_scope.remove_symbol(var_id.clone()).unwrap();
+		symbol.set_symbol_value(Option::Some(expr_node));
+		current_scope.update_symbol_val(var_id.clone(), Option::Some(symbol));
+		return;
 	}
 
 	// 在所有父域中查找
@@ -150,8 +164,10 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
 		// 当前域中是否存在该变量
 		if scope.current_has_symbol(var_id.clone()) {
-			// 更新
+			let mut symbol = scope.remove_symbol(var_id.clone()).unwrap();
+			symbol.set_symbol_value(Option::Some(expr_node));
 			scope.update_symbol_val(var_id.clone(), None);
+			return;
 		}
 		parent_name = scope.parent_scope_name();
 	}
@@ -165,14 +181,45 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// - Identifier: 从本域开始向超查找，找到对应变量，然后进行求值计算
 /// - ExpressionStmt: todo
 fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	let target = ast_node.get_child(0).unwrap();
+	let target = ast_node.get_child_mut(0).unwrap();
 
 	match target._type {
-		AstNodeType::Identifier => {}
+		AstNodeType::Identifier => {
+			visit_identifier(target, scope_stack);
+		}
 		AstNodeType::IntLiteral => {
 			println!("{}", target._text.clone());
 		}
 		_ => print_panic_extend("todo", target),
+	}
+}
+
+/// ### identifier可能的场景
+/// 符号表中:k=id,v=ast_node
+/// ast_node's type = expressionStmt
+/// 根据id的text在符号表从下到上遍历寻找对应符号以及值
+fn visit_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+	print_info("visit identifier");
+	// println!("id_node: {:?}", id_node);
+	let id = id_node._text.clone();
+	let current = scope_stack.current().unwrap();
+	// println!("id: {:?}", id);
+	// println!("current scope: {:?}", current);
+	if current.current_has_symbol(id.clone()) {
+		let symbol = current.get_symbol(id.clone()).as_ref().unwrap();
+		let node = symbol.get_symbol_val().as_ref().unwrap();
+		// println!("symbol val is {:?}", node);
+		let text = node._text.clone();
+		println!("{}", text);
+	} else {
+		let mut parent_name = current.parent_scope_name();
+		while parent_name.is_some() {
+			// 获取父域
+			let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
+			// 当前域中是否存在该变量
+			if scope.current_has_symbol(id.clone()) {}
+			parent_name = scope.parent_scope_name();
+		}
 	}
 }
 

@@ -31,6 +31,7 @@ fn visit_test() {
 		 int a = 1;
 		 a = 2;
 		 echo 1;
+         echo a;
 		",
 	);
 	let mut tokens = lexer::lexing(s);

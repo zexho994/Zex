@@ -7,7 +7,8 @@ use std::io::Read;
 use std::io::Write;
 use std::path::Path;
 
-const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
+// const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
+const DEFAULT_PATH: &str = "/Users/a994/Github/Zex/sample";
 
 fn main() {
     // 配置cmd命令
@@ -56,11 +57,11 @@ fn main() {
     let out = matches.value_of("output").unwrap_or("");
 
     // 选择启动模式
-    if mode == "input" {
-        input_mode();
-    } else if mode == "file" {
-        file_mode(path, file, out);
-    }
+    // if mode == "input" {
+        // input_mode();
+    // } else if mode == "file" {
+    file_mode(path, file, out);
+    // }
 }
 
 /// 手动输入模式

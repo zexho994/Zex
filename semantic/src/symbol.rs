@@ -38,4 +38,8 @@ impl Symbol {
 	pub fn set_symbol_value(&mut self, v: Option<AstNode>) {
 		self.symbol_val = v;
 	}
+
+	pub fn get_symbol_val(&self) -> &Option<AstNode> {
+		&self.symbol_val
+	}
 }

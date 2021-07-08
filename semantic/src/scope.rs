@@ -49,6 +49,16 @@ impl Scope {
 			.insert(symbol.get_symbol_name(), Option::Some(symbol));
 	}
 
+	/// 借用符号表的一个符号
+	pub fn get_symbol(&self, name: String) -> &Option<Symbol> {
+		self.symbol_table.get(&name).unwrap()
+	}
+
+	/// 移除符号表一个符号，返回被移除的符号
+	pub fn remove_symbol(&mut self, name: String) -> Option<Symbol> {
+		self.symbol_table.remove(&name).unwrap()
+	}
+
 	pub fn current_has_symbol(&self, k: String) -> bool {
 		self.symbol_table.contains_key(&k)
 	}
