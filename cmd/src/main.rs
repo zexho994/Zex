@@ -1,10 +1,7 @@
 use clap::App;
 use clap::Arg;
 use std::fs::File;
-use std::io::stdin;
-use std::io::stdout;
 use std::io::Read;
-use std::io::Write;
 use std::path::Path;
 
 // const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
@@ -51,36 +48,36 @@ fn main() {
         .get_matches();
 
     // 解析启动参数
-    let mode = matches.value_of("mode").unwrap_or("file");
+    // let mode = matches.value_of("mode").unwrap_or("file");
     let path = matches.value_of("path").unwrap_or(DEFAULT_PATH);
     let file = matches.value_of("file").unwrap_or("");
     let out = matches.value_of("output").unwrap_or("");
 
     // 选择启动模式
     // if mode == "input" {
-        // input_mode();
+    // input_mode();
     // } else if mode == "file" {
     file_mode(path, file, out);
     // }
 }
 
 /// 手动输入模式
-fn input_mode() {
-    println!("=> 手动输入执行语句，以分号；结束.");
-    loop {
-        print!(">");
-        stdout().flush().expect("flush error!");
-        let mut input = String::new();
-        stdin().read_line(&mut input).unwrap();
-        input = input.trim().to_string();
-        if input == "exit" {
-            break;
-        }
-        let mut tokens = lexer::lexing(input.to_string());
-        parse::parsing(&mut tokens);
-        // println!("{:?}", num.unwrap());
-    }
-}
+// fn input_mode() {
+//     println!("=> 手动输入执行语句，以分号；结束.");
+//     loop {
+//         print!(">");
+//         stdout().flush().expect("flush error!");
+//         let mut input = String::new();
+//         stdin().read_line(&mut input).unwrap();
+//         input = input.trim().to_string();
+//         if input == "exit" {
+//             break;
+//         }
+//         let mut tokens = lexer::lexing(input.to_string());
+//         parse::parsing(&mut tokens);
+//         // println!("{:?}", num.unwrap());
+//     }
+// }
 
 /// 读取文件解析模式
 fn file_mode(p: &str, n: &str, out: &str) {
