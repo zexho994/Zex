@@ -5,6 +5,7 @@ use lexer::token::{token_struct::*, token_type::*};
 
 /// <program> ::= <statements>
 pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
+    print_parse_more2_info("match program,token is ", tokens.peek(), tokens.pos);
     let mut prog_node = AstNode {
         _type: AstNodeType::Program,
         ..Default::default()
@@ -21,6 +22,7 @@ pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <statements> ::= <blockStm> | <statement> | <statement> <statements>
 fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
+    print_parse_more2_info("match statements,token is ", tokens.peek(), tokens.pos);
     let mut ast_node = AstNode {
         _type: AstNodeType::Statements,
         ..Default::default()
@@ -46,7 +48,7 @@ fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <blockStm> ::= { <statements> }
 fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match block statement");
+    print_parse_more2_info("match block statement,token is ", tokens.peek(), tokens.pos);
     let mut ast_node = AstNode {
         _type: AstNodeType::BlockStmt,
         ..Default::default()
@@ -62,7 +64,6 @@ fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
             panic!("match block right brace error,tokens : {:?}", tokens);
         }
     } else {
-        println!("match block statement failed");
         return None;
     }
 
@@ -72,11 +73,7 @@ fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
 /// 语句类型：分配声明语句，表达式语句，赋值语句
 /// <statement> ::= <declare> | <expressionStm> | <assignmentStm>
 fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
-    println!(
-        "match statement, token is {:?}, pos is {}",
-        tokens.peek(),
-        tokens.pos
-    );
+    print_parse_more2_info("match statement,token is ", tokens.peek(), tokens.pos);
 
     let mut ast_node: AstNode = AstNode {
         _type: AstNodeType::Statement,
@@ -103,6 +100,7 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <echo> ::= echo ( <id> | <intLiteral> )
 fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
+    print_parse_more2_info("match echo,token is ", tokens.peek(), tokens.pos);
     if let TokenType::Echo = tokens.peek().unwrap()._type {
         tokens.read();
         let mut node = AstNode {
@@ -136,12 +134,11 @@ fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
 /// todo 声明语句现在提供变量声明，以后还有方法声明、类声明
 /// <declare> ::= <varDeclare> ;
 fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match declare");
+    print_parse_more2_info("match declare,token is ", tokens.peek(), tokens.pos);
     let pos = tokens.position();
     if let Some(n) = match_var_declare(tokens) {
         Some(n)
     } else {
-        println!("match declare failed");
         tokens.set_position(pos);
         None
     }
@@ -149,7 +146,7 @@ fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <varDeclare> ::= <type> <id> <assign> <exprStm> | <type> <id>
 fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match var declare");
+    print_parse_more2_info("match var declare,token is ", tokens.peek(), tokens.pos);
     let mut node = AstNode {
         _type: AstNodeType::VarDeclareStmt,
         ..Default::default()
@@ -180,7 +177,7 @@ fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <type> ::= int
 fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match type");
+    print_parse_more2_info("match type,token is ", tokens.peek(), tokens.pos);
     match tokens.peek().unwrap()._type {
         TokenType::Int => {
             let t = tokens.read().unwrap();
@@ -196,7 +193,7 @@ fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <id> = id
 fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match id");
+    print_parse_more2_info("match identifier,token is ", tokens.peek(), tokens.pos);
     if let TokenType::Identifier = tokens.peek().unwrap()._type {
         let t = tokens.read().unwrap();
         return Option::Some(AstNode {
@@ -209,7 +206,7 @@ fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match assignment");
+    print_parse_more2_info("match assignment,token is ", tokens.peek(), tokens.pos);
     match tokens.peek().unwrap()._type {
         TokenType::Assignment => Option::Some(AstNode {
             _type: AstNodeType::AssignmentSymbol,
@@ -229,7 +226,7 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
 ///
 /// todo: a += 1; a -= 1; a*= 1, a /= 1;
 fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match assignment stm");
+    print_parse_more2_info("match assignmentStmt,token is ", tokens.peek(), tokens.pos);
     let mut node = AstNode {
         _type: AstNodeType::AssignmentStmt,
         ..Default::default()
@@ -255,7 +252,7 @@ fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <exprStm> ::= <addExpr>
 fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match expr stm");
+    print_parse_more2_info("match expr,token is ", tokens.peek(), tokens.pos);
     let mut ast_node = AstNode {
         _type: AstNodeType::ExpressionStmt,
         ..Default::default()
@@ -270,7 +267,7 @@ fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
 fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
-    println!("match add expr");
+    print_parse_more2_info("match add,token is ", tokens.peek(), tokens.pos);
     let mut child: AstNode;
     if let Some(n) = match_mul_expr(tokens) {
         child = n;
@@ -305,7 +302,7 @@ fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
 /// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
 fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
     let pos = tokens.position();
-    println!("match mul expr, pos is {:?}", pos);
+    print_parse_more2_info("match mul,token is ", tokens.peek(), tokens.pos);
     let mut child: AstNode;
 
     if let Some(n) = match_primary(tokens) {
@@ -344,11 +341,7 @@ fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <primary> ::= int | Identifier
 fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
-    println!(
-        "match primary, token: {:?}, pos is {}",
-        tokens.peek(),
-        tokens.pos
-    );
+    print_parse_more2_info("match primary,token is ", tokens.peek(), tokens.pos);
     let node: AstNode;
     match tokens.peek() {
         Some(t1) => match t1._type {
@@ -368,15 +361,23 @@ fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 fn match_semicolon(tokens: &mut Tokens) -> bool {
-    println!(
-        "match semicolon, token is {:?}, pos is {}",
-        tokens.peek(),
-        tokens.pos
-    );
+    print_parse_more2_info("match semicolon,token is ", tokens.peek(), tokens.pos);
     if let TokenType::SemiColon = tokens.peek().unwrap()._type {
         tokens.read();
         true
     } else {
         false
     }
+}
+
+// fn print_parse_info(msg: &str) {
+//     println!("[info][parse] {} ", msg);
+// }
+
+// fn print_parse_more1_info<T: std::fmt::Debug>(msg: &str, t: T) {
+//     println!("[info][parse] {}, {:?}", msg, t);
+// }
+
+fn print_parse_more2_info<T: std::fmt::Debug, K: std::fmt::Debug>(msg: &str, t1: T, t2: K) {
+    // println!("[info][parse] {}, {:?}, {:?}", msg, t1, t2);
 }
