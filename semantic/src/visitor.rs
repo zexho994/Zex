@@ -209,10 +209,8 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let target = ast_node.get_child_mut(0).unwrap();
 	match target._type {
 		AstNodeType::Identifier => echo_identifier(target, scope_stack),
-		AstNodeType::IntLiteral => {
-			println!("{}", target._text.clone());
-		}
-		_ => print_panic_extend("todo", target),
+		AstNodeType::IntLiteral => println!("{}", target._text.clone()),
+		_ => panic!("visit echo"),
 	}
 }
 
@@ -221,7 +219,7 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// ast_node's type = expressionStmt
 /// 根据id的text在符号表从下到上遍历寻找对应符号以及值
 fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	print_info("visit identifier");
+	print_info_extend("visit identifier", id_node);
 	let id = id_node._text.clone();
 	let current = scope_stack.current().unwrap();
 
