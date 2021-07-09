@@ -1,5 +1,8 @@
 {
 	// "rust-client.enableMultiProjectSetup": true,
 	"rust-client.rustupPath": "$HOME/.cargo/bin/rustup",
+	"cSpell.words": [
+		"struct"
+	],
 	// "rust-client.channel": "nightly"
 }
