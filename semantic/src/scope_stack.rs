@@ -28,11 +28,11 @@ impl ScopeStack {
 		self.seq += 1;
 	}
 
-	pub fn pop(&mut self) {
-		self.stack.pop();
+	pub fn pop(&mut self) -> Option<Scope> {
+		self.stack.pop()
 	}
 
-	pub fn current(&mut self) -> Option<&mut Scope> {
+	pub fn current_scope(&mut self) -> Option<&mut Scope> {
 		let len = self.stack.len();
 		self.stack.get_mut(len - 1)
 	}

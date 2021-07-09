@@ -44,7 +44,7 @@ fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut S
 /// block域的父域是上一层域
 fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit block statement");
-	let pre_scope = scope_stack.current().unwrap();
+	let pre_scope = scope_stack.current_scope().unwrap();
 	let block_scope: Scope = Scope::new_local(pre_scope.scope_name.clone());
 	scope_stack.push(block_scope);
 
@@ -112,7 +112,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 	print_info("visit var declare stmt");
 
 	// 在本域中查找
-	let current_scope = scope_stack.current().unwrap();
+	let current_scope = scope_stack.current_scope().unwrap();
 	let var_id = ast_node.get_child_text(1).unwrap();
 	if current_scope.current_has_symbol(var_id.clone()) {
 		print_panic("变量重复声明")
@@ -131,7 +131,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 	}
 
 	// 添加变量到本域符号表中
-	let current_scope = scope_stack.current().unwrap();
+	let current_scope = scope_stack.current_scope().unwrap();
 	let ast_node = ast_node.remove_child(3);
 	let variable = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
 	current_scope.define_symbol(variable);
@@ -146,10 +146,10 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit var declare stmt");
 	let var_id: String = ast_node.get_child_text(0).unwrap();
 	let expr_node = ast_node.remove_child(2);
-	let mut parent_name: Option<String> = scope_stack.current().unwrap().parent_scope_name();
+	let mut parent_name: Option<String> = scope_stack.current_scope().unwrap().parent_scope_name();
 
 	// 在本域中查找
-	let current_scope = scope_stack.current().unwrap();
+	let current_scope = scope_stack.current_scope().unwrap();
 	if current_scope.current_has_symbol(var_id.clone()) {
 		let mut symbol = current_scope.remove_symbol(var_id.clone()).unwrap();
 		symbol.set_symbol_value(Option::Some(expr_node));
@@ -216,7 +216,7 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info_extend("visit identifier", id_node);
 	let id = id_node._text.clone();
-	let current = scope_stack.current().unwrap();
+	let current = scope_stack.current_scope().unwrap();
 
 	if let Some(symbol) = current.find_symbol(id.clone()) {
 		let num = AstNode::calculate(symbol.get_symbol_val().unwrap());
