@@ -102,7 +102,7 @@ fn visit_expression_stmt(child: &mut AstNode, scope_stack: &mut ScopeStack) {}
 /// int a = 1;
 /// {
 /// 	int a = 2;  //error,上级域中已经有a
-/// 	int b = 2;  
+/// 	int b = 2;
 /// }
 /// int b = 3;   //success,块中的b已经失效了
 /// ```
@@ -135,7 +135,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 
 	// 添加变量到本域符号表中
 	let current_scope = scope_stack.current().unwrap();
-	let ast_node = ast_node.remove_child(2);
+	let ast_node = ast_node.remove_child(3);
 	let variable = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
 	current_scope.push_symbol(variable);
 }
@@ -196,13 +196,11 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// - ExpressionStmt: todo
 /// -
 ///
-/// ```rust
 /// echo 3;     //intLiteral
 /// int a = 1;	// a:primary
 /// echo a;	    //identifier a
 /// int b = a + 2;  //b:expressionStmt
 /// echo b;     //identifier b
-/// ```
 ///
 fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info_extend("visit echo", &ast_node);
@@ -224,7 +222,8 @@ fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let current = scope_stack.current().unwrap();
 
 	if let Some(symbol) = current.get_symbol(id.clone()) {
-		symbol.get_symbol_val().unwrap().echo();
+		let num = AstNode::calculate(symbol.get_symbol_val().unwrap());
+		println!("{}", num);
 		return;
 	} else {
 		let mut parent_name = current.parent_scope_name();
@@ -235,7 +234,8 @@ fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 				.unwrap();
 			// 当前域中是否存在该变量
 			if let Some(symbol) = scope.get_symbol(id.clone()) {
-				symbol.get_symbol_val().unwrap().echo();
+				let num = AstNode::calculate(symbol.get_symbol_val().unwrap());
+				println!("{}", num);
 				return;
 			}
 			parent_name = scope.parent_scope_name();
@@ -244,11 +244,11 @@ fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 }
 
 fn print_info(msg: &str) {
-	println!("[info][ast_visit]: {}", msg);
+	// println!("[info][ast_visit]: {}", msg);
 }
 
 fn print_info_extend<T: std::fmt::Debug>(msg: &str, t: &T) {
-	println!("[info][ast_visit]: {},t = {:?}", msg, t);
+	// println!("[info][ast_visit]: {},t = {:?}", msg, t);
 }
 
 fn print_panic(msg: &str) {

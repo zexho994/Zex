@@ -7,8 +7,8 @@ use std::io::Read;
 use std::io::Write;
 use std::path::Path;
 
-const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
-// const DEFAULT_PATH: &str = "/Users/a994/Github/Zex/sample";
+// const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
+const DEFAULT_PATH: &str = "/Users/a994/Github/Zex/sample";
 
 fn main() {
     // 配置cmd命令

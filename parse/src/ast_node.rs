@@ -83,51 +83,88 @@ impl AstNode {
     pub fn add_child(&mut self, child: AstNode) {
         self._child.push(child);
     }
-
-    pub fn print_ast(&self) {
-        // let stack = Vec::new();
-    }
-
-    /// 可以调用echo的节点类型:
-    /// 1. 字面量 => echo 1;
-    /// 2. 标识符id => echo a;
-    /// 3. 表达式 => echo a+1; [todo]
-    pub fn echo(&self) -> Option<u32> {
-        self.calculate()
-    }
 }
 
-trait Calculate {
-    // 计算节点的值
-    // 如果节点为additive，遍历求值
-    fn calculate(&self) -> Option<u32>;
-    fn calculate_add(&self) -> u32;
-    fn calculate_expr(&self) -> u32;
-}
+// trait Calculate {
+//     // 计算节点的值
+//     // 如果节点为additive，遍历求值
+//     fn calculate() -> Option<u32>;
+//     fn calculate_sum() -> u32;
+//     fn calculate_add() -> u32;
+//     fn calculate_expr() -> u32;
+// }
 
-impl Calculate for AstNode {
+impl AstNode {
     /// int a = 1;
     /// a = 2;
     ///
     /// 出发计算的节点的可能类型:
     ///
     /// 1.
-    fn calculate(&self) -> Option<u32> {
-        println!("calculate {:?}", self);
-        match self._type {
-            AstNodeType::Identifier => {}
-            AstNodeType::ExpressionStmt => {}
-            AstNodeType::IntLiteral => {}
-            _ => {}
+    pub fn calculate(node: &AstNode) -> i32 {
+        AstNode::print_calculate_info("calculate");
+        match node._type {
+            AstNodeType::Identifier => {
+                panic!("calculate identifier")
+            }
+            AstNodeType::ExpressionStmt => AstNode::calculate_expr(node),
+            AstNodeType::IntLiteral => node._text.parse().unwrap(),
+            AstNodeType::Additive => AstNode::calculate_number(node),
+            _ => panic!("calculate,{:?}", node),
         }
-        None
     }
 
-    fn calculate_expr(&self) -> u32 {
-        0
+    /// expr -> add
+    fn calculate_expr(node: &AstNode) -> i32 {
+        AstNode::print_calculate_info("calculate expression");
+        let child = node.get_child(0).unwrap();
+        AstNode::calculate_number(child)
     }
 
-    fn calculate_add(&self) -> u32 {
-        0
+    fn calculate_number(node: &AstNode) -> i32 {
+        AstNode::print_calculate_info("calculate_number");
+        match node._type {
+            AstNodeType::Additive => {
+                let mut left: i32 = 0;
+                let mut right: i32 = 0;
+                if let Some(left_child) = node.get_child(0) {
+                    left = AstNode::calculate_number(left_child);
+                }
+                if let Some(right_child) = node.get_child(1) {
+                    right = AstNode::calculate_number(right_child);
+                }
+                left + right
+            }
+            AstNodeType::Multiplicative => {
+                let mut left: i32 = 0;
+                let mut right: i32 = 1;
+                if let Some(left_child) = node.get_child(0) {
+                    left = AstNode::calculate_number(left_child);
+                }
+                if let Some(right_child) = node.get_child(1) {
+                    right = AstNode::calculate_number(right_child);
+                }
+                left * right
+            }
+            AstNodeType::Primary => AstNode::calculate_primary(node),
+            AstNodeType::IntLiteral => node._text.parse().unwrap(),
+            _ => panic!("calculate {:?} failed", node),
+        }
+    }
+
+    fn calculate_primary(node: &AstNode) -> i32 {
+        match node._type {
+            AstNodeType::Identifier => {
+                panic!("calculate primary,{:?}", node)
+            }
+            AstNodeType::IntLiteral => {
+                return node._text.parse().unwrap();
+            }
+            _ => panic!("calculate primary,{:?}", node),
+        }
+    }
+
+    fn print_calculate_info(msg: &str) {
+        // println!("[info][calculate] {}", msg)
     }
 }

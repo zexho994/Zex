@@ -11,7 +11,7 @@
             "program": "${workspaceRoot}/cmd/target/debug/cmd",
             "args": [
                 "-mfile",
-                "-f/block/block1.zex",
+                "-f/echo/echo_int.zex",
             ],
             "cwd": "${workspaceRoot}",
         }
