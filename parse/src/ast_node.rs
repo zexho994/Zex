@@ -87,6 +87,14 @@ impl AstNode {
     pub fn print_ast(&self) {
         // let stack = Vec::new();
     }
+
+    /// 可以调用echo的节点类型:
+    /// 1. 字面量 => echo 1;
+    /// 2. 标识符id => echo a;
+    /// 3. 表达式 => echo a+1; [todo]
+    pub fn echo(&self) -> Option<u32> {
+        self.calculate()
+    }
 }
 
 trait Calculate {
@@ -98,17 +106,20 @@ trait Calculate {
 }
 
 impl Calculate for AstNode {
+    /// int a = 1;
+    /// a = 2;
+    ///
+    /// 出发计算的节点的可能类型:
+    ///
+    /// 1.
     fn calculate(&self) -> Option<u32> {
+        println!("calculate {:?}", self);
         match self._type {
-            AstNodeType::ExpressionStmt => {
-                self.calculate_expr();
-            }
-            AstNodeType::Additive => {
-                self.calculate_add();
-            }
-            _ => panic!("Does not support {:?}", self),
+            AstNodeType::Identifier => {}
+            AstNodeType::ExpressionStmt => {}
+            AstNodeType::IntLiteral => {}
+            _ => {}
         }
-
         None
     }
 

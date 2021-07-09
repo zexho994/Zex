@@ -37,7 +37,16 @@ impl ScopeStack {
 		self.stack.get_mut(len - 1)
 	}
 
-	pub fn find_scope(&mut self, scope_name: &str) -> Option<&mut Scope> {
+	pub fn find_scope(&self, scope_name: String) -> Option<&Scope> {
+		for scope in self.stack.iter() {
+			if scope.scope_name == scope_name {
+				return Option::Some(scope);
+			}
+		}
+		None
+	}
+
+	pub fn find_scope_mut(&mut self, scope_name: String) -> Option<&mut Scope> {
 		for scope in self.stack.iter_mut() {
 			if scope.scope_name == scope_name {
 				return Option::Some(scope);

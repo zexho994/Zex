@@ -60,7 +60,7 @@ fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &
 /// 2. varDeclareStmt 声明语句
 /// 3. assignmentStmt 赋值语句
 /// 4. expressionStmt 表达式语句
-fn visit_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
+fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit statement");
 
 	for child in ast_node._child.iter_mut() {
@@ -74,11 +74,19 @@ fn visit_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut Sc
 			AstNodeType::AssignmentStmt => {
 				visit_assignment_stmt(child, scope_stack);
 			}
-			AstNodeType::ExpressionStmt => {}
+			AstNodeType::ExpressionStmt => {
+				visit_expression_stmt(child, scope_stack);
+			}
 			_ => panic!("visit statement error"),
 		}
 	}
 }
+
+/// <expressionStm> ::= <addExpr>
+/// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
+/// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
+/// <primary> :: <primary> ::= <id> | <intLiteral>
+fn visit_expression_stmt(child: &mut AstNode, scope_stack: &mut ScopeStack) {}
 
 /// ### varDeclareStmt结构
 /// type, id, assignment, expressionStm
@@ -116,7 +124,9 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 
 	// 在所有父域中查找
 	while parent_name.is_some() {
-		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
+		let scope = scope_stack
+			.find_scope(parent_name.unwrap().clone())
+			.unwrap();
 		if scope.current_has_symbol(var_id.clone()) {
 			print_panic("变量重复声明")
 		}
@@ -142,11 +152,11 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let mut parent_name: Option<String> = scope_stack.current().unwrap().parent_scope_name();
 
 	// 在本域中查找
-	let mut current_scope = scope_stack.current().unwrap();
+	let current_scope = scope_stack.current().unwrap();
 	if current_scope.current_has_symbol(var_id.clone()) {
 		let mut symbol = current_scope.remove_symbol(var_id.clone()).unwrap();
 		symbol.set_symbol_value(Option::Some(expr_node));
-		current_scope.update_symbol_val(var_id.clone(), Option::Some(symbol));
+		current_scope.update_symbol_val(var_id.clone(), symbol);
 		return;
 	}
 
@@ -161,32 +171,44 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	//
 	while parent_name.is_some() {
 		// 获取父域
-		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
+		let scope = scope_stack
+			.find_scope_mut(parent_name.unwrap().clone())
+			.unwrap();
+
 		// 当前域中是否存在该变量
 		if scope.current_has_symbol(var_id.clone()) {
 			let mut symbol = scope.remove_symbol(var_id.clone()).unwrap();
 			symbol.set_symbol_value(Option::Some(expr_node));
-			scope.update_symbol_val(var_id.clone(), None);
+			scope.update_symbol_val(var_id.clone(), symbol);
 			return;
 		}
 		parent_name = scope.parent_scope_name();
 	}
 }
 
-/// echo hack
+/// <echo> ::= echo (<id> |<intLiteral>),
 /// 获取要输出的节点，计算值
 /// 要输出的值必需在合法作用域中，且在合法生命周期内
 /// 如果要输出的字面值类型，直接打印即可
 /// 如果要输出的是其他类型，需要进行计算,计算规则:
+/// -
 /// - Identifier: 从本域开始向超查找，找到对应变量，然后进行求值计算
 /// - ExpressionStmt: todo
+/// -
+///
+/// ```rust
+/// echo 3;     //intLiteral
+/// int a = 1;	// a:primary
+/// echo a;	    //identifier a
+/// int b = a + 2;  //b:expressionStmt
+/// echo b;     //identifier b
+/// ```
+///
 fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+	print_info_extend("visit echo", &ast_node);
 	let target = ast_node.get_child_mut(0).unwrap();
-
 	match target._type {
-		AstNodeType::Identifier => {
-			visit_identifier(target, scope_stack);
-		}
+		AstNodeType::Identifier => echo_identifier(target, scope_stack),
 		AstNodeType::IntLiteral => {
 			println!("{}", target._text.clone());
 		}
@@ -198,26 +220,26 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// 符号表中:k=id,v=ast_node
 /// ast_node's type = expressionStmt
 /// 根据id的text在符号表从下到上遍历寻找对应符号以及值
-fn visit_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit identifier");
-	// println!("id_node: {:?}", id_node);
 	let id = id_node._text.clone();
 	let current = scope_stack.current().unwrap();
-	// println!("id: {:?}", id);
-	// println!("current scope: {:?}", current);
-	if current.current_has_symbol(id.clone()) {
-		let symbol = current.get_symbol(id.clone()).as_ref().unwrap();
-		let node = symbol.get_symbol_val().as_ref().unwrap();
-		// println!("symbol val is {:?}", node);
-		let text = node._text.clone();
-		println!("{}", text);
+
+	if let Some(symbol) = current.get_symbol(id.clone()) {
+		symbol.get_symbol_val().unwrap().echo();
+		return;
 	} else {
 		let mut parent_name = current.parent_scope_name();
 		while parent_name.is_some() {
 			// 获取父域
-			let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
+			let scope = scope_stack
+				.find_scope(parent_name.unwrap().clone())
+				.unwrap();
 			// 当前域中是否存在该变量
-			if scope.current_has_symbol(id.clone()) {}
+			if let Some(symbol) = scope.get_symbol(id.clone()) {
+				symbol.get_symbol_val().unwrap().echo();
+				return;
+			}
 			parent_name = scope.parent_scope_name();
 		}
 	}
@@ -227,9 +249,9 @@ fn print_info(msg: &str) {
 	println!("[info][ast_visit]: {}", msg);
 }
 
-// fn print_info_extend<T: std::fmt::Debug>(msg: &str, t: &T) {
-// 	println!("[info][ast_visit]: {},t = {:?}", msg, t);
-// }
+fn print_info_extend<T: std::fmt::Debug>(msg: &str, t: &T) {
+	println!("[info][ast_visit]: {},t = {:?}", msg, t);
+}
 
 fn print_panic(msg: &str) {
 	panic!("[error][ast_visit] {}", msg);

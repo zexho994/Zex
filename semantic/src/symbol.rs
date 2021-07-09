@@ -39,7 +39,7 @@ impl Symbol {
 		self.symbol_val = v;
 	}
 
-	pub fn get_symbol_val(&self) -> &Option<AstNode> {
-		&self.symbol_val
+	pub fn get_symbol_val(&self) -> Option<&AstNode> {
+		self.symbol_val.as_ref()
 	}
 }

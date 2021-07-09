@@ -44,5 +44,5 @@
 
 <intLiteral> ::= [1-9][0-9]\*
 
-<echo> ::= echo <id> | echo <intLiteral>
+<echo> ::= echo (<id> |<intLiteral>)
 ```
