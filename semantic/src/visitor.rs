@@ -131,7 +131,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 	}
 
 	// 添加变量到本域符号表中
-	let current_scope = scope_stack.current_scope().unwrap();
+	let current_scope = scope_stack.current_scope_mut().unwrap();
 	let ast_node = ast_node.remove_child(3);
 	let variable = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
 	current_scope.define_symbol(variable);
@@ -149,10 +149,10 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let mut parent_name: Option<String> = scope_stack.current_scope().unwrap().parent_scope_name();
 
 	// 在本域中查找
-	let current_scope = scope_stack.current_scope().unwrap();
+	let current_scope = scope_stack.current_scope_mut().unwrap();
 	if current_scope.current_has_symbol(var_id.clone()) {
 		let mut symbol = current_scope.remove_symbol(var_id.clone()).unwrap();
-		symbol.set_symbol_value(Option::Some(expr_node));
+		symbol.set_ast_node(Option::Some(expr_node));
 		current_scope.update_symbol_val(var_id.clone(), symbol);
 		return;
 	}
@@ -175,7 +175,7 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 		// 当前域中是否存在该变量
 		if scope.current_has_symbol(var_id.clone()) {
 			let mut symbol = scope.remove_symbol(var_id.clone()).unwrap();
-			symbol.set_symbol_value(Option::Some(expr_node));
+			symbol.set_ast_node(Option::Some(expr_node));
 			scope.update_symbol_val(var_id.clone(), symbol);
 			return;
 		}
@@ -203,8 +203,10 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info_extend("visit echo", &ast_node);
 	let target = ast_node.get_child_mut(0).unwrap();
 	match target._type {
-		AstNodeType::Identifier => echo_identifier(target, scope_stack),
-		AstNodeType::IntLiteral => println!("{}", target._text.clone()),
+		// 标识符类型，需要先获取id对应的symbol，然在再获取对应的AstNode
+		AstNodeType::Identifier => visit_identifier(target, scope_stack),
+		// 字面量类型，可以直接输出
+		AstNodeType::IntLiteral => echo_int_literal(target),
 		_ => panic!("visit echo"),
 	}
 }
@@ -213,39 +215,45 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// 符号表中:k=id,v=ast_node
 /// ast_node's type = expressionStmt
 /// 根据id的text在符号表从下到上遍历寻找对应符号以及值
-fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	print_info_extend("visit identifier", id_node);
-	let id = id_node._text.clone();
-	let current = scope_stack.current_scope().unwrap();
+fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
+	print_info_extend("visit identifier", ast_node);
+	let id = ast_node._text.clone();
+	let mut target_symbol: Option<&Symbol> = None;
 
-	if let Some(symbol) = current.find_symbol(id.clone()) {
-		let num = AstNode::calculate(symbol.get_symbol_val().unwrap());
-		println!("{}", num);
-		return;
+	// 在当前域中查找符号
+	if let Some(symbol) = scope_stack.current_scope().unwrap().find_symbol(id.clone()) {
+		target_symbol = Some(symbol);
 	} else {
-		let mut parent_name = current.parent_scope_name();
+		let mut parent_name = scope_stack.current_scope().unwrap().parent_scope_name();
+		//父域中查找符号
 		while parent_name.is_some() {
-			// 获取父域
 			let scope = scope_stack
 				.find_scope(parent_name.unwrap().clone())
 				.unwrap();
-			// 当前域中是否存在该变量
 			if let Some(symbol) = scope.find_symbol(id.clone()) {
-				let num = AstNode::calculate(symbol.get_symbol_val().unwrap());
-				println!("{}", num);
-				return;
+				target_symbol = Some(symbol);
+				break;
 			}
 			parent_name = scope.parent_scope_name();
 		}
 	}
+
+	// 打印值
+	let ast_node = target_symbol.unwrap().get_ast_node().unwrap();
+	let num = AstNode::calculate(ast_node);
+	println!("{}", num);
+}
+
+fn echo_int_literal(ast_node: &mut AstNode) {
+	println!("{}", ast_node._text.clone())
 }
 
 fn print_info(_msg: &str) {
-	// println!("[info][ast_visit]: {}", msg);
+	// println!("[info][ast_visit]: {}", _msg);
 }
 
 fn print_info_extend<T: std::fmt::Debug>(_msg: &str, _t: &T) {
-	// println!("[info][ast_visit]: {},t = {:?}", msg, t);
+	// println!("[info][ast_visit]: {},t = {:?}", _msg, _t);
 }
 
 fn print_panic(msg: &str) {

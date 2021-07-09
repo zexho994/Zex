@@ -7,9 +7,9 @@ use super::scope::*;
 /// current() 表示栈顶，也等同于当前域
 #[derive(Debug)]
 pub struct ScopeStack {
-	pub seq: u8,
+	seq: u8,
 	//  直接管理生命周期，在pop时候就可以直接进行引用回收了
-	pub stack: Vec<Scope>,
+	stack: Vec<Scope>,
 }
 
 impl ScopeStack {
@@ -18,6 +18,11 @@ impl ScopeStack {
 			seq: 0,
 			stack: Vec::new(),
 		}
+	}
+
+	/// stack len
+	pub fn len(&self) -> usize {
+		self.stack.len()
 	}
 
 	pub fn push(&mut self, mut scope: Scope) {
@@ -32,7 +37,12 @@ impl ScopeStack {
 		self.stack.pop()
 	}
 
-	pub fn current_scope(&mut self) -> Option<&mut Scope> {
+	pub fn current_scope(&self) -> Option<&Scope> {
+		let len = self.stack.len();
+		self.stack.get(len - 1)
+	}
+
+	pub fn current_scope_mut(&mut self) -> Option<&mut Scope> {
 		let len = self.stack.len();
 		self.stack.get_mut(len - 1)
 	}

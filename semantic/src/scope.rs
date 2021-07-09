@@ -44,7 +44,7 @@ impl Scope {
 	}
 
 	pub fn define_symbol(&mut self, symbol: Symbol) {
-		self.symbol_table.insert(symbol.get_symbol_name(), symbol);
+		self.symbol_table.insert(symbol.get_name(), symbol);
 	}
 
 	pub fn find_symbol(&self, name: String) -> Option<&Symbol> {

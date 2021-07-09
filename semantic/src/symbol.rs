@@ -31,15 +31,15 @@ impl Symbol {
 		}
 	}
 
-	pub fn get_symbol_name(&self) -> String {
+	pub fn get_name(&self) -> String {
 		self.symbol_name.clone()
 	}
 
-	pub fn set_symbol_value(&mut self, v: Option<AstNode>) {
+	pub fn set_ast_node(&mut self, v: Option<AstNode>) {
 		self.symbol_val = v;
 	}
 
-	pub fn get_symbol_val(&self) -> Option<&AstNode> {
+	pub fn get_ast_node(&self) -> Option<&AstNode> {
 		self.symbol_val.as_ref()
 	}
 }

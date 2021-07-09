@@ -17,7 +17,7 @@ fn scope_stack_push() {
 	let ls3 = Scope::new_local(stack.current_scope().unwrap().scope_name.clone());
 	stack.push(ls3);
 
-	assert!(stack.stack.len() == 3);
+	assert!(stack.len() == 3);
 	match stack.current_scope() {
 		Some(e) => {
 			println!("current e is {:?}", e);

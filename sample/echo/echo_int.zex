@@ -2,4 +2,9 @@ echo 100;
 int i= 10 + 10;
 echo i;
 i = 50;
-echo i;
+{
+	int c = 3;
+	echo i;
+	echo c;
+}
+echo c;
