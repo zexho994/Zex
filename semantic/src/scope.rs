@@ -1,5 +1,4 @@
 use super::symbol::*;
-use crate::scope_stack::ScopeStack;
 use std::collections::HashMap;
 
 #[derive(Debug)]

@@ -75,7 +75,8 @@ fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 				visit_assignment_stmt(child, scope_stack);
 			}
 			AstNodeType::ExpressionStmt => {
-				visit_expression_stmt(child, scope_stack);
+				// visit_expression_stmt(child, scope_stack);
+				panic!("visit expr error")
 			}
 			_ => panic!("visit statement error"),
 		}
@@ -86,7 +87,7 @@ fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
 /// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
 /// <primary> :: <primary> ::= <id> | <intLiteral>
-fn visit_expression_stmt(child: &mut AstNode, scope_stack: &mut ScopeStack) {}
+// fn visit_expression_stmt(child: &mut AstNode, scope_stack: &mut ScopeStack) {}
 
 /// ### varDeclareStmt结构
 /// type, id, assignment, expressionStm
@@ -109,18 +110,14 @@ fn visit_expression_stmt(child: &mut AstNode, scope_stack: &mut ScopeStack) {}
 ///
 fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit var declare stmt");
-	let var_id: String;
-	let mut parent_name: Option<String> = None;
 
 	// 在本域中查找
-	{
-		let current_scope = scope_stack.current().unwrap();
-		var_id = ast_node.get_child_text(1).unwrap();
-		if current_scope.current_has_symbol(var_id.clone()) {
-			print_panic("变量重复声明")
-		}
-		parent_name = current_scope.parent_scope_name();
+	let current_scope = scope_stack.current().unwrap();
+	let var_id = ast_node.get_child_text(1).unwrap();
+	if current_scope.current_has_symbol(var_id.clone()) {
+		print_panic("变量重复声明")
 	}
+	let mut parent_name = current_scope.parent_scope_name();
 
 	// 在所有父域中查找
 	while parent_name.is_some() {
@@ -243,18 +240,14 @@ fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	}
 }
 
-fn print_info(msg: &str) {
+fn print_info(_msg: &str) {
 	// println!("[info][ast_visit]: {}", msg);
 }
 
-fn print_info_extend<T: std::fmt::Debug>(msg: &str, t: &T) {
+fn print_info_extend<T: std::fmt::Debug>(_msg: &str, _t: &T) {
 	// println!("[info][ast_visit]: {},t = {:?}", msg, t);
 }
 
 fn print_panic(msg: &str) {
 	panic!("[error][ast_visit] {}", msg);
-}
-
-fn print_panic_extend<T: std::fmt::Debug>(msg: &str, t: &T) {
-	panic!("[error][ast_visit] {}, t = {:?}", msg, t);
 }

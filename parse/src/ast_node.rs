@@ -164,7 +164,7 @@ impl AstNode {
         }
     }
 
-    fn print_calculate_info(msg: &str) {
+    fn print_calculate_info(_msg: &str) {
         // println!("[info][calculate] {}", msg)
     }
 }
