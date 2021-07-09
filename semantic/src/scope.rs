@@ -43,13 +43,11 @@ impl Scope {
 		}
 	}
 
-	// 压入一个符号
-	pub fn push_symbol(&mut self, symbol: Symbol) {
+	pub fn define_symbol(&mut self, symbol: Symbol) {
 		self.symbol_table.insert(symbol.get_symbol_name(), symbol);
 	}
 
-	/// 借用符号表的一个符号
-	pub fn get_symbol(&self, name: String) -> Option<&Symbol> {
+	pub fn find_symbol(&self, name: String) -> Option<&Symbol> {
 		self.symbol_table.get(&name)
 	}
 

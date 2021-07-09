@@ -134,7 +134,7 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 	let current_scope = scope_stack.current().unwrap();
 	let ast_node = ast_node.remove_child(3);
 	let variable = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
-	current_scope.push_symbol(variable);
+	current_scope.define_symbol(variable);
 }
 
 /// ast_node type = AstNodeType::AssignmentStmt
@@ -218,7 +218,7 @@ fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let id = id_node._text.clone();
 	let current = scope_stack.current().unwrap();
 
-	if let Some(symbol) = current.get_symbol(id.clone()) {
+	if let Some(symbol) = current.find_symbol(id.clone()) {
 		let num = AstNode::calculate(symbol.get_symbol_val().unwrap());
 		println!("{}", num);
 		return;
@@ -230,7 +230,7 @@ fn echo_identifier(id_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 				.find_scope(parent_name.unwrap().clone())
 				.unwrap();
 			// 当前域中是否存在该变量
-			if let Some(symbol) = scope.get_symbol(id.clone()) {
+			if let Some(symbol) = scope.find_symbol(id.clone()) {
 				let num = AstNode::calculate(symbol.get_symbol_val().unwrap());
 				println!("{}", num);
 				return;
