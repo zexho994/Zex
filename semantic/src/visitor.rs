@@ -134,10 +134,10 @@ fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: 
 	}
 
 	// 添加变量到本域符号表中
-	let current_scope = scope_stack.current_scope_mut().unwrap();
-	let ast_node = ast_node.remove_child(3);
-	let variable = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
-	current_scope.define_symbol(variable);
+	let expr_child_seq = 3;
+	let ast_node = ast_node.remove_child(expr_child_seq);
+	let variable_symbol = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
+	scope_stack.current_scope_mut().add_symbol(variable_symbol);
 }
 
 // fn parent_scope_contain_symbol(
@@ -168,7 +168,7 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let mut parent_name: Option<String> = scope_stack.current_scope().parent_scope_name();
 
 	// 在本域中查找
-	let current_scope = scope_stack.current_scope_mut().unwrap();
+	let current_scope = scope_stack.current_scope_mut();
 	if current_scope.find_symbol(&var_id).is_some() {
 		let mut symbol = current_scope.remove_symbol(var_id.clone()).unwrap();
 		symbol.set_ast_node(Option::Some(expr_node));

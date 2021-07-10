@@ -42,9 +42,9 @@ impl ScopeStack {
 		self.stack.get(len - 1).unwrap()
 	}
 
-	pub fn current_scope_mut(&mut self) -> Option<&mut Scope> {
+	pub fn current_scope_mut(&mut self) -> &mut Scope {
 		let len = self.stack.len();
-		self.stack.get_mut(len - 1)
+		self.stack.get_mut(len - 1).unwrap()
 	}
 
 	pub fn find_scope(&self, scope_name: &String) -> Option<&Scope> {

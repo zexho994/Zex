@@ -10,15 +10,6 @@ fn repeat_declare() {
 	semantic(ast);
 }
 
-/// 变量重复声明测试
-/// { int a = 1 ;}  //success
-/// { int a = 1 ;}  //success
-/// int a = 1;      //success
-/// 上面三个a都能声明成功
-///
-/// int a = 1;    //success
-/// {int a = 1;}  // failure. 因为a已经声明
-///
 #[test]
 fn visit_test() {
 	let s = String::from(
