@@ -47,9 +47,10 @@ impl ScopeStack {
 		self.stack.get_mut(len - 1)
 	}
 
-	pub fn find_scope(&self, scope_name: String) -> Option<&Scope> {
+	pub fn find_scope(&self, scope_name: &String) -> Option<&Scope> {
+		let name = scope_name.as_str();
 		for scope in self.stack.iter() {
-			if scope.scope_name == scope_name {
+			if scope.scope_name == name {
 				return Option::Some(scope);
 			}
 		}
