@@ -13,25 +13,35 @@ fn repeat_declare() {
 #[test]
 fn visit_test() {
 	let s = String::from(
-		"{
-			int a = 1;
-			echo a;
-		 }
-	     { 
-		    int a = 1; 
-		 }
-		 int a = 1;
-		 echo a;
-		 a = 2;
-         echo a;
-		 a = 1 + 2;
-		 echo a;
-		 int b = 2 + 2 * 3;
-		 echo b;
-		 b = 2 * 10 + 2 * 10;
-		 echo b;
-		",
+		"
+ {
+	int a = 5 + 5;
+	echo a;
+ }
+
+ { 
+	int a = 20; 
+	echo a;
+ }
+
+ int a = 30;
+ echo a;
+
+ a = 40;
+ echo a;
+
+ a = 30 + 20;
+ echo a;
+
+ int b = 2 + 2 * 3;
+ echo b;
+
+ b = 2 * 10 + 2 * 10;
+ echo b;
+
+	",
 	);
+	println!("input : {}", s);
 	let mut tokens = lexer::lexing(s);
 	let ast = parsing(&mut tokens).unwrap();
 	semantic(ast);

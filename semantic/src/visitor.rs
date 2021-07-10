@@ -124,37 +124,16 @@ fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// }
 /// int b = 3;   //success,块中的b已经失效了
 /// ```
-fn visit_var_declare_stmt(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
+fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit var declare stmt");
 	let var_id: String = ast_node.get_child_text(1).unwrap();
-	let current_scope: &Scope = scope_stack.current_scope();
+	let mut scope = scope_stack.pop().unwrap();
 
-	if current_scope.is_contain_symbol(&var_id, scope_stack) {
-		print_panic("变量重复声明");
-	}
-
-	// 添加变量到本域符号表中
-	let expr_child_seq = 3;
-	let ast_node = ast_node.remove_child(expr_child_seq);
-	let variable_symbol = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
-	scope_stack.current_scope_mut().add_symbol(variable_symbol);
+	let ast_node = ast_node.remove_child(3);
+	let symbol = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
+	scope.define_symbol(symbol, scope_stack);
+	scope_stack.push(scope);
 }
-
-// fn parent_scope_contain_symbol(
-// 	symbol_id: &String,
-// 	scope: &Scope,
-// 	scope_stack: &ScopeStack,
-// ) -> bool {
-// 	let mut parent_name = scope.parent_scope_name();
-// 	while parent_name.is_some() {
-// 		let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
-// 		if scope.is_contain_symbol(&symbol_id) {
-// 			return true;
-// 		}
-// 		parent_name = scope.parent_scope_name();
-// 	}
-// 	false
-// }
 
 /// ast_node type = AstNodeType::AssignmentStmt
 /// 赋值语句将更新已有的变量值:

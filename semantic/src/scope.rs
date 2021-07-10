@@ -48,13 +48,21 @@ impl Scope {
 		self.scope_name.as_str()
 	}
 
-	pub fn add_symbol(&mut self, symbol: Symbol) {
+	fn add_symbol(&mut self, symbol: Symbol) {
 		self.symbol_table.insert(symbol.get_name(), symbol);
 	}
 
 	/// 在域中定义符号
 	/// 前提条件: 该域中还未存在相同名该的符号，即一个域中不允许相同名称的符号
-	pub fn define_symbol(&mut self, _symbol: Symbol) {}
+	pub fn define_symbol(&mut self, symbol: Symbol, scope_stack: &mut ScopeStack) {
+		let symbol_id = symbol.get_name();
+
+		if self.is_contain_symbol(&symbol_id, scope_stack) {
+			panic!("变量重复声明,symbol = {:?}", symbol);
+		}
+
+		self.add_symbol(symbol);
+	}
 
 	pub fn find_symbol(&self, name: &String) -> Option<&Symbol> {
 		self.symbol_table.get(name)
