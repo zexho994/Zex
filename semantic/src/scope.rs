@@ -43,6 +43,10 @@ impl Scope {
 		}
 	}
 
+	pub fn get_scope_name(&self) -> &str {
+		self.scope_name.as_str()
+	}
+
 	pub fn define_symbol(&mut self, symbol: Symbol) {
 		self.symbol_table.insert(symbol.get_name(), symbol);
 	}

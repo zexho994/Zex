@@ -37,9 +37,9 @@ impl ScopeStack {
 		self.stack.pop()
 	}
 
-	pub fn current_scope(&self) -> Option<&Scope> {
+	pub fn current_scope(&self) -> &Scope {
 		let len = self.stack.len();
-		self.stack.get(len - 1)
+		self.stack.get(len - 1).unwrap()
 	}
 
 	pub fn current_scope_mut(&mut self) -> Option<&mut Scope> {
