@@ -9,18 +9,25 @@ use super::symbol::*;
 // 3. 保存，退出
 pub fn visit_program(ast_node: &mut AstNode) {
 	print_info("visit program");
-	// 创建作用域栈
-	let mut scope_stack = ScopeStack::new();
-	// 创建全局域
+	// 初始化全局域
 	let global_scope = Scope::new_global();
+	// 初始化域栈
+	let mut scope_stack = ScopeStack::new();
+	// 入栈
 	scope_stack.push(global_scope);
 
-	for child in ast_node._child.iter_mut() {
-		visit_statements(child, &mut scope_stack);
-	}
+	// 访问子节点
+	visit_program_children(ast_node, &mut scope_stack);
 
-	// 退出全局域
+	//出栈
 	scope_stack.pop();
+}
+
+/// visit program的所有子节点
+fn visit_program_children(program_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+	for child in program_node._child.iter_mut() {
+		visit_statements(child, scope_stack);
+	}
 }
 
 /// ast_node type = AstNodeType::Statements
