@@ -33,7 +33,10 @@ fn visit_program_children(program_node: &mut AstNode, scope_stack: &mut ScopeSta
 /// ast_node type = AstNodeType::Statements
 fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit statements");
+	visit_statements_children(ast_node, scope_stack)
+}
 
+fn visit_statements_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	for child in ast_node._child.iter_mut() {
 		match child._type {
 			AstNodeType::BlockStmt => {
@@ -42,7 +45,7 @@ fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut S
 			AstNodeType::Statement => {
 				visit_statement(child, scope_stack);
 			}
-			_ => {}
+			_ => print_panic_more("visit statements children, child node type error", child),
 		}
 	}
 }
@@ -265,4 +268,8 @@ fn print_info_extend<T: std::fmt::Debug>(_msg: &str, _t: &T) {
 
 fn print_panic(msg: &str) {
 	panic!("[error][ast_visit] {}", msg);
+}
+
+fn print_panic_more<T: std::fmt::Debug>(msg: &str, t: &T) {
+	panic!("[error][visitor] msg = {}, t = {:?}", msg, t);
 }
