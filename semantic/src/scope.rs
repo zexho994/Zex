@@ -72,36 +72,44 @@ impl Scope {
 	/// 1. 符号以及被声明过
 	pub fn update_symbol(
 		&mut self,
-		name: &String,
-		mut symbol: Symbol,
+		symbol_name: &String,
+		new_symbol: Symbol,
 		scope_stack: &mut ScopeStack,
 	) {
-		// 在本域中查找
-		let current_scope = scope_stack.current_scope_mut();
-		if current_scope.symbol_table.contains_key(name) {
-			let t = current_scope
-				.symbol_table
-				.get(name)
-				.unwrap()
-				.get_symbol_type();
-			symbol.set_symbol_type(t);
-			current_scope.symbol_table.insert(name.to_string(), symbol);
+		if self.find_symbol(symbol_name).is_some() {
+			Scope::update_in_current(self, symbol_name, new_symbol);
+		} else {
+			Scope::update_in_parent(self, symbol_name, new_symbol, scope_stack)
+		}
+	}
+
+	fn update_in_current(scope: &mut Scope, symbol_name: &String, mut new_symbol: Symbol) {
+		if let Some(symbol) = scope.find_symbol(symbol_name) {
+			let origin_type = symbol.get_symbol_type();
+			new_symbol.set_symbol_type(origin_type);
+			scope.add_symbol(new_symbol);
 			return;
 		}
+	}
 
-		let mut parent_name = current_scope.parent_scope_name();
+	fn update_in_parent(
+		scope: &mut Scope,
+		symbol_name: &String,
+		mut new_symbol: Symbol,
+		scope_stack: &mut ScopeStack,
+	) {
+		let mut parent_name = scope.parent_scope_name();
 		while parent_name.is_some() {
 			let scope = scope_stack
 				.find_scope_mut(parent_name.unwrap().clone())
 				.unwrap();
-			if scope.symbol_table.contains_key(name) {
-				let t = scope.symbol_table.get(name).unwrap().get_symbol_type();
-				symbol.set_symbol_type(t);
-				scope.symbol_table.insert(name.to_string(), symbol);
+			if let Some(s) = scope.find_symbol(&symbol_name) {
+				let origin_type = s.get_symbol_type();
+				new_symbol.set_symbol_type(origin_type);
+				scope.add_symbol(new_symbol);
 				return;
-			} else {
-				parent_name = scope.parent_scope_name();
 			}
+			parent_name = scope.parent_scope_name();
 		}
 	}
 

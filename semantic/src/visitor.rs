@@ -147,7 +147,9 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 		SYMBOL_TYPE_VARIABLE,
 		Option::Some(ast_node.remove_child(2)),
 	);
-	scope_stack.update_symbol(&var_id, new_symbol);
+	let mut current_scope = scope_stack.pop().unwrap();
+	current_scope.update_symbol(&var_id, new_symbol, scope_stack);
+	scope_stack.push(current_scope);
 }
 
 /// <echo> ::= echo (<id> |<intLiteral>),
