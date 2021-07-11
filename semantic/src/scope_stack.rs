@@ -1,5 +1,4 @@
 use super::scope::*;
-use crate::symbol::Symbol;
 
 /// 存储Scope的栈
 /// - 在进入一个作用域的时候，执行push，压入新的Scope
