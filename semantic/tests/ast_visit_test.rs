@@ -4,7 +4,7 @@ pub use semantic::*;
 #[test]
 #[ignore]
 fn repeat_declare() {
-	let s = String::from("int a = 1;{ int a = 1 ; }");
+	let s = String::from("int a = 1;int a =2;");
 	let mut tokens = lexer::lexing(s);
 	let ast = parsing(&mut tokens).unwrap();
 	semantic(ast);

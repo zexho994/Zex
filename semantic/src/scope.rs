@@ -64,8 +64,53 @@ impl Scope {
 		self.add_symbol(symbol);
 	}
 
+	/// 更新符号
+	/// 在域中找到名称为name的符号,并替换成symbol
+	/// symbol_id: 被更新的符号名称
+	/// symbol: 更新的符号
+	/// 约束条件:
+	/// 1. 符号以及被声明过
+	pub fn update_symbol(
+		&mut self,
+		name: &String,
+		mut symbol: Symbol,
+		scope_stack: &mut ScopeStack,
+	) {
+		// 在本域中查找
+		let current_scope = scope_stack.current_scope_mut();
+		if current_scope.symbol_table.contains_key(name) {
+			let t = current_scope
+				.symbol_table
+				.get(name)
+				.unwrap()
+				.get_symbol_type();
+			symbol.set_symbol_type(t);
+			current_scope.symbol_table.insert(name.to_string(), symbol);
+			return;
+		}
+
+		let mut parent_name = current_scope.parent_scope_name();
+		while parent_name.is_some() {
+			let scope = scope_stack
+				.find_scope_mut(parent_name.unwrap().clone())
+				.unwrap();
+			if scope.symbol_table.contains_key(name) {
+				let t = scope.symbol_table.get(name).unwrap().get_symbol_type();
+				symbol.set_symbol_type(t);
+				scope.symbol_table.insert(name.to_string(), symbol);
+				return;
+			} else {
+				parent_name = scope.parent_scope_name();
+			}
+		}
+	}
+
 	pub fn find_symbol(&self, name: &String) -> Option<&Symbol> {
 		self.symbol_table.get(name)
+	}
+
+	pub fn find_symbol_mut(&mut self, name: &String) -> Option<&mut Symbol> {
+		self.symbol_table.get_mut(name)
 	}
 
 	/// 移除符号表一个符号，返回被移除的符号
@@ -75,7 +120,8 @@ impl Scope {
 
 	/// 查询域以及所有父域中是否包含目标符号
 	/// symbol_id: 要查询的符号名称
-	pub fn is_contain_symbol(&self, symbol_id: &String, scope_stack: &ScopeStack) -> bool {
+	/// return
+	fn is_contain_symbol(&self, symbol_id: &String, scope_stack: &ScopeStack) -> bool {
 		if self.find_symbol(&symbol_id).is_some() {
 			return true;
 		}
@@ -89,10 +135,6 @@ impl Scope {
 			parent_name = scope.parent_scope_name();
 		}
 		false
-	}
-
-	pub fn update_symbol_val(&mut self, var_name: String, var_val: Symbol) {
-		self.symbol_table.insert(var_name, var_val);
 	}
 
 	pub fn parent_scope_name(&self) -> Option<String> {

@@ -139,46 +139,15 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 /// 赋值语句将更新已有的变量值:
 /// 1. 确保变量已经声明
 /// 2. 更新变量的值
-///
 fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit var declare stmt");
 	let var_id: String = ast_node.get_child_text(0).unwrap();
-	let expr_node = ast_node.remove_child(2);
-	let mut parent_name: Option<String> = scope_stack.current_scope().parent_scope_name();
-
-	// 在本域中查找
-	let current_scope = scope_stack.current_scope_mut();
-	if current_scope.find_symbol(&var_id).is_some() {
-		let mut symbol = current_scope.remove_symbol(var_id.clone()).unwrap();
-		symbol.set_ast_node(Option::Some(expr_node));
-		current_scope.update_symbol_val(var_id.clone(), symbol);
-		return;
-	}
-
-	// 在所有父域中查找
-	//
-	// 流程：
-	// 查找当前域
-	// if 当前域中存在
-	// 		then -> update 变量
-	// else 当前域中不存在
-	// 		then -> 到父级域中找
-	//
-	while parent_name.is_some() {
-		// 获取父域
-		let scope = scope_stack
-			.find_scope_mut(parent_name.unwrap().clone())
-			.unwrap();
-
-		// 当前域中是否存在该变量
-		if scope.find_symbol(&var_id).is_some() {
-			let mut symbol = scope.remove_symbol(var_id.clone()).unwrap();
-			symbol.set_ast_node(Option::Some(expr_node));
-			scope.update_symbol_val(var_id.clone(), symbol);
-			return;
-		}
-		parent_name = scope.parent_scope_name();
-	}
+	let new_symbol = Symbol::new(
+		var_id.clone(),
+		SYMBOL_TYPE_VARIABLE,
+		Option::Some(ast_node.remove_child(2)),
+	);
+	scope_stack.update_symbol(&var_id, new_symbol);
 }
 
 /// <echo> ::= echo (<id> |<intLiteral>),

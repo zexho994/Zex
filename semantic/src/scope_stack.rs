@@ -1,4 +1,5 @@
 use super::scope::*;
+use crate::symbol::Symbol;
 
 /// 存储Scope的栈
 /// - 在进入一个作用域的时候，执行push，压入新的Scope
@@ -64,5 +65,29 @@ impl ScopeStack {
 			}
 		}
 		None
+	}
+
+	pub fn update_symbol(&mut self, name: &String, mut symbol: Symbol) {
+		// 在本域中查找
+		let current_scope = self.current_scope_mut();
+		if let Some(k) = current_scope.symbol_table.get(name) {
+			let t = k.get_symbol_type();
+			symbol.set_symbol_type(t);
+			current_scope.symbol_table.insert(name.to_string(), symbol);
+			return;
+		}
+
+		let mut parent_name = current_scope.parent_scope_name();
+		while parent_name.is_some() {
+			let scope = self.find_scope_mut(parent_name.unwrap().clone()).unwrap();
+			if let Some(k) = scope.symbol_table.get(name) {
+				let t = k.get_symbol_type();
+				symbol.set_symbol_type(t);
+				scope.symbol_table.insert(name.to_string(), symbol);
+				return;
+			} else {
+				parent_name = scope.parent_scope_name();
+			}
+		}
 	}
 }

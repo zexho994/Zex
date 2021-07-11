@@ -35,6 +35,14 @@ impl Symbol {
 		self.symbol_name.clone()
 	}
 
+	pub fn get_symbol_type(&self) -> u8 {
+		self.symbol_type
+	}
+
+	pub fn set_symbol_type(&mut self, symbol_type: u8) {
+		self.symbol_type = symbol_type;
+	}
+
 	pub fn set_ast_node(&mut self, v: Option<AstNode>) {
 		self.symbol_val = v;
 	}
