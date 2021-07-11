@@ -21,7 +21,6 @@ impl ScopeStack {
 		}
 	}
 
-	/// stack len
 	pub fn len(&self) -> usize {
 		self.stack.len()
 	}
@@ -89,5 +88,7 @@ impl ScopeStack {
 				parent_name = scope.parent_scope_name();
 			}
 		}
+		
+		panic!("update symbol failure");
 	}
 }
