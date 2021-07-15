@@ -27,6 +27,27 @@ pub fn state_e_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState)
         (i, DfaState::Identifier)
     }
 }
+pub fn state_f_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    println!("==> match DfaState : {} , next char is {}", "f", ch);
+    if ch == 'n' {
+        token.text.push(ch);
+        (i + 1, DfaState::FN)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+pub fn state_fn_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    println!("==> match DfaState : {} , next char is {}", "fn", ch);
+    if ch == ' ' {
+        token._type = TokenType::Fn;
+        token.text.push(ch);
+        (i + 1, DfaState::Initial)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
 
 pub fn state_ec_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();

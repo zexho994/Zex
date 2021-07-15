@@ -43,4 +43,7 @@ pub enum DfaState {
     ECH,
     // 'echo'
     ECHO,
+
+    F,
+    FN,
 }
