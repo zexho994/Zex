@@ -9,11 +9,11 @@ pub enum TokenType {
     // 数字字面量类型
     IntLiteral,
     // == 符号
-    EQ,
+    Eq,
     // > 符号
-    GT,
+    Gt,
     // >= 符号
-    GE,
+    Ge,
     // =
     Assignment,
     // int 关键字
@@ -29,11 +29,11 @@ pub enum TokenType {
     // ;
     SemiColon,
     // if
-    IF,
+    If,
     // {
     LeftBrace,
     // }
     RightBrace,
-    // echo 
+    // echo
     Echo,
 }

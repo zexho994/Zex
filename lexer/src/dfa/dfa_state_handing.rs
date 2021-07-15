@@ -63,7 +63,7 @@ pub fn state_if2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaStat
     let ch = s.chars().nth(i).unwrap();
     println!("state if2 handle ch is {}", ch);
     if ch == ' ' {
-        token._type = TokenType::IF;
+        token._type = TokenType::If;
         (i + 1, DfaState::Initial)
     } else {
         (i, DfaState::Identifier)
@@ -103,7 +103,7 @@ pub fn state_identifier_handle(i: usize, s: &str, token: &mut Token) -> (usize, 
 pub fn state_gt_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if char_is_eq(ch) {
-        token._type = TokenType::GE;
+        token._type = TokenType::Ge;
         token.text.push(ch);
         (i + 1, DfaState::Initial)
     } else {

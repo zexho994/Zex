@@ -25,7 +25,7 @@ mod test {
             _ => panic!("parse s = {} failed", s),
         }
         match tokens.get_child_idx(2).unwrap()._type {
-            TokenType::IF => {}
+            TokenType::If => {}
             _ => panic!("parse s = {} failed", s),
         }
         match tokens.get_child_idx(3).unwrap()._type {
@@ -33,7 +33,7 @@ mod test {
             _ => panic!("parse s = {} failed", s),
         }
         match tokens.get_child_idx(4).unwrap()._type {
-            TokenType::GT => {}
+            TokenType::Gt => {}
             _ => panic!("parse s = {} failed", s),
         }
         match tokens.get_child_idx(5).unwrap()._type {

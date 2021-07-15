@@ -14,11 +14,11 @@ pub enum DfaState {
     /// 标识符状态，数字或者字母
     Identifier,
     ///  等于状态
-    EQ,
+    Eq,
     /// 大于状态
-    GT,
+    Gt,
     /// 大于等于状态
-    GE,
+    Ge,
     /// 首字母为 'i'
     I,
     /// int_2的状态.int_1后字母为'n'

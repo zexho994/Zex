@@ -42,13 +42,13 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     }
 
     if char_is_gt(ch) {
-        token._type = TokenType::GT;
-        return (token, DfaState::GT);
+        token._type = TokenType::Gt;
+        return (token, DfaState::Gt);
     }
 
     if ch == '=' {
         token._type = TokenType::Assignment;
-        return (token, DfaState::EQ);
+        return (token, DfaState::Eq);
     }
 
     if ch == '+' {
@@ -134,7 +134,7 @@ pub fn get_full_token(
             DfaState::Identifier => {
                 handle_res = state_identifier_handle(i, s, &mut token);
             }
-            DfaState::GT => {
+            DfaState::Gt => {
                 handle_res = state_gt_handle(i, s, &mut token);
             }
             DfaState::Number => {
@@ -143,7 +143,7 @@ pub fn get_full_token(
             DfaState::Plus | DfaState::Minus | DfaState::Star | DfaState::Slash => {
                 handle_res = state_algorithm_handle(i);
             }
-            DfaState::EQ => {
+            DfaState::Eq => {
                 handle_res = state_eq_handle(i);
             }
             _ => {
