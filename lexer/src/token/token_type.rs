@@ -42,4 +42,6 @@ pub enum TokenType {
     Echo,
     // ->
     Arrow,
+    // class
+    Class,
 }

@@ -16,6 +16,19 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     }
     token.text.push(ch);
 
+    if char_is_alpha(ch) {
+        token._type = TokenType::Identifier;
+        return if ch == 'i' {
+            (token, DfaState::I)
+        } else if ch == 'e' {
+            (token, DfaState::E)
+        } else if ch == 'c' {
+            (token, DfaState::C)
+        } else {
+            (token, DfaState::Identifier)
+        };
+    }
+
     if ch == '{' {
         token._type = TokenType::LeftBrace;
         return (token, DfaState::Initial);
@@ -31,17 +44,6 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     if ch == ')' {
         token._type = TokenType::RightBracket;
         return (token, DfaState::Initial);
-    }
-
-    if char_is_alpha(ch) {
-        token._type = TokenType::Identifier;
-        return if ch == 'i' {
-            (token, DfaState::I)
-        } else if ch == 'e' {
-            (token, DfaState::E)
-        } else {
-            (token, DfaState::Identifier)
-        };
     }
 
     if char_is_digit(ch) {
@@ -155,6 +157,21 @@ pub fn get_full_token(
             }
             DfaState::Eq => {
                 handle_res = state_eq_handle(i);
+            }
+            DfaState::C => {
+                handle_res = state_c_handle(i, s, &mut token);
+            }
+            DfaState::Cl => {
+                handle_res = state_cl_handle(i, s, &mut token);
+            }
+            DfaState::Cla => {
+                handle_res = state_cla_handle(i, s, &mut token);
+            }
+            DfaState::Clas => {
+                handle_res = state_clas_handle(i, s, &mut token);
+            }
+            DfaState::Class => {
+                handle_res = state_class_handle(i, s, &mut token);
             }
             _ => {
                 panic!("token type error!")

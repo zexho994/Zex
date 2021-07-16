@@ -48,4 +48,11 @@ pub enum DfaState {
     /// Cross -> Minus
     /// Cross -> Arrow
     Cross,
+
+    /// class
+    C,
+    Cl,
+    Cla,
+    Clas,
+    Class,
 }

@@ -136,6 +136,55 @@ pub fn state_cross_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSt
     }
 }
 
+pub fn state_c_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 'l' {
+        token.text.push(ch);
+        (i + 1, DfaState::Cl)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+pub fn state_cl_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 'a' {
+        token.text.push(ch);
+        (i + 1, DfaState::Cla)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+pub fn state_cla_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 's' {
+        token.text.push(ch);
+        (i + 1, DfaState::Clas)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+
+pub fn state_clas_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == 's' {
+        token.text.push(ch);
+        (i + 1, DfaState::Class)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+
+pub fn state_class_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == ' ' {
+        token.text.push(ch);
+        token._type = TokenType::Class;
+        (i + 1, DfaState::Initial)
+    } else {
+        (i, DfaState::Identifier)
+    }
+}
+
 /// 遇到算数运算符，已经是一个完整的token
 /// 直接返回Initial进行下一轮解析
 pub fn state_algorithm_handle(i: usize) -> (usize, DfaState) {
