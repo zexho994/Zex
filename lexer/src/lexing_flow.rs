@@ -77,7 +77,6 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     }
 
     (token, DfaState::EOF)
-    // panic!("initial to other error,ch = a{}a", ch);
 }
 
 /// # parse_to_token ()

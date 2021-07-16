@@ -26,7 +26,7 @@ impl ScopeStack {
 
 	pub fn push(&mut self, mut scope: Scope) {
 		let seq = self.seq;
-		scope.scope_seq = seq;
+		scope.set_seq(seq);
 		scope.scope_name.push_str(seq.to_string().as_str());
 		self.stack.push(scope);
 		self.seq += 1;

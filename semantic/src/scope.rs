@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Scope {
-	pub scope_seq: u8,
+	scope_seq: u8,
 	pub scope_name: String,
 	// 1.全局，2临时
 	pub scope_type: u8,
@@ -44,6 +44,17 @@ impl Scope {
 		}
 	}
 
+	pub fn set_seq(&mut self, s: u8) {
+		self.scope_seq = s;
+	}
+
+	pub fn get_seq(&self) -> u8 {
+		if self.scope_seq == DEFAULT_SEQ {
+			panic!("scope un initial");
+		}
+		return self.scope_seq;
+	}
+
 	pub fn get_scope_name(&self) -> &str {
 		self.scope_name.as_str()
 	}
@@ -70,7 +81,12 @@ impl Scope {
 	/// symbol: 更新的符号
 	/// 约束条件:
 	/// 1. 符号以及被声明过
-	pub fn update_symbol(&mut self,symbol_name: &String,new_symbol: Symbol,scope_stack: &mut ScopeStack) {
+	pub fn update_symbol(
+		&mut self,
+		symbol_name: &String,
+		new_symbol: Symbol,
+		scope_stack: &mut ScopeStack,
+	) {
 		if self.find_symbol(symbol_name).is_some() {
 			Scope::update_in_current(self, symbol_name, new_symbol);
 		} else {
@@ -87,7 +103,12 @@ impl Scope {
 		}
 	}
 
-	fn update_in_parent(scope: &mut Scope,symbol_name: &String,mut new_symbol: Symbol,scope_stack: &mut ScopeStack) {
+	fn update_in_parent(
+		scope: &mut Scope,
+		symbol_name: &String,
+		mut new_symbol: Symbol,
+		scope_stack: &mut ScopeStack,
+	) {
 		let mut parent_name = scope.parent_scope_name();
 		while parent_name.is_some() {
 			let scope = scope_stack
