@@ -9,7 +9,7 @@ pub struct Token {
 #[derive(Debug)]
 pub struct Tokens {
 	data: Vec<Token>,
-	pub pos: usize,
+	pos: usize,
 }
 
 impl Tokens {
