@@ -3,7 +3,7 @@ use super::ast_node_type::*;
 #[derive(Debug)]
 pub struct AstNode {
     _text: String,
-    pub _type: AstNodeType,
+    _type: AstNodeType,
     pub _child: Vec<AstNode>,
 }
 
@@ -18,6 +18,10 @@ impl AstNode {
 
     pub fn get_text(&self) -> String {
         self._text.clone()
+    }
+
+    pub fn get_type(&self) -> &AstNodeType {
+        &self._type
     }
 
     /// 移除一个子节点，转移所有权给调用者

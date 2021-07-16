@@ -38,7 +38,7 @@ fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut S
 
 fn visit_statements_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	for child in ast_node._child.iter_mut() {
-		match child._type {
+		match child.get_type() {
 			AstNodeType::BlockStmt => {
 				visit_block_statement(child, scope_stack);
 			}
@@ -68,7 +68,7 @@ fn visit_block_statement_children(
 	scope_stack: &mut ScopeStack,
 ) {
 	for child in ast_node._child.iter_mut() {
-		match child._type {
+		match child.get_type() {
 			AstNodeType::Statements => visit_statements(child, scope_stack),
 			_ => print_panic_more(
 				"visit block statement children, child node type error",
@@ -90,7 +90,7 @@ fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 
 	// visit children
 	for child in ast_node._child.iter_mut() {
-		match child._type {
+		match child.get_type() {
 			AstNodeType::Echo => visit_echo(child, scope_stack),
 			AstNodeType::VarDeclareStmt => visit_var_declare_stmt(child, scope_stack),
 			AstNodeType::AssignmentStmt => visit_assignment_stmt(child, scope_stack),
@@ -171,7 +171,7 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info_extend("visit echo", &ast_node);
 	let target = ast_node.get_child_mut(0).unwrap();
-	match target._type {
+	match target.get_type() {
 		// 标识符类型，需要先获取id对应的symbol，然在再获取对应的AstNode
 		AstNodeType::Identifier => visit_identifier(target, scope_stack),
 		// 字面量类型，可以直接输出
