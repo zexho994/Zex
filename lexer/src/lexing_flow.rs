@@ -6,10 +6,7 @@ use super::{
 /// 获取初始dfa状态
 pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     let ch = s.chars().nth(i).unwrap();
-    let mut token = Token {
-        _type: TokenType::Blank,
-        text: String::from(""),
-    };
+    let mut token = Token::new(TokenType::Blank,"".to_string());
 
     if char_is_blank(ch) {
         return (token, DfaState::Blank);
@@ -17,7 +14,7 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     token.text.push(ch);
 
     if char_is_alpha(ch) {
-        token._type = TokenType::Identifier;
+        token.set_type(TokenType::Identifier);
         return if ch == 'i' {
             (token, DfaState::I)
         } else if ch == 'e' {
@@ -30,59 +27,59 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     }
 
     if ch == '{' {
-        token._type = TokenType::LeftBrace;
+        token.set_type(TokenType::LeftBrace);
         return (token, DfaState::Initial);
     }
     if ch == '}' {
-        token._type = TokenType::RightBrace;
+        token.set_type(TokenType::RightBrace);
         return (token, DfaState::Initial);
     }
     if ch == '(' {
-        token._type = TokenType::LeftBracket;
+        token.set_type(TokenType::LeftBracket);
         return (token, DfaState::Initial);
     }
     if ch == ')' {
-        token._type = TokenType::RightBracket;
+        token.set_type(TokenType::RightBracket);
         return (token, DfaState::Initial);
     }
 
     if char_is_digit(ch) {
-        token._type = TokenType::IntLiteral;
+        token.set_type(TokenType::IntLiteral);
         return (token, DfaState::Number);
     }
 
     if char_is_gt(ch) {
-        token._type = TokenType::Gt;
+        token.set_type(TokenType::Gt);
         return (token, DfaState::Gt);
     }
 
     if ch == '=' {
-        token._type = TokenType::Assignment;
+        token.set_type(TokenType::Assignment);
         return (token, DfaState::Eq);
     }
 
     if ch == '+' {
-        token._type = TokenType::Plus;
+        token.set_type(TokenType::Plus);
         return (token, DfaState::Plus);
     }
 
     if ch == '-' {
-        token._type = TokenType::Minus;
+        token.set_type(TokenType::Minus);
         return (token, DfaState::Cross);
     }
 
     if ch == '*' {
-        token._type = TokenType::Star;
+        token.set_type(TokenType::Star);
         return (token, DfaState::Star);
     }
 
     if ch == '/' {
-        token._type = TokenType::Slash;
+        token.set_type(TokenType::Slash);
         return (token, DfaState::Slash);
     }
 
     if ch == ';' {
-        token._type = TokenType::SemiColon;
+        token.set_type(TokenType::SemiColon);
         return (token, DfaState::SemiColon);
     }
 

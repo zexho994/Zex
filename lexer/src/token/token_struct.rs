@@ -2,7 +2,7 @@ use super::token_type::*;
 
 #[derive(Debug)]
 pub struct Token {
-	pub _type: TokenType,
+	_type: TokenType,
 	pub text: String,
 }
 
@@ -10,6 +10,19 @@ pub struct Token {
 pub struct Tokens {
 	data: Vec<Token>,
 	pos: usize,
+}
+
+impl Token {
+	pub fn new(t: TokenType, s: String) -> Token {
+		Token { _type: t, text: s }
+	}
+	pub fn set_type(&mut self, t: TokenType) {
+		self._type = t;
+	}
+
+	pub fn get_type(&self) -> &TokenType {
+		&self._type
+	}
 }
 
 impl Tokens {

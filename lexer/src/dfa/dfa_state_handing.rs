@@ -51,7 +51,7 @@ pub fn state_ech_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaStat
 pub fn state_echo_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == ' ' {
-        token._type = TokenType::Echo;
+        token.set_type(TokenType::Echo);
         (i + 1, DfaState::Initial)
     } else {
         (i, DfaState::Identifier)
@@ -63,7 +63,7 @@ pub fn state_if2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaStat
     let ch = s.chars().nth(i).unwrap();
     println!("state if2 handle ch is {}", ch);
     if ch == ' ' {
-        token._type = TokenType::If;
+        token.set_type(TokenType::If);
         (i + 1, DfaState::Initial)
     } else {
         (i, DfaState::Identifier)
@@ -83,7 +83,7 @@ pub fn state_int2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
 pub fn state_int3_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if char_is_blank(ch) {
-        token._type = TokenType::Int;
+        token.set_type(TokenType::Int);
         (i + 1, DfaState::Initial)
     } else {
         (i, DfaState::Identifier)
@@ -103,7 +103,7 @@ pub fn state_identifier_handle(i: usize, s: &str, token: &mut Token) -> (usize, 
 pub fn state_gt_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if char_is_eq(ch) {
-        token._type = TokenType::Ge;
+        token.set_type(TokenType::Ge);
         token.text.push(ch);
         (i + 1, DfaState::Initial)
     } else {
@@ -128,10 +128,10 @@ pub fn state_cross_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSt
     let ch = s.chars().nth(i).unwrap();
     if ch == '>' {
         token.text.push(ch);
-        token._type = TokenType::Arrow;
+        token.set_type(TokenType::Arrow);
         (i + 1, DfaState::Initial)
     } else {
-        token._type = TokenType::Minus;
+        token.set_type(TokenType::Minus);
         (i, DfaState::Initial)
     }
 }
@@ -178,7 +178,7 @@ pub fn state_class_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSt
     let ch = s.chars().nth(i).unwrap();
     if ch == ' ' {
         token.text.push(ch);
-        token._type = TokenType::Class;
+        token.set_type(TokenType::Class);
         (i + 1, DfaState::Initial)
     } else {
         (i, DfaState::Identifier)
