@@ -8,11 +8,18 @@ pub struct Token {
 
 #[derive(Debug)]
 pub struct Tokens {
-	pub data: Vec<Token>,
+	data: Vec<Token>,
 	pub pos: usize,
 }
 
 impl Tokens {
+	pub fn new() -> Tokens {
+		Tokens {
+			data: Vec::new(),
+			pos: 0,
+		}
+	}
+
 	pub fn add_token(&mut self, t: Token) {
 		self.data.push(t);
 	}

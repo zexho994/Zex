@@ -14,7 +14,7 @@ mod test {
     fn lexing_flow() {
         let s = String::from("i int if num > 01; {} echo - -> ( )");
         let tokens = lexing(s.as_str().to_string());
-        assert!(tokens.data.len() == 14);
+        assert!(tokens.count() == 14);
         match tokens.get_child_idx(0).unwrap()._type {
             TokenType::Identifier => {}
             _ => panic!("parse s = {} failed", s),
@@ -88,10 +88,7 @@ mod test {
 /// 解析入口
 pub fn lexing(s: String) -> Tokens {
     let mut i: usize = 0;
-    let mut tokens = Tokens {
-        data: Vec::new(),
-        pos: 0,
-    };
+    let mut tokens = Tokens::new();
     while i < s.chars().count() {
         let (token, state) = get_initial_state(i, s.as_str());
         i = get_full_token(state, i + 1, s.as_str(), token, &mut tokens);
