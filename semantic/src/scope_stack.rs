@@ -27,7 +27,7 @@ impl ScopeStack {
 	pub fn push(&mut self, mut scope: Scope) {
 		let seq = self.seq;
 		scope.set_seq(seq);
-		scope.scope_name.push_str(seq.to_string().as_str());
+		scope.append_scope_name(&seq.to_string());
 		self.stack.push(scope);
 		self.seq += 1;
 	}
@@ -49,7 +49,7 @@ impl ScopeStack {
 	pub fn find_scope(&self, scope_name: &String) -> Option<&Scope> {
 		let name = scope_name.as_str();
 		for scope in self.stack.iter() {
-			if scope.scope_name == name {
+			if scope.get_scope_name() == name {
 				return Option::Some(scope);
 			}
 		}
@@ -58,7 +58,7 @@ impl ScopeStack {
 
 	pub fn find_scope_mut(&mut self, scope_name: String) -> Option<&mut Scope> {
 		for scope in self.stack.iter_mut() {
-			if scope.scope_name == scope_name {
+			if scope.get_scope_name() == scope_name {
 				return Option::Some(scope);
 			}
 		}

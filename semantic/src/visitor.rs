@@ -55,7 +55,7 @@ fn visit_statements_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStac
 fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit block statement");
 	let current_scope: &Scope = scope_stack.current_scope();
-	let new_local_scope: Scope = Scope::new_local(current_scope.scope_name.clone());
+	let new_local_scope: Scope = Scope::new_local(current_scope.get_scope_name());
 	scope_stack.push(new_local_scope);
 
 	visit_block_statement_children(ast_node, scope_stack);

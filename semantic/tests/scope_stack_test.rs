@@ -9,12 +9,12 @@ fn scope_stack_push() {
 	let mut stack = ScopeStack::new();
 	let gs = Scope::new_global();
 	stack.push(gs);
-	let ls1 = Scope::new_local(stack.current_scope().scope_name.clone());
+	let ls1 = Scope::new_local(stack.current_scope().get_scope_name());
 	stack.push(ls1);
-	let ls2 = Scope::new_local(stack.current_scope().scope_name.clone());
+	let ls2 = Scope::new_local(stack.current_scope().get_scope_name());
 	stack.push(ls2);
 	stack.pop();
-	let ls3 = Scope::new_local(stack.current_scope().scope_name.clone());
+	let ls3 = Scope::new_local(stack.current_scope().get_scope_name());
 	stack.push(ls3);
 
 	assert!(stack.len() == 3);
