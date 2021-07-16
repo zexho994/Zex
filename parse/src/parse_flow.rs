@@ -5,11 +5,8 @@ use lexer::token::{token_struct::*, token_type::*};
 
 /// <program> ::= <statements>
 pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match program,token is ", tokens.peek(), tokens.pos);
-    let mut prog_node = AstNode {
-        _type: AstNodeType::Program,
-        ..Default::default()
-    };
+    print_parse_more2_info("match program,token is ", tokens.peek(), tokens.position());
+    let mut prog_node = AstNode::new(AstNodeType::Program, "");
 
     if let Some(n) = match_statements(tokens) {
         prog_node.add_child(n);
@@ -22,11 +19,12 @@ pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <statements> ::= <blockStm> | <statement> | <statement> <statements>
 fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match statements,token is ", tokens.peek(), tokens.pos);
-    let mut ast_node = AstNode {
-        _type: AstNodeType::Statements,
-        ..Default::default()
-    };
+    print_parse_more2_info(
+        "match statements,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
+    let mut ast_node = AstNode::new(AstNodeType::Statements, "");
 
     while tokens.peek().is_some() {
         if let TokenType::RightBrace = tokens.peek().unwrap()._type {
@@ -48,11 +46,12 @@ fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <blockStm> ::= { <statements> }
 fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match block statement,token is ", tokens.peek(), tokens.pos);
-    let mut ast_node = AstNode {
-        _type: AstNodeType::BlockStmt,
-        ..Default::default()
-    };
+    print_parse_more2_info(
+        "match block statement,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
+    let mut ast_node = AstNode::new(AstNodeType::BlockStmt, "");
     if let TokenType::LeftBrace = tokens.peek().unwrap()._type {
         tokens.read();
         if let Some(node) = match_statements(tokens) {
@@ -73,13 +72,12 @@ fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
 /// 语句类型：分配声明语句，表达式语句，赋值语句
 /// <statement> ::= <declare> | <expressionStm> | <assignmentStm>
 fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match statement,token is ", tokens.peek(), tokens.pos);
-
-    let mut ast_node: AstNode = AstNode {
-        _type: AstNodeType::Statement,
-        ..Default::default()
-    };
-
+    print_parse_more2_info(
+        "match statement,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
+    let mut ast_node = AstNode::new(AstNodeType::Statement, "");
     if let Some(node) = match_echo(tokens) {
         ast_node.add_child(node);
     } else if let Some(node) = match_declare(tokens) {
@@ -100,22 +98,19 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <echo> ::= echo ( <id> | <intLiteral> )
 fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match echo,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info("match echo,token is ", tokens.peek(), tokens.position());
     if let TokenType::Echo = tokens.peek().unwrap()._type {
         tokens.read();
-        let mut node = AstNode {
-            _type: AstNodeType::Echo,
-            ..Default::default()
-        };
+        let mut node = AstNode::new(AstNodeType::Echo, "");
         match tokens.peek().unwrap()._type {
             TokenType::Identifier => {
                 let t = tokens.read().unwrap();
-                let child = AstNode::new_id_node(t.text.clone());
+                let child = AstNode::new(AstNodeType::Identifier, t.text.as_str());
                 node.add_child(child);
             }
             TokenType::IntLiteral => {
                 let t = tokens.read().unwrap();
-                let child = AstNode::new_intliter_node(t.text.clone());
+                let child = AstNode::new(AstNodeType::IntLiteral, t.text.as_str());
                 node.add_child(child);
             }
             _ => panic!(
@@ -134,7 +129,7 @@ fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
 /// todo 声明语句现在提供变量声明，以后还有方法声明、类声明
 /// <declare> ::= <varDeclare> ;
 fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match declare,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info("match declare,token is ", tokens.peek(), tokens.position());
     let pos = tokens.position();
     if let Some(n) = match_var_declare(tokens) {
         Some(n)
@@ -146,11 +141,12 @@ fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <varDeclare> ::= <type> <id> <assign> <exprStm> | <type> <id>
 fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match var declare,token is ", tokens.peek(), tokens.pos);
-    let mut node = AstNode {
-        _type: AstNodeType::VarDeclareStmt,
-        ..Default::default()
-    };
+    print_parse_more2_info(
+        "match var declare,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
+    let mut node = AstNode::new(AstNodeType::VarDeclareStmt, "");
     if let Some(t) = match_type(tokens) {
         node.add_child(t);
     } else {
@@ -177,15 +173,12 @@ fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <type> ::= int
 fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match type,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info("match type,token is ", tokens.peek(), tokens.position());
     match tokens.peek().unwrap()._type {
         TokenType::Int => {
             let t = tokens.read().unwrap();
-            Option::Some(AstNode {
-                _type: AstNodeType::Int,
-                _text: t.text.clone(),
-                ..Default::default()
-            })
+            let node = AstNode::new(AstNodeType::Int, t.text.as_str());
+            Option::Some(node)
         }
         _ => None,
     }
@@ -193,26 +186,33 @@ fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <id> = id
 fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match identifier,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info(
+        "match identifier,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
     if let TokenType::Identifier = tokens.peek().unwrap()._type {
         let t = tokens.read().unwrap();
-        return Option::Some(AstNode {
-            _type: AstNodeType::Identifier,
-            _text: t.text.clone(),
-            ..Default::default()
-        });
+        let node = AstNode::new(AstNodeType::Identifier, t.text.as_str());
+        return Option::Some(node);
     }
     None
 }
 
 fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match assignment,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info(
+        "match assignment,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
     match tokens.peek().unwrap()._type {
-        TokenType::Assignment => Option::Some(AstNode {
-            _type: AstNodeType::AssignmentSymbol,
-            _text: tokens.read().unwrap().text.to_string(),
-            ..Default::default()
-        }),
+        TokenType::Assignment => {
+            let node = AstNode::new(
+                AstNodeType::AssignmentSymbol,
+                tokens.read().unwrap().text.as_str(),
+            );
+            Option::Some(node)
+        }
         _ => {
             println!("match assignment failed");
             None
@@ -226,11 +226,12 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
 ///
 /// todo: a += 1; a -= 1; a*= 1, a /= 1;
 fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match assignmentStmt,token is ", tokens.peek(), tokens.pos);
-    let mut node = AstNode {
-        _type: AstNodeType::AssignmentStmt,
-        ..Default::default()
-    };
+    print_parse_more2_info(
+        "match assignmentStmt,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
+    let mut node = AstNode::new(AstNodeType::AssignmentStmt, "");
     let pos = tokens.position();
     if let Some(n) = match_id(tokens) {
         node.add_child(n)
@@ -252,11 +253,8 @@ fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <exprStm> ::= <addExpr>
 fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match expr,token is ", tokens.peek(), tokens.pos);
-    let mut ast_node = AstNode {
-        _type: AstNodeType::ExpressionStmt,
-        ..Default::default()
-    };
+    print_parse_more2_info("match expr,token is ", tokens.peek(), tokens.position());
+    let mut ast_node = AstNode::new(AstNodeType::ExpressionStmt, "");
     if let Some(n) = match_add_expr(tokens) {
         ast_node.add_child(n);
     } else {
@@ -267,7 +265,7 @@ fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
 fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match add,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info("match add,token is ", tokens.peek(), tokens.position());
     let mut child: AstNode;
     if let Some(n) = match_mul_expr(tokens) {
         child = n;
@@ -282,7 +280,7 @@ fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
             TokenType::Plus => {
                 tokens.read();
                 if let Some(t) = match_add_expr(tokens) {
-                    let mut r = new_ast_node(AstNodeType::Additive, String::from("+"));
+                    let mut r = AstNode::new(AstNodeType::Additive, "+");
                     r.add_child(child);
                     r.add_child(t);
                     child = r;
@@ -302,7 +300,7 @@ fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
 /// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
 fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
     let pos = tokens.position();
-    print_parse_more2_info("match mul,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info("match mul,token is ", tokens.peek(), tokens.position());
     let mut child: AstNode;
 
     if let Some(n) = match_primary(tokens) {
@@ -319,7 +317,7 @@ fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
             TokenType::Star => {
                 tokens.read().unwrap();
                 if let Some(p) = match_primary(tokens) {
-                    let mut r = new_ast_node(AstNodeType::Multiplicative, "*".to_string());
+                    let mut r = AstNode::new(AstNodeType::Multiplicative, "*");
                     r.add_child(child);
                     r.add_child(p);
                     child = r;
@@ -341,17 +339,17 @@ fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// <primary> ::= int | Identifier
 fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match primary,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info("match primary,token is ", tokens.peek(), tokens.position());
     let node: AstNode;
     match tokens.peek() {
         Some(t1) => match t1._type {
             TokenType::IntLiteral => {
                 let t2 = tokens.read().unwrap();
-                node = new_ast_node(AstNodeType::IntLiteral, t2.text.clone());
+                node = AstNode::new(AstNodeType::IntLiteral, t2.text.as_str());
             }
             TokenType::Identifier => {
                 let t2 = tokens.read().unwrap();
-                node = new_ast_node(AstNodeType::Identifier, t2.text.clone());
+                node = AstNode::new(AstNodeType::IntLiteral, t2.text.as_str());
             }
             _ => return None,
         },
@@ -361,7 +359,11 @@ fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 fn match_semicolon(tokens: &mut Tokens) -> bool {
-    print_parse_more2_info("match semicolon,token is ", tokens.peek(), tokens.pos);
+    print_parse_more2_info(
+        "match semicolon,token is ",
+        tokens.peek(),
+        tokens.position(),
+    );
     if let TokenType::SemiColon = tokens.peek().unwrap()._type {
         tokens.read();
         true

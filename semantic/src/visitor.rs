@@ -186,7 +186,7 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// 根据id的text在符号表从下到上遍历寻找对应符号以及值
 fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
 	print_info_extend("visit identifier", ast_node);
-	let id = ast_node._text.clone();
+	let id = ast_node.get_text();
 	let mut target_symbol: Option<&Symbol> = None;
 
 	// 在当前域中查找符号
@@ -212,7 +212,7 @@ fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
 }
 
 fn echo_int_literal(ast_node: &mut AstNode) {
-	println!("{}", ast_node._text.clone())
+	println!("{}", ast_node.get_text().clone())
 }
 
 fn print_info(_msg: &str) {
