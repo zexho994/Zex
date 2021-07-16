@@ -25,7 +25,7 @@ pub fn visit_program(ast_node: &mut AstNode) {
 
 /// visit program的所有子节点
 fn visit_program_children(program_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	for child in program_node._child.iter_mut() {
+	for child in program_node.get_child_vec_mut().iter_mut() {
 		visit_statements(child, scope_stack);
 	}
 }
@@ -37,7 +37,7 @@ fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut S
 }
 
 fn visit_statements_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	for child in ast_node._child.iter_mut() {
+	for child in ast_node.get_child_vec_mut().iter_mut() {
 		match child.get_type() {
 			AstNodeType::BlockStmt => {
 				visit_block_statement(child, scope_stack);
@@ -67,7 +67,7 @@ fn visit_block_statement_children(
 	ast_node: &mut parse::ast_node::AstNode,
 	scope_stack: &mut ScopeStack,
 ) {
-	for child in ast_node._child.iter_mut() {
+	for child in ast_node.get_child_vec_mut().iter_mut() {
 		match child.get_type() {
 			AstNodeType::Statements => visit_statements(child, scope_stack),
 			_ => print_panic_more(
@@ -89,7 +89,7 @@ fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit statement");
 
 	// visit children
-	for child in ast_node._child.iter_mut() {
+	for child in ast_node.get_child_vec_mut().iter_mut() {
 		match child.get_type() {
 			AstNodeType::Echo => visit_echo(child, scope_stack),
 			AstNodeType::VarDeclareStmt => visit_var_declare_stmt(child, scope_stack),

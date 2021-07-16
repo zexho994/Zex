@@ -4,7 +4,7 @@ use super::ast_node_type::*;
 pub struct AstNode {
     _text: String,
     _type: AstNodeType,
-    pub _child: Vec<AstNode>,
+    _child: Vec<AstNode>,
 }
 
 impl AstNode {
@@ -22,6 +22,14 @@ impl AstNode {
 
     pub fn get_type(&self) -> &AstNodeType {
         &self._type
+    }
+
+    pub fn get_child_vec(&self) -> &Vec<AstNode> {
+        &self._child
+    }
+
+    pub fn get_child_vec_mut(&mut self) -> &mut Vec<AstNode> {
+        &mut self._child
     }
 
     /// 移除一个子节点，转移所有权给调用者
