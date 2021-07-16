@@ -24,6 +24,14 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
         token._type = TokenType::RightBrace;
         return (token, DfaState::Initial);
     }
+    if ch == '(' {
+        token._type = TokenType::LeftBracket;
+        return (token, DfaState::Initial);
+    }
+    if ch == ')' {
+        token._type = TokenType::RightBracket;
+        return (token, DfaState::Initial);
+    }
 
     if char_is_alpha(ch) {
         token._type = TokenType::Identifier;
