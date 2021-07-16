@@ -105,12 +105,12 @@ fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
         match tokens.peek().unwrap().get_type() {
             TokenType::Identifier => {
                 let t = tokens.read().unwrap();
-                let child = AstNode::new(AstNodeType::Identifier, t.text.as_str());
+                let child = AstNode::new(AstNodeType::Identifier, t.get_text().as_str());
                 node.add_child(child);
             }
             TokenType::IntLiteral => {
                 let t = tokens.read().unwrap();
-                let child = AstNode::new(AstNodeType::IntLiteral, t.text.as_str());
+                let child = AstNode::new(AstNodeType::IntLiteral, t.get_text().as_str());
                 node.add_child(child);
             }
             _ => panic!(
@@ -177,7 +177,7 @@ fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
     match tokens.peek().unwrap().get_type() {
         TokenType::Int => {
             let t = tokens.read().unwrap();
-            let node = AstNode::new(AstNodeType::Int, t.text.as_str());
+            let node = AstNode::new(AstNodeType::Int, t.get_text().as_str());
             Option::Some(node)
         }
         _ => None,
@@ -193,7 +193,7 @@ fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
     );
     if let TokenType::Identifier = tokens.peek().unwrap().get_type() {
         let t = tokens.read().unwrap();
-        let node = AstNode::new(AstNodeType::Identifier, t.text.as_str());
+        let node = AstNode::new(AstNodeType::Identifier, t.get_text().as_str());
         return Option::Some(node);
     }
     None
@@ -209,7 +209,7 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
         TokenType::Assignment => {
             let node = AstNode::new(
                 AstNodeType::AssignmentSymbol,
-                tokens.read().unwrap().text.as_str(),
+                tokens.read().unwrap().get_text().as_str(),
             );
             Option::Some(node)
         }
@@ -345,11 +345,11 @@ fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
         Some(t1) => match t1.get_type() {
             TokenType::IntLiteral => {
                 let t2 = tokens.read().unwrap();
-                node = AstNode::new(AstNodeType::IntLiteral, t2.text.as_str());
+                node = AstNode::new(AstNodeType::IntLiteral, t2.get_text().as_str());
             }
             TokenType::Identifier => {
                 let t2 = tokens.read().unwrap();
-                node = AstNode::new(AstNodeType::IntLiteral, t2.text.as_str());
+                node = AstNode::new(AstNodeType::IntLiteral, t2.get_text().as_str());
             }
             _ => return None,
         },

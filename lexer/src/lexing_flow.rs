@@ -11,7 +11,7 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
     if char_is_blank(ch) {
         return (token, DfaState::Blank);
     }
-    token.text.push(ch);
+    token.text_append_char(ch);
 
     if char_is_alpha(ch) {
         token.set_type(TokenType::Identifier);

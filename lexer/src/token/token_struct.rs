@@ -3,7 +3,7 @@ use super::token_type::*;
 #[derive(Debug)]
 pub struct Token {
 	_type: TokenType,
-	pub text: String,
+	text: String,
 }
 
 #[derive(Debug)]
@@ -22,6 +22,18 @@ impl Token {
 
 	pub fn get_type(&self) -> &TokenType {
 		&self._type
+	}
+
+	pub fn set_text(&mut self, s: String) {
+		self.text = s;
+	}
+
+	pub fn get_text(&self) -> String {
+		self.text.clone()
+	}
+
+	pub fn text_append_char(&mut self, s: char) {
+		self.text.push(s);
 	}
 }
 

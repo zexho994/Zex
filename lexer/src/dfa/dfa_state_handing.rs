@@ -8,10 +8,10 @@ use super::dfa_state::*;
 pub fn state_i_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'n' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Int2)
     } else if ch == 'f' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::If2)
     } else {
         (i, DfaState::Identifier)
@@ -21,7 +21,7 @@ pub fn state_i_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState)
 pub fn state_e_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'c' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::EC)
     } else {
         (i, DfaState::Identifier)
@@ -31,7 +31,7 @@ pub fn state_e_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState)
 pub fn state_ec_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'h' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::ECH)
     } else {
         (i, DfaState::Identifier)
@@ -41,7 +41,7 @@ pub fn state_ec_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState
 pub fn state_ech_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'o' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::ECHO)
     } else {
         (i, DfaState::Identifier)
@@ -75,7 +75,7 @@ pub fn state_int2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
     if ch != 't' {
         (i, DfaState::Identifier)
     } else {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Int3)
     }
 }
@@ -93,7 +93,7 @@ pub fn state_int3_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
 pub fn state_identifier_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if char_is_alpha(ch) || char_is_digit(ch) {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Identifier)
     } else {
         (i, DfaState::Initial)
@@ -104,7 +104,7 @@ pub fn state_gt_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState
     let ch = s.chars().nth(i).unwrap();
     if char_is_eq(ch) {
         token.set_type(TokenType::Ge);
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Initial)
     } else {
         (i, DfaState::Initial)
@@ -114,7 +114,7 @@ pub fn state_gt_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState
 pub fn state_number_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if char_is_digit(ch) {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Number)
     } else {
         (i, DfaState::Initial)
@@ -127,7 +127,7 @@ pub fn state_number_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaS
 pub fn state_cross_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == '>' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         token.set_type(TokenType::Arrow);
         (i + 1, DfaState::Initial)
     } else {
@@ -139,7 +139,7 @@ pub fn state_cross_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSt
 pub fn state_c_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'l' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Cl)
     } else {
         (i, DfaState::Identifier)
@@ -148,7 +148,7 @@ pub fn state_c_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState)
 pub fn state_cl_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 'a' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Cla)
     } else {
         (i, DfaState::Identifier)
@@ -157,7 +157,7 @@ pub fn state_cl_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState
 pub fn state_cla_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 's' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Clas)
     } else {
         (i, DfaState::Identifier)
@@ -167,7 +167,7 @@ pub fn state_cla_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaStat
 pub fn state_clas_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == 's' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         (i + 1, DfaState::Class)
     } else {
         (i, DfaState::Identifier)
@@ -177,7 +177,7 @@ pub fn state_clas_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
 pub fn state_class_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
     if ch == ' ' {
-        token.text.push(ch);
+        token.text_append_char(ch);
         token.set_type(TokenType::Class);
         (i + 1, DfaState::Initial)
     } else {
