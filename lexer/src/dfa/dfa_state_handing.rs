@@ -121,6 +121,21 @@ pub fn state_number_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaS
     }
 }
 
+/// cross '-'
+/// Arrow : -> xx
+/// minus : - xx
+pub fn state_cross_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
+    let ch = s.chars().nth(i).unwrap();
+    if ch == '>' {
+        token.text.push(ch);
+        token._type = TokenType::Arrow;
+        (i + 1, DfaState::Initial)
+    } else {
+        token._type = TokenType::Minus;
+        (i, DfaState::Initial)
+    }
+}
+
 /// 遇到算数运算符，已经是一个完整的token
 /// 直接返回Initial进行下一轮解析
 pub fn state_algorithm_handle(i: usize) -> (usize, DfaState) {

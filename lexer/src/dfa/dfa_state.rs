@@ -43,4 +43,9 @@ pub enum DfaState {
     ECH,
     // 'echo'
     ECHO,
+
+    /// -
+    /// Cross -> Minus
+    /// Cross -> Arrow
+    Cross,
 }

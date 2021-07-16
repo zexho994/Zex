@@ -58,7 +58,7 @@ pub fn get_initial_state(i: usize, s: &str) -> (Token, DfaState) {
 
     if ch == '-' {
         token._type = TokenType::Minus;
-        return (token, DfaState::Minus);
+        return (token, DfaState::Cross);
     }
 
     if ch == '*' {
@@ -140,7 +140,10 @@ pub fn get_full_token(
             DfaState::Number => {
                 handle_res = state_number_handle(i, s, &mut token);
             }
-            DfaState::Plus | DfaState::Minus | DfaState::Star | DfaState::Slash => {
+            DfaState::Cross => {
+                handle_res = state_cross_handle(i, s, &mut token);
+            }
+            DfaState::Plus | DfaState::Star | DfaState::Slash => {
                 handle_res = state_algorithm_handle(i);
             }
             DfaState::Eq => {

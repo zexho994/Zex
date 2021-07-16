@@ -70,12 +70,7 @@ impl Scope {
 	/// symbol: 更新的符号
 	/// 约束条件:
 	/// 1. 符号以及被声明过
-	pub fn update_symbol(
-		&mut self,
-		symbol_name: &String,
-		new_symbol: Symbol,
-		scope_stack: &mut ScopeStack,
-	) {
+	pub fn update_symbol(&mut self,symbol_name: &String,new_symbol: Symbol,scope_stack: &mut ScopeStack) {
 		if self.find_symbol(symbol_name).is_some() {
 			Scope::update_in_current(self, symbol_name, new_symbol);
 		} else {
@@ -92,12 +87,7 @@ impl Scope {
 		}
 	}
 
-	fn update_in_parent(
-		scope: &mut Scope,
-		symbol_name: &String,
-		mut new_symbol: Symbol,
-		scope_stack: &mut ScopeStack,
-	) {
+	fn update_in_parent(scope: &mut Scope,symbol_name: &String,mut new_symbol: Symbol,scope_stack: &mut ScopeStack) {
 		let mut parent_name = scope.parent_scope_name();
 		while parent_name.is_some() {
 			let scope = scope_stack
