@@ -205,7 +205,6 @@ fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
 		}
 	}
 
-	// 打印值
 	let ast_node = target_symbol.unwrap().get_ast_node().unwrap();
 	let num = AstNode::calculate(ast_node);
 	println!("{}", num);

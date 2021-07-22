@@ -13,8 +13,25 @@
 // 语句类型：分配声明语句，表达式语句，赋值语句
 <statement> ::= <echo> | <declare> | <expressionStm> | <assignmentStm> ;
 
+//
+<echo> ::= echo (<intLiteral> | <id> | <expressionStm>)
+
 // 声明语句现在提供变量声明，以后还有方法声明、类声明
-<declare> ::= <varDeclare>
+<declare> ::= <varDeclare> | <fnDeclare>
+
+// 方法声明
+// fn foo () {}
+// fn foo () -> {}
+<fnDeclare> ::= fn <id> <params> <returnType>? <blockStm>
+
+<params> ::= ( <param>* )
+
+<param> ::= <varDefine>
+
+<returnType> ::= <Arrow> <type>
+
+// 箭头指向符
+<Arrow> ::= -> 
 
 // 变量声明有两种，有无初始化
 <varDeclare> ::= <varDefine> | <varDefine> <assignment> <expressionStm>

@@ -38,7 +38,6 @@ fn visit_test() {
 
  b = 2 * 10 + 2 * 10;
  echo b;
-
 	",
 	);
 	println!("input : {}", s);
