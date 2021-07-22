@@ -29,7 +29,6 @@ pub fn state_e_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState)
 }
 pub fn state_f_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
-    println!("==> match DfaState : {} , next char is {}", "f", ch);
     if ch == 'n' {
         token.text_append_char(ch);
         (i + 1, DfaState::FN)
@@ -39,7 +38,6 @@ pub fn state_f_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState)
 }
 pub fn state_fn_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
-    println!("==> match DfaState : {} , next char is {}", "fn", ch);
     if ch == ' ' {
         token.set_type(TokenType::Fn);
         token.text_append_char(ch);
@@ -82,7 +80,6 @@ pub fn state_echo_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaSta
 // 'i' -> 'if',最后需要讲过ifOk判断为‘ ’，才能确定是if
 pub fn state_if2_handle(i: usize, s: &str, token: &mut Token) -> (usize, DfaState) {
     let ch = s.chars().nth(i).unwrap();
-    println!("state if2 handle ch is {}", ch);
     if ch == ' ' {
         token.set_type(TokenType::If);
         (i + 1, DfaState::Initial)

@@ -5,9 +5,9 @@ use lexer::token::token_type::*;
 
 #[test]
 fn lexing_flow() {
-    let s = String::from("i int if num > 01; {} echo - -> ( ) class cla class ");
+    let s = String::from("i int if num > 01; {} echo - -> ( ) class cla clas fn ");
     let tokens = lexing(s.as_str().to_string());
-    assert!(tokens.count() == 17);
+    assert!(tokens.count() == 18);
     match tokens.get_child_idx(0).unwrap().get_type() {
         TokenType::Identifier => {}
         _ => panic!("parse s = {} failed", s),
@@ -15,7 +15,8 @@ fn lexing_flow() {
     match tokens.get_child_idx(1).unwrap().get_type() {
         TokenType::Int => {}
         _ => panic!("parse s = {} failed", s),
-    }    match tokens.get_child_idx(2).unwrap().get_type() {
+    }
+    match tokens.get_child_idx(2).unwrap().get_type() {
         TokenType::If => {}
         _ => panic!("parse s = {} failed", s),
     }
@@ -74,6 +75,10 @@ fn lexing_flow() {
     match tokens.get_child_idx(16).unwrap().get_type() {
         TokenType::Identifier => {}
         _ => panic!("parse s = {} failed", s),
+    }
+    match tokens.get_child_idx(17).unwrap().get_type() {
+        TokenType::Fn => {}
+        _ => panic!("parse s = {:?} failed", tokens.get_child_idx(17)),
     }
 }
 
