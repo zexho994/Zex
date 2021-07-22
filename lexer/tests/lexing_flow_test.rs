@@ -5,7 +5,7 @@ use lexer::token::token_type::*;
 
 #[test]
 fn lexing_flow() {
-    let s = String::from("i int if num > 01; {} echo - -> ( ) class cla class");
+    let s = String::from("i int if num > 01; {} echo - -> ( ) class cla class ");
     let tokens = lexing(s.as_str().to_string());
     assert!(tokens.count() == 17);
     match tokens.get_child_idx(0).unwrap().get_type() {
