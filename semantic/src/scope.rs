@@ -4,14 +4,14 @@ use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Scope {
-	pub scope_seq: u8,
-	pub scope_name: String,
+	scope_seq: u8,
+	scope_name: String,
 	// 1.全局，2临时
-	pub scope_type: u8,
-	pub scope_parent: Option<String>,
-	pub scope_children: HashMap<String, Scope>,
+	scope_type: u8,
+	scope_parent: Option<String>,
+	scope_children: HashMap<String, Scope>,
 	// 符号表，存储此域下所有符号,K:符号名,V:符号对象
-	pub symbol_table: HashMap<String, Symbol>,
+	symbol_table: HashMap<String, Symbol>,
 }
 
 // 默认的序号为0，实际的序号在stack push时候才会赋值
@@ -44,8 +44,27 @@ impl Scope {
 		}
 	}
 
-	pub fn get_scope_name(&self) -> &str {
-		self.scope_name.as_str()
+	pub fn set_seq(&mut self, s: u8) {
+		self.scope_seq = s;
+	}
+
+	pub fn get_seq(&self) -> u8 {
+		if self.scope_seq == DEFAULT_SEQ {
+			panic!("scope un initial");
+		}
+		return self.scope_seq;
+	}
+
+	pub fn get_scope_name(&self) -> String {
+		self.scope_name.clone()
+	}
+
+	pub fn set_scope_name(&mut self, str: String) {
+		self.scope_name = str;
+	}
+
+	pub fn append_scope_name(&mut self, str: &String) {
+		self.scope_name.push_str(str);
 	}
 
 	fn add_symbol(&mut self, symbol: Symbol) {

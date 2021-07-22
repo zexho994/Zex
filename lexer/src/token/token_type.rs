@@ -34,8 +34,16 @@ pub enum TokenType {
     LeftBrace,
     // }
     RightBrace,
+    // (
+    LeftBracket,
+    // )
+    RightBracket,
     // echo
     Echo,
     // fn
     Fn,
+    // ->
+    Arrow,
+    // class
+    Class,
 }

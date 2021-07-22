@@ -2,17 +2,49 @@ use super::token_type::*;
 
 #[derive(Debug)]
 pub struct Token {
-	pub _type: TokenType,
-	pub text: String,
+	_type: TokenType,
+	text: String,
 }
 
 #[derive(Debug)]
 pub struct Tokens {
-	pub data: Vec<Token>,
-	pub pos: usize,
+	data: Vec<Token>,
+	pos: usize,
+}
+
+impl Token {
+	pub fn new(t: TokenType, s: String) -> Token {
+		Token { _type: t, text: s }
+	}
+	pub fn set_type(&mut self, t: TokenType) {
+		self._type = t;
+	}
+
+	pub fn get_type(&self) -> &TokenType {
+		&self._type
+	}
+
+	pub fn set_text(&mut self, s: String) {
+		self.text = s;
+	}
+
+	pub fn get_text(&self) -> String {
+		self.text.clone()
+	}
+
+	pub fn text_append_char(&mut self, s: char) {
+		self.text.push(s);
+	}
 }
 
 impl Tokens {
+	pub fn new() -> Tokens {
+		Tokens {
+			data: Vec::new(),
+			pos: 0,
+		}
+	}
+
 	pub fn add_token(&mut self, t: Token) {
 		self.data.push(t);
 	}

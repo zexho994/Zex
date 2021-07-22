@@ -2,53 +2,34 @@ use super::ast_node_type::*;
 
 #[derive(Debug)]
 pub struct AstNode {
-    pub _text: String,
-    pub _type: AstNodeType,
-    pub _child: Vec<AstNode>,
-}
-
-/// 设置默认构造参数
-impl Default for AstNode {
-    fn default() -> AstNode {
-        AstNode {
-            _text: "".to_string(),
-            _type: AstNodeType::None,
-            _child: Vec::new(),
-        }
-    }
-}
-
-pub fn new_ast() -> AstNode {
-    AstNode {
-        _child: Vec::new(),
-        _type: AstNodeType::Program,
-        _text: String::from("Program"),
-    }
-}
-
-pub fn new_ast_node(t: AstNodeType, s: String) -> AstNode {
-    AstNode {
-        _child: Vec::new(),
-        _type: t,
-        _text: s,
-    }
+    _text: String,
+    _type: AstNodeType,
+    _child: Vec<AstNode>,
 }
 
 impl AstNode {
-    pub fn new_id_node(text: String) -> AstNode {
+    pub fn new(t: AstNodeType, s: &str) -> AstNode {
         AstNode {
-            _type: AstNodeType::Identifier,
-            _text: text,
-            ..Default::default()
+            _text: s.to_string(),
+            _type: t,
+            _child: Vec::new(),
         }
     }
 
-    pub fn new_intliter_node(text: String) -> AstNode {
-        AstNode {
-            _type: AstNodeType::IntLiteral,
-            _text: text,
-            ..Default::default()
-        }
+    pub fn get_text(&self) -> String {
+        self._text.clone()
+    }
+
+    pub fn get_type(&self) -> &AstNodeType {
+        &self._type
+    }
+
+    pub fn get_child_vec(&self) -> &Vec<AstNode> {
+        &self._child
+    }
+
+    pub fn get_child_vec_mut(&mut self) -> &mut Vec<AstNode> {
+        &mut self._child
     }
 
     /// 移除一个子节点，转移所有权给调用者

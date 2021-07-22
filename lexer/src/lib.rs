@@ -12,52 +12,75 @@ mod test {
 
     #[test]
     fn lexing_flow() {
-        let s = String::from("i int if num > 01; {} echo fn lexer");
+        let s = String::from("i int if num > 01; {} echo - -> ( ) class cla classs");
         let tokens = lexing(s.as_str().to_string());
-        println!("tokens {:?}", tokens);
-        assert!(tokens.data.len() == 12);
-        match tokens.get_child_idx(0).unwrap()._type {
+        assert!(tokens.count() == 17);
+        match tokens.get_child_idx(0).unwrap().get_type() {
             TokenType::Identifier => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(1).unwrap()._type {
+        match tokens.get_child_idx(1).unwrap().get_type() {
             TokenType::Int => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(2).unwrap()._type {
+        match tokens.get_child_idx(2).unwrap().get_type() {
             TokenType::If => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(3).unwrap()._type {
+        match tokens.get_child_idx(3).unwrap().get_type() {
             TokenType::Identifier => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(4).unwrap()._type {
+        match tokens.get_child_idx(4).unwrap().get_type() {
             TokenType::Gt => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(5).unwrap()._type {
+        match tokens.get_child_idx(5).unwrap().get_type() {
             TokenType::IntLiteral => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(6).unwrap()._type {
+        match tokens.get_child_idx(6).unwrap().get_type() {
             TokenType::SemiColon => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(7).unwrap()._type {
+        match tokens.get_child_idx(7).unwrap().get_type() {
             TokenType::LeftBrace => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(8).unwrap()._type {
+        match tokens.get_child_idx(8).unwrap().get_type() {
             TokenType::RightBrace => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(9).unwrap()._type {
+        match tokens.get_child_idx(9).unwrap().get_type() {
             TokenType::Echo => {}
             _ => panic!("parse s = {} failed", s),
         }
-        match tokens.get_child_idx(10).unwrap()._type {
-            TokenType::Fn => {}
+        match tokens.get_child_idx(10).unwrap().get_type() {
+            TokenType::Minus => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(11).unwrap().get_type() {
+            TokenType::Arrow => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(12).unwrap().get_type() {
+            TokenType::LeftBracket => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(13).unwrap().get_type() {
+            TokenType::RightBracket => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(14).unwrap().get_type() {
+            TokenType::Class => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(15).unwrap().get_type() {
+            TokenType::Identifier => {}
+            _ => panic!("parse s = {} failed", s),
+        }
+        match tokens.get_child_idx(16).unwrap().get_type() {
+            TokenType::Identifier => {}
             _ => panic!("parse s = {} failed", s),
         }
     }
@@ -77,10 +100,7 @@ mod test {
 /// 解析入口
 pub fn lexing(s: String) -> Tokens {
     let mut i: usize = 0;
-    let mut tokens = Tokens {
-        data: Vec::new(),
-        pos: 0,
-    };
+    let mut tokens = Tokens::new();
     while i < s.chars().count() {
         let (token, state) = get_initial_state(i, s.as_str());
         i = get_full_token(state, i + 1, s.as_str(), token, &mut tokens);
