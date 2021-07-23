@@ -1,4 +1,5 @@
 use super::flow_statements::*;
+use super::flow_declare::*;
 use crate::ast_node::*;
 use crate::ast_node_type::*;
 use lexer::token::{token_struct::*, token_type::*};
@@ -99,21 +100,10 @@ pub fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
     None
 }
 
-/// todo 声明语句现在提供变量声明，以后还有方法声明、类声明
-/// <declare> ::= <varDeclare> ;
-fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match declare,token is ", tokens.peek(), tokens.position());
-    let pos = tokens.position();
-    if let Some(n) = match_var_declare(tokens) {
-        Some(n)
-    } else {
-        tokens.set_position(pos);
-        None
-    }
-}
+
 
 /// <varDeclare> ::= <type> <id> <assign> <exprStm> | <type> <id>
-fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match var declare,token is ",
         tokens.peek(),
