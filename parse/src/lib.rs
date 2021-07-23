@@ -1,6 +1,7 @@
 pub mod ast_node;
 pub mod ast_node_type;
 pub mod flow;
+pub mod utils;
 
 use flow::parse_flow;
 

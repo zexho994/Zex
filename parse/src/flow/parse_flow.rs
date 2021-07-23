@@ -1,3 +1,4 @@
+use super::flow_statements::*;
 use crate::ast_node::*;
 use crate::ast_node_type::*;
 use lexer::token::{token_struct::*, token_type::*};
@@ -16,35 +17,8 @@ pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
     Option::Some(prog_node)
 }
 
-/// <statements> ::= <blockStm> | <statement> | <statement> <statements>
-fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info(
-        "match statements,token is ",
-        tokens.peek(),
-        tokens.position(),
-    );
-    let mut ast_node = AstNode::new(AstNodeType::Statements, "");
-
-    while tokens.peek().is_some() {
-        if let TokenType::RightBrace = tokens.peek().unwrap().get_type() {
-            break;
-        }
-
-        if let Some(node) = match_block_statement(tokens) {
-            ast_node.add_child(node);
-            continue;
-        }
-        if let Some(node) = match_statement(tokens) {
-            ast_node.add_child(node);
-            continue;
-        }
-    }
-
-    Option::Some(ast_node)
-}
-
 /// <blockStm> ::= { <statements> }
-fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match block statement,token is ",
         tokens.peek(),
@@ -70,7 +44,7 @@ fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
 
 /// 语句类型：分配声明语句，表达式语句，赋值语句
 /// <statement> ::= <declare> | <expressionStm> | <assignmentStm>
-fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match statement,token is ",
         tokens.peek(),
@@ -96,7 +70,7 @@ fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <echo> ::= echo ( <id> | <intLiteral> )
-fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match echo,token is ", tokens.peek(), tokens.position());
     if let TokenType::Echo = tokens.peek().unwrap().get_type() {
         tokens.read();
