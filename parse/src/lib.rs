@@ -1,6 +1,8 @@
 pub mod ast_node;
 pub mod ast_node_type;
-pub mod parse_flow;
+pub mod flow;
+
+use flow::parse_flow;
 
 #[cfg(test)]
 mod tests {

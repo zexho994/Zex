@@ -1,6 +1,5 @@
-use super::*;
-use ast_node::*;
-use ast_node_type::*;
+use crate::ast_node::*;
+use crate::ast_node_type::*;
 use lexer::token::{token_struct::*, token_type::*};
 
 /// <program> ::= <statements>
