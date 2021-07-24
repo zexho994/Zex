@@ -1,4 +1,4 @@
-use super::ast_node_type::*;
+pub use super::ast_node_type::*;
 
 #[derive(Debug)]
 pub struct AstNode {

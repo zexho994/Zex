@@ -1,7 +1,6 @@
 use super::flow_declare::*;
 use super::flow_statements::*;
 use crate::ast_node::*;
-use crate::ast_node_type::*;
 use lexer::token::{token_struct::*, token_type::*};
 
 /// <program> ::= <statements>
@@ -16,31 +15,6 @@ pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
     }
 
     Option::Some(prog_node)
-}
-
-/// <blockStm> ::= { <statements> }
-pub fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info(
-        "match block statement,token is ",
-        tokens.peek().unwrap(),
-        tokens.position(),
-    );
-    let mut ast_node = AstNode::new(AstNodeType::BlockStmt, "");
-    if let TokenType::LeftBrace = tokens.peek().unwrap().get_type() {
-        tokens.read();
-        if let Some(node) = match_statements(tokens) {
-            ast_node.add_child(node);
-        }
-        if let TokenType::RightBrace = tokens.peek().unwrap().get_type() {
-            tokens.read();
-        } else {
-            panic!("match block right brace error,tokens : {:?}", tokens);
-        }
-    } else {
-        return None;
-    }
-
-    Option::Some(ast_node)
 }
 
 /// 语句类型：分配声明语句，表达式语句，赋值语句
@@ -64,9 +38,6 @@ pub fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
         panic!("match statement error, tokens is {:?}", tokens);
     }
 
-    // if !match_semicolon(tokens) {
-    //     panic!("match statement,要以分号结束");
-    // }
     Option::Some(ast_node)
 }
 
@@ -180,9 +151,7 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
             );
             Option::Some(node)
         }
-        _ => {
-            None
-        }
+        _ => None,
     }
 }
 
