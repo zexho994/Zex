@@ -5,3 +5,4 @@ pub mod flow_fn_declare;
 pub mod flow_block_statement;
 pub mod flow_statement;
 pub mod flow_echo;
+pub mod flow_var_declare;
