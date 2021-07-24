@@ -17,30 +17,6 @@ pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
     Option::Some(prog_node)
 }
 
-/// 语句类型：分配声明语句，表达式语句，赋值语句
-/// <statement> ::= <declare> | <expressionStm> | <assignmentStm>
-pub fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info(
-        "match statement,token is ",
-        tokens.peek().unwrap(),
-        tokens.position(),
-    );
-    let mut ast_node = AstNode::new(AstNodeType::Statement, "");
-    if let Some(node) = match_echo(tokens) {
-        ast_node.add_child(node);
-    } else if let Some(node) = match_declare(tokens) {
-        ast_node.add_child(node);
-    } else if let Some(node) = match_expr_stm(tokens) {
-        ast_node.add_child(node);
-    } else if let Some(node) = match_assignment_stm(tokens) {
-        ast_node.add_child(node);
-    } else {
-        panic!("match statement error, tokens is {:?}", tokens);
-    }
-
-    Option::Some(ast_node)
-}
-
 /// <echo> ::= echo ( <id> | <intLiteral> )
 pub fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match echo,token is ", tokens.peek(), tokens.position());
@@ -109,7 +85,7 @@ pub fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <type> ::= int
-fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match type,token is ", tokens.peek(), tokens.position());
     match tokens.peek().unwrap().get_type() {
         TokenType::Int => {
@@ -137,7 +113,7 @@ pub fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// a = b
-fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match assignment,token is ",
         tokens.peek(),
@@ -160,7 +136,7 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
 /// a = 1 + 1 * 2;
 ///
 /// todo: a += 1; a -= 1; a*= 1, a /= 1;
-fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match assignmentStmt,token is ",
         tokens.peek(),
@@ -190,7 +166,7 @@ fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <exprStm> ::= <addExpr>
-fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match expr,token is ", tokens.peek(), tokens.position());
     let mut ast_node = AstNode::new(AstNodeType::ExpressionStmt, "");
     if let Some(n) = match_add_expr(tokens) {
@@ -202,7 +178,7 @@ fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
-fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match add,token is ", tokens.peek(), tokens.position());
     let mut child: AstNode;
     if let Some(n) = match_mul_expr(tokens) {
@@ -236,7 +212,7 @@ fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
-fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
     let pos = tokens.position();
     print_parse_more2_info("match mul,token is ", tokens.peek(), tokens.position());
     let mut child: AstNode;
@@ -276,7 +252,7 @@ fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <primary> ::= int | Identifier
-fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match primary,token is ", tokens.peek(), tokens.position());
     let node: AstNode;
     match tokens.peek() {
@@ -310,6 +286,6 @@ pub fn match_semicolon(tokens: &mut Tokens) -> bool {
     }
 }
 
-fn print_parse_more2_info<T: std::fmt::Debug, K: std::fmt::Debug>(msg: &str, t1: T, t2: K) {
+pub fn print_parse_more2_info<T: std::fmt::Debug, K: std::fmt::Debug>(msg: &str, t1: T, t2: K) {
     println!("[info][parse] {}, {:?}, {:?}", msg, t1, t2);
 }
