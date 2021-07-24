@@ -1,7 +1,7 @@
 use super::flow_fn_declare::*;
 use super::parse_flow::*;
 use crate::ast_node::*;
-use crate::flow::flow_var_declare::match_var_declare;
+use crate::flow::flow_declare_variable::match_var_declare;
 use lexer::token::token_struct::*;
 
 /// todo 声明语句现在提供变量声明，以后还有方法声明、类声明
