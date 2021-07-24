@@ -21,11 +21,9 @@ pub fn match_fn_declare(tokens: &mut Tokens) -> Option<AstNode> {
 		return None;
 	}
 
-	let mut node = AstNode::new(AstNodeType::FnDeclareStmt, "fn");
-
-	// match id
+	let mut node;
 	if let Some(n) = match_id(tokens) {
-		node.add_child(n);
+		node = AstNode::new(AstNodeType::FnDeclareStmt, &n.get_text());
 	} else {
 		tokens.set_position(pos);
 		return None;

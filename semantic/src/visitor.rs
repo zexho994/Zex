@@ -140,15 +140,16 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 ///
 fn visit_fn_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info_extend("visit fn declare statement", ast_node);
-	let id = ast_node.get_id_child();
+	let id = ast_node.get_text();
 	let arguments = ast_node.get_argument_child();
 	let returnType = ast_node.get_return_child();
 	let block_stmt = ast_node.get_block_statement_child();
+	
 
-	println!(
-		"id = {:?},arguments = {:?},returnType ={:?} ,blockStmt ={:?} ",
-		id, arguments, returnType, block_stmt
-	);
+	// println!(
+	// 	"id = {:?},arguments = {:?},returnType ={:?} ,blockStmt ={:?} ",
+	// 	id, arguments, returnType, block_stmt
+	// );
 }
 
 /// ast_node type = AstNodeType::AssignmentStmt
@@ -220,7 +221,6 @@ fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
 			parent_name = scope.parent_scope_name();
 		}
 	}
-
 	let ast_node = target_symbol.unwrap().get_ast_node().unwrap();
 	let num = AstNode::calculate(ast_node);
 	println!("{}", num);
