@@ -38,6 +38,10 @@ fn visit_test() {
 
  b = 2 * 10 + 2 * 10;
  echo b;
+
+ fn foo () {
+	 int c = 30;
+ }
 	",
 	);
 	println!("input : {}", s);

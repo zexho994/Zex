@@ -93,6 +93,7 @@ fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 		match child.get_type() {
 			AstNodeType::Echo => visit_echo(child, scope_stack),
 			AstNodeType::VarDeclareStmt => visit_var_declare_stmt(child, scope_stack),
+			AstNodeType::FnDeclareStmt => visit_fn_declare_stmt(child, scope_stack),
 			AstNodeType::AssignmentStmt => visit_assignment_stmt(child, scope_stack),
 			AstNodeType::ExpressionStmt => print_panic("visit expr error"),
 			_ => print_panic_more("visit statement child error", child),
@@ -133,6 +134,21 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 	let symbol = Symbol::new(var_id, SYMBOL_TYPE_VARIABLE, Option::Some(ast_node));
 	scope.define_symbol(symbol, scope_stack);
 	scope_stack.push(scope);
+}
+
+/// 处理方法表达式
+///
+fn visit_fn_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+	print_info_extend("visit fn declare statement", ast_node);
+	let id = ast_node.get_id_child();
+	let arguments = ast_node.get_argument_child();
+	let returnType = ast_node.get_return_child();
+	let block_stmt = ast_node.get_block_statement_child();
+
+	println!(
+		"id = {:?},arguments = {:?},returnType ={:?} ,blockStmt ={:?} ",
+		id, arguments, returnType, block_stmt
+	);
 }
 
 /// ast_node type = AstNodeType::AssignmentStmt

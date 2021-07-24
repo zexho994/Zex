@@ -64,6 +64,43 @@ impl AstNode {
     pub fn add_child(&mut self, child: AstNode) {
         self._child.push(child);
     }
+
+    // 获取id子节点
+    pub fn get_id_child(&self) -> &AstNode {
+        match self.get_type() {
+            AstNodeType::FnDeclareStmt => self.get_child(0).unwrap(),
+            _ => {
+                panic!("get id child error")
+            }
+        }
+    }
+
+    pub fn get_block_statement_child(&self) -> &AstNode {
+        match self.get_type() {
+            AstNodeType::FnDeclareStmt => self.get_child(3).unwrap(),
+            _ => {
+                panic!("get id child error")
+            }
+        }
+    }
+
+    pub fn get_argument_child(&self) -> &AstNode {
+        match self.get_type() {
+            AstNodeType::FnDeclareStmt => self.get_child(1).unwrap(),
+            _ => {
+                panic!("get id child error")
+            }
+        }
+    }
+
+    pub fn get_return_child(&self) -> &AstNode {
+        match self.get_type() {
+            AstNodeType::FnDeclareStmt => self.get_child(2).unwrap(),
+            _ => {
+                panic!("get return child error")
+            }
+        }
+    }
 }
 
 // trait Calculate {
@@ -74,7 +111,6 @@ impl AstNode {
 //     fn calculate_add() -> u32;
 //     fn calculate_expr() -> u32;
 // }
-
 impl AstNode {
     /// int a = 1;
     /// a = 2;

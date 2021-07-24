@@ -1,4 +1,5 @@
 use crate::ast_node::*;
+use crate::utils::print_util::print_parse_more2_info;
 use lexer::token::{token_struct::*, token_type::*};
 
 /// <type> ::= int
@@ -81,8 +82,4 @@ pub fn match_semicolon(tokens: &mut Tokens) -> bool {
     } else {
         false
     }
-}
-
-pub fn print_parse_more2_info<T: std::fmt::Debug, K: std::fmt::Debug>(msg: &str, t1: T, t2: K) {
-    println!("[info][parse] {}, {:?}, {:?}", msg, t1, t2);
 }

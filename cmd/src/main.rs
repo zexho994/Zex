@@ -4,8 +4,8 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-// const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
-const DEFAULT_PATH: &str = "/Users/a994/Github/Zex/sample";
+const DEFAULT_PATH: &str = "/Users/zexho/Github/Zex/sample";
+// const DEFAULT_PATH: &str = "/Users/a994/Github/Zex/sample";
 
 /// ./target/debug/cmd -f /echo/echo_int.zex --out all
 fn main() {

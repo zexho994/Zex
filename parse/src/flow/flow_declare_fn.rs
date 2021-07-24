@@ -1,6 +1,7 @@
-use crate::flow::flow_statement_block::match_block_statement;
 use super::parse_flow::*;
 use crate::ast_node::*;
+use crate::flow::flow_statement_block::match_block_statement;
+use crate::utils::print_util::print_parse_more2_info;
 use lexer::token::{token_struct::*, token_type::*};
 
 /// match fn declare,匹配方法声明语句
@@ -31,10 +32,13 @@ pub fn match_fn_declare(tokens: &mut Tokens) -> Option<AstNode> {
 	}
 
 	if let TokenType::LeftBrace = tokens.read().unwrap().get_type() {}
+
 	// match arguments
+	node.add_child(AstNode::new(AstNodeType::Arguments, ""));
 	if let TokenType::RightBrace = tokens.read().unwrap().get_type() {}
 
 	// match arrow
+	node.add_child(AstNode::new(AstNodeType::FnReturn, ""));
 
 	print_parse_more2_info(
 		"match fn declare,step 7 match block statement,token is ",
