@@ -1,4 +1,4 @@
-use super::flow_fn_declare::*;
+use super::flow_declare_fn::*;
 use super::parse_flow::*;
 use crate::ast_node::*;
 use crate::flow::flow_declare_variable::match_var_declare;
