@@ -1,4 +1,5 @@
 pub mod parse_flow;
+pub mod flow_program;
 
 pub mod flow_statement;
 pub mod flow_statement_assignment;

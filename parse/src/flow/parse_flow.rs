@@ -1,20 +1,5 @@
-use super::flow_statements::*;
 use crate::ast_node::*;
 use lexer::token::{token_struct::*, token_type::*};
-
-/// <program> ::= <statements>
-pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match program,token is ", tokens.peek(), tokens.position());
-    let mut prog_node = AstNode::new(AstNodeType::Program, "");
-
-    if let Some(n) = match_statements(tokens) {
-        prog_node.add_child(n);
-    } else {
-        return None;
-    }
-
-    Option::Some(prog_node)
-}
 
 /// <type> ::= int
 pub fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
@@ -62,7 +47,6 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
         _ => None,
     }
 }
-
 
 /// <primary> ::= int | Identifier
 pub fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
