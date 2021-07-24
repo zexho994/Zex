@@ -76,45 +76,6 @@ pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
     Some(ast_node)
 }
 
-/// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
-pub fn match_mul_expr(tokens: &mut Tokens) -> Option<AstNode> {
-    let pos = tokens.position();
-    print_parse_more2_info("match mul,token is ", tokens.peek(), tokens.position());
-    let mut child: AstNode;
-
-    if let Some(n) = match_primary(tokens) {
-        child = n;
-    } else {
-        return None;
-    }
-
-    loop {
-        if tokens.peek().is_none() {
-            break;
-        }
-        match tokens.peek().unwrap().get_type() {
-            TokenType::Star => {
-                tokens.read().unwrap();
-                if let Some(p) = match_primary(tokens) {
-                    let mut r = AstNode::new(AstNodeType::Multiplicative, "*");
-                    r.add_child(child);
-                    r.add_child(p);
-                    child = r;
-                } else {
-                    panic!("match mul expr error");
-                }
-            }
-            TokenType::Plus | TokenType::SemiColon | TokenType::RightBrace => {
-                break;
-            }
-            _ => {
-                tokens.set_position(pos);
-                return None;
-            }
-        }
-    }
-    Option::Some(child)
-}
 
 /// <primary> ::= int | Identifier
 pub fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
