@@ -1,5 +1,5 @@
-use super::flow_statements::*;
 use super::flow_declare::*;
+use super::flow_statements::*;
 use crate::ast_node::*;
 use crate::ast_node_type::*;
 use lexer::token::{token_struct::*, token_type::*};
@@ -22,7 +22,7 @@ pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
 pub fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match block statement,token is ",
-        tokens.peek(),
+        tokens.peek().unwrap(),
         tokens.position(),
     );
     let mut ast_node = AstNode::new(AstNodeType::BlockStmt, "");
@@ -48,7 +48,7 @@ pub fn match_block_statement(tokens: &mut Tokens) -> Option<AstNode> {
 pub fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match statement,token is ",
-        tokens.peek(),
+        tokens.peek().unwrap(),
         tokens.position(),
     );
     let mut ast_node = AstNode::new(AstNodeType::Statement, "");
@@ -64,9 +64,9 @@ pub fn match_statement(tokens: &mut Tokens) -> Option<AstNode> {
         panic!("match statement error, tokens is {:?}", tokens);
     }
 
-    if !match_semicolon(tokens) {
-        panic!("match statement,要以分号结束");
-    }
+    // if !match_semicolon(tokens) {
+    //     panic!("match statement,要以分号结束");
+    // }
     Option::Some(ast_node)
 }
 
@@ -93,14 +93,14 @@ pub fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
                 tokens.position()
             ),
         }
-
+        if !match_semicolon(tokens) {
+            panic!("match statement,要以分号结束");
+        }
         return Option::Some(node);
     }
 
     None
 }
-
-
 
 /// <varDeclare> ::= <type> <id> <assign> <exprStm> | <type> <id>
 pub fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
@@ -131,6 +131,9 @@ pub fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
         }
     }
 
+    if !match_semicolon(tokens) {
+        panic!("match statement,要以分号结束");
+    }
     return Some(node);
 }
 
@@ -148,7 +151,7 @@ fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
 }
 
 /// <id> = id
-fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
+pub fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match identifier,token is ",
         tokens.peek(),
@@ -162,6 +165,7 @@ fn match_id(tokens: &mut Tokens) -> Option<AstNode> {
     None
 }
 
+/// a = b
 fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match assignment,token is ",
@@ -177,7 +181,6 @@ fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
             Option::Some(node)
         }
         _ => {
-            println!("match assignment failed");
             None
         }
     }
@@ -211,6 +214,9 @@ fn match_assignment_stm(tokens: &mut Tokens) -> Option<AstNode> {
 
     node.add_child(match_add_expr(tokens).unwrap());
 
+    if !match_semicolon(tokens) {
+        panic!("match statement,要以分号结束");
+    }
     Option::Some(node)
 }
 
@@ -321,7 +327,7 @@ fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
     Option::Some(node)
 }
 
-fn match_semicolon(tokens: &mut Tokens) -> bool {
+pub fn match_semicolon(tokens: &mut Tokens) -> bool {
     print_parse_more2_info(
         "match semicolon,token is ",
         tokens.peek(),
@@ -335,14 +341,6 @@ fn match_semicolon(tokens: &mut Tokens) -> bool {
     }
 }
 
-// fn print_parse_info(msg: &str) {
-//     println!("[info][parse] {} ", msg);
-// }
-
-// fn print_parse_more1_info<T: std::fmt::Debug>(msg: &str, t: T) {
-//     println!("[info][parse] {}, {:?}", msg, t);
-// }
-
-fn print_parse_more2_info<T: std::fmt::Debug, K: std::fmt::Debug>(_msg: &str, _t1: T, _t2: K) {
-    // println!("[info][parse] {}, {:?}, {:?}", msg, t1, t2);
+fn print_parse_more2_info<T: std::fmt::Debug, K: std::fmt::Debug>(msg: &str, t1: T, t2: K) {
+    println!("[info][parse] {}, {:?}, {:?}", msg, t1, t2);
 }

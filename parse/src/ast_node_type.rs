@@ -6,6 +6,7 @@ pub enum AstNodeType {
     Statement,
     BlockStmt,
     VarDeclareStmt, //变量声明
+    FnDeclareStmt,  //方法声明
     ExpressionStmt, // 表达式语句，即表达式后面跟个分号';'
     AssignmentStmt, // 赋值语句
     Primary,        // 基础表达式

@@ -17,7 +17,6 @@ pub fn match_statements(tokens: &mut Tokens) -> Option<AstNode> {
 		if let TokenType::RightBrace = tokens.peek().unwrap().get_type() {
 			break;
 		}
-
 		if let Some(node) = match_block_statement(tokens) {
 			ast_node.add_child(node);
 			continue;

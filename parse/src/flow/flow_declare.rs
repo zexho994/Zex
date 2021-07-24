@@ -1,3 +1,4 @@
+use super::flow_fn_declare::*;
 use super::parse_flow::*;
 use crate::ast_node::*;
 use crate::utils::print_util::*;
@@ -9,6 +10,8 @@ pub fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match declare,token is ", tokens.peek(), tokens.position());
     let pos = tokens.position();
     if let Some(n) = match_var_declare(tokens) {
+        Some(n)
+    } else if let Some(n) = match_fn_declare(tokens) {
         Some(n)
     } else {
         tokens.set_position(pos);

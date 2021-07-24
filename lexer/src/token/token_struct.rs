@@ -64,6 +64,14 @@ impl Tokens {
 		Option::Some(&self.data[self.pos])
 	}
 
+	pub fn peek_type(&self) -> Option<&TokenType> {
+		let p = self.peek();
+		match p {
+			Some(t) => Some(t.get_type()),
+			None => None,
+		}
+	}
+
 	pub fn read(&mut self) -> Option<&mut Token> {
 		if self.pos == self.count() {
 			return None;
