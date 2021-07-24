@@ -1,5 +1,6 @@
 use super::flow_statements::*;
 use crate::ast_node::*;
+use crate::flow::flow_add_expr::match_add_expr;
 use lexer::token::{token_struct::*, token_type::*};
 
 /// <program> ::= <statements>
@@ -15,7 +16,6 @@ pub fn match_program(tokens: &mut Tokens) -> Option<AstNode> {
 
     Option::Some(prog_node)
 }
-
 
 /// <type> ::= int
 pub fn match_type(tokens: &mut Tokens) -> Option<AstNode> {
@@ -64,7 +64,6 @@ pub fn match_assignment(tokens: &mut Tokens) -> Option<AstNode> {
     }
 }
 
-
 /// <exprStm> ::= <addExpr>
 pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match expr,token is ", tokens.peek(), tokens.position());
@@ -75,40 +74,6 @@ pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
         return None;
     }
     Some(ast_node)
-}
-
-/// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
-pub fn match_add_expr(tokens: &mut Tokens) -> Option<AstNode> {
-    print_parse_more2_info("match add,token is ", tokens.peek(), tokens.position());
-    let mut child: AstNode;
-    if let Some(n) = match_mul_expr(tokens) {
-        child = n;
-    } else {
-        return None;
-    }
-    loop {
-        if tokens.peek().is_none() {
-            break;
-        }
-        match tokens.peek().unwrap().get_type() {
-            TokenType::Plus => {
-                tokens.read();
-                if let Some(t) = match_add_expr(tokens) {
-                    let mut r = AstNode::new(AstNodeType::Additive, "+");
-                    r.add_child(child);
-                    r.add_child(t);
-                    child = r;
-                } else {
-                    panic!("match add expr failed, the child2 it not be null");
-                }
-            }
-            TokenType::SemiColon | TokenType::RightBrace => {
-                break;
-            }
-            _ => panic!("match add expr failed,token is {:?}", tokens.peek()),
-        }
-    }
-    Option::Some(child)
 }
 
 /// <mulExpr> ::= <primary> | <primary> '*' <mulExpr>
