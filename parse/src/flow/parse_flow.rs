@@ -102,7 +102,7 @@ pub fn match_echo(tokens: &mut Tokens) -> Option<AstNode> {
     None
 }
 
-/// <varDeclare> ::= <type> <id> <assign> <exprStm> | <type> <id>
+/// <varDeclare> ::= <type> <id> <assign> <exprStm> | <type> <id> ;
 pub fn match_var_declare(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info(
         "match var declare,token is ",

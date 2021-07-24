@@ -11,10 +11,10 @@
 <blockStm> ::= { <statements> }
 
 // 语句类型：分配声明语句，表达式语句，赋值语句
-<statement> ::= <echo> | <declare> | <expressionStm> | <assignmentStm> ;
+<statement> ::= <echo> | <declare> | <expressionStm> | <assignmentStm>
 
-//
-<echo> ::= echo (<intLiteral> | <id> | <expressionStm>)
+// echo a;
+<echo> ::= echo (<intLiteral> | <id> | <expressionStm>) ;
 
 // 声明语句现在提供变量声明，以后还有方法声明、类声明
 <declare> ::= <varDeclare> | <fnDeclare>
@@ -34,7 +34,7 @@
 <Arrow> ::= -> 
 
 // 变量声明有两种，有无初始化
-<varDeclare> ::= <varDefine> | <varDefine> <assignment> <expressionStm>
+<varDeclare> ::= (<varDefine> | <varDefine> <assignment> <expressionStm>) ;
 
 // 变量定义
 <varDefine> ::= <type> <id>
@@ -43,7 +43,7 @@
 <type> ::= int
 
 // 表达式语句
-<expressionStm> ::= <addExpr> ;
+<expressionStm> ::= <addExpr>
 
 // 赋值语句
 <assignmentStm> ::= <identifier> <assignment> <expressionStm> ;
