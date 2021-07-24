@@ -76,7 +76,6 @@ pub fn match_expr_stm(tokens: &mut Tokens) -> Option<AstNode> {
     Some(ast_node)
 }
 
-
 /// <primary> ::= int | Identifier
 pub fn match_primary(tokens: &mut Tokens) -> Option<AstNode> {
     print_parse_more2_info("match primary,token is ", tokens.peek(), tokens.position());
