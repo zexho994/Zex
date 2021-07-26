@@ -1,7 +1,7 @@
 use crate::scope_stack::ScopeStack;
+use crate::visitor::visit_primary_identifier::visit_identifier;
 use crate::visitor::visitor::echo_int_literal;
 use crate::visitor::visitor::print_info_extend;
-use crate::visitor::visitor::visit_identifier;
 pub use parse::ast_node::AstNode;
 pub use parse::ast_node_type::AstNodeType;
 
