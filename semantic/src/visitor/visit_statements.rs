@@ -1,8 +1,8 @@
+use crate::visitor::visit_statement::visit_statement;
 use crate::scope_stack::ScopeStack;
 use crate::visitor::visit_block_statement::visit_block_statement;
 use crate::visitor::visitor::print_info;
 use crate::visitor::visitor::print_panic_more;
-use crate::visitor::visitor::visit_statement;
 pub use parse::ast_node::AstNode;
 pub use parse::ast_node_type::AstNodeType;
 

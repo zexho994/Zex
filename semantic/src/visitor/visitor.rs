@@ -5,28 +5,6 @@ use crate::symbol::*;
 use crate::visitor::visit_block_statement::visit_block_statement;
 
 
-/// ast_node type = AstNodeType::Statement
-///
-/// statement 的类型
-/// 1. echo 语句
-/// 2. varDeclareStmt 声明语句
-/// 3. assignmentStmt 赋值语句
-/// 4. expressionStmt 表达式语句
-pub fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	print_info("visit statement");
-
-	// visit children
-	for child in ast_node.get_child_vec_mut().iter_mut() {
-		match child.get_type() {
-			AstNodeType::Echo => visit_echo(child, scope_stack),
-			AstNodeType::VarDeclareStmt => visit_var_declare_stmt(child, scope_stack),
-			AstNodeType::FnDeclareStmt => visit_fn_declare_stmt(child, scope_stack),
-			AstNodeType::AssignmentStmt => visit_assignment_stmt(child, scope_stack),
-			AstNodeType::ExpressionStmt => print_panic("visit expr error"),
-			_ => print_panic_more("visit statement child error", child),
-		}
-	}
-}
 
 /// <expressionStm> ::= <addExpr>
 /// <addExpr> ::= <mulExpr> | <mulExpr> '+' <addExpr>
@@ -52,7 +30,7 @@ pub fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// }
 /// int b = 3;   //success,块中的b已经失效了
 /// ```
-fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+pub fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit var declare stmt");
 	let var_id: String = ast_node.get_child_text(1).unwrap();
 	let mut scope = scope_stack.pop().unwrap();
@@ -65,7 +43,7 @@ fn visit_var_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) 
 
 /// 处理方法表达式
 ///
-fn visit_fn_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+pub fn visit_fn_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info_extend("visit fn declare statement", ast_node);
 	let id = ast_node.get_text();
 	let arguments = ast_node.get_argument_child();
@@ -84,7 +62,7 @@ fn visit_fn_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// 赋值语句将更新已有的变量值:
 /// 1. 确保变量已经声明
 /// 2. 更新变量的值
-fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+pub fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit var declare stmt");
 	let var_id: String = ast_node.get_child_text(0).unwrap();
 	let new_symbol = Symbol::new(
@@ -113,7 +91,7 @@ fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// int b = a + 2;  //b:expressionStmt
 /// echo b;     //identifier b
 ///
-fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+pub fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info_extend("visit echo", &ast_node);
 	let target = ast_node.get_child_mut(0).unwrap();
 	match target.get_type() {
@@ -129,7 +107,7 @@ fn visit_echo(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 /// 符号表中:k=id,v=ast_node
 /// ast_node's type = expressionStmt
 /// 根据id的text在符号表从下到上遍历寻找对应符号以及值
-fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
+pub fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
 	print_info_extend("visit identifier", ast_node);
 	let id = ast_node.get_text();
 	let mut target_symbol: Option<&Symbol> = None;
@@ -154,7 +132,7 @@ fn visit_identifier(ast_node: &mut AstNode, scope_stack: &ScopeStack) {
 	println!("{}", num);
 }
 
-fn echo_int_literal(ast_node: &mut AstNode) {
+pub fn echo_int_literal(ast_node: &mut AstNode) {
 	println!("{}", ast_node.get_text().clone())
 }
 
