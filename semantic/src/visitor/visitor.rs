@@ -1,8 +1,8 @@
 use crate::ast_node::AstNode;
 use crate::ast_node_type::AstNodeType;
-use crate::scope::Scope;
 use crate::scope_stack::ScopeStack;
 use crate::symbol::*;
+use crate::visitor::visit_block_statement::visit_block_statement;
 
 /// ast_node type = AstNodeType::Statements
 pub fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
@@ -20,34 +20,6 @@ fn visit_statements_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStac
 				visit_statement(child, scope_stack);
 			}
 			_ => print_panic_more("visit statements children, child node type error", child),
-		}
-	}
-}
-
-/// ast_node type = AstNodeType::BlockStmt
-/// block域的父域是上一层域
-fn visit_block_statement(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
-	print_info("visit block statement");
-	let current_scope: &Scope = scope_stack.current_scope();
-	let new_local_scope: Scope = Scope::new_local(current_scope.get_scope_name());
-	scope_stack.push(new_local_scope);
-
-	visit_block_statement_children(ast_node, scope_stack);
-
-	scope_stack.pop();
-}
-
-fn visit_block_statement_children(
-	ast_node: &mut parse::ast_node::AstNode,
-	scope_stack: &mut ScopeStack,
-) {
-	for child in ast_node.get_child_vec_mut().iter_mut() {
-		match child.get_type() {
-			AstNodeType::Statements => visit_statements(child, scope_stack),
-			_ => print_panic_more(
-				"visit block statement children, child node type error",
-				child,
-			),
 		}
 	}
 }
