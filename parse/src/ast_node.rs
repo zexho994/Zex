@@ -75,42 +75,12 @@ impl AstNode {
         }
     }
 
-    pub fn get_block_statement_child(&self) -> &AstNode {
-        match self.get_type() {
-            AstNodeType::FnDeclareStmt => self.get_child(2).unwrap(),
-            _ => {
-                panic!("get id child error")
-            }
-        }
-    }
-
-    pub fn remove_block_statement_child(&mut self) -> AstNode {
-        match self.get_type() {
-            AstNodeType::FnDeclareStmt => self.remove_child(2),
-            _ => {
-                panic!("get id child error")
-            }
-
-        }
-
-    }
-
-    pub fn get_argument_child(&self) -> &AstNode {
-        match self.get_type() {
-            AstNodeType::FnDeclareStmt => self.get_child(0).unwrap(),
-            _ => {
-                panic!("get id child error")
-            }
-        }
-    }
-
-    pub fn get_return_child(&self) -> &AstNode {
-        match self.get_type() {
-            AstNodeType::FnDeclareStmt => self.get_child(1).unwrap(),
-            _ => {
-                panic!("get return child error")
-            }
-        }
+    pub fn remove_fn_child(&mut self) -> (AstNode, AstNode, AstNode) {
+        (
+            self.remove_child(0),
+            self.remove_child(0),
+            self.remove_child(0),
+        )
     }
 }
 

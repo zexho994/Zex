@@ -1,11 +1,7 @@
 use crate::ast_node::AstNode;
-use crate::scope_stack::ScopeStack;
-use crate::symbol::*;
 
-
-
-pub fn echo_int_literal(ast_node: &mut AstNode) {
-	println!("{}", ast_node.get_text().clone())
+pub fn echo_int_literal(_ast_node: &mut AstNode) {
+	// println!("{}", ast_node.get_text().clone())
 }
 
 pub fn print_info(_msg: &str) {
