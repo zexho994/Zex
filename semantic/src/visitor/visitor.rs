@@ -4,34 +4,8 @@ use crate::scope::Scope;
 use crate::scope_stack::ScopeStack;
 use crate::symbol::*;
 
-// 1. 创建全局域
-// 2. 处理流程
-// 3. 保存，退出
-pub fn visit_program(ast_node: &mut AstNode) {
-	print_info("visit program");
-	// 初始化全局域
-	let global_scope = Scope::new_global();
-	// 初始化域栈
-	let mut scope_stack = ScopeStack::new();
-	// 入栈
-	scope_stack.push(global_scope);
-
-	// 访问子节点
-	visit_program_children(ast_node, &mut scope_stack);
-
-	//出栈
-	scope_stack.pop();
-}
-
-/// visit program的所有子节点
-fn visit_program_children(program_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	for child in program_node.get_child_vec_mut().iter_mut() {
-		visit_statements(child, scope_stack);
-	}
-}
-
 /// ast_node type = AstNodeType::Statements
-fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
+pub fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit statements");
 	visit_statements_children(ast_node, scope_stack)
 }
@@ -231,18 +205,18 @@ fn echo_int_literal(ast_node: &mut AstNode) {
 	println!("{}", ast_node.get_text().clone())
 }
 
-fn print_info(_msg: &str) {
+pub fn print_info(_msg: &str) {
 	// println!("[info][ast_visit]: {}", _msg);
 }
 
-fn print_info_extend<T: std::fmt::Debug>(_msg: &str, _t: &T) {
+pub fn print_info_extend<T: std::fmt::Debug>(_msg: &str, _t: &T) {
 	// println!("[info][ast_visit]: {},t = {:?}", _msg, _t);
 }
 
-fn print_panic(msg: &str) {
+pub fn print_panic(msg: &str) {
 	panic!("[error][ast_visit] {}", msg);
 }
 
-fn print_panic_more<T: std::fmt::Debug>(msg: &str, t: &T) {
+pub fn print_panic_more<T: std::fmt::Debug>(msg: &str, t: &T) {
 	panic!("[error][visitor] msg = {}, t = {:?}", msg, t);
 }
