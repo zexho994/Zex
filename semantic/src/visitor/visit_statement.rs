@@ -1,12 +1,11 @@
+use crate::visitor::visit_var_declare::visit_var_declare_stmt;
 use crate::scope_stack::ScopeStack;
-use crate::visitor::visit_block_statement::visit_block_statement;
 use crate::visitor::visitor::print_info;
 use crate::visitor::visitor::print_panic;
 use crate::visitor::visitor::print_panic_more;
 use crate::visitor::visitor::visit_assignment_stmt;
 use crate::visitor::visitor::visit_echo;
 use crate::visitor::visitor::visit_fn_declare_stmt;
-use crate::visitor::visitor::visit_var_declare_stmt;
 pub use parse::ast_node::AstNode;
 pub use parse::ast_node_type::AstNodeType;
 
