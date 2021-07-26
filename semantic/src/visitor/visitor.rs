@@ -4,25 +4,6 @@ use crate::scope_stack::ScopeStack;
 use crate::symbol::*;
 use crate::visitor::visit_block_statement::visit_block_statement;
 
-/// ast_node type = AstNodeType::Statements
-pub fn visit_statements(ast_node: &mut parse::ast_node::AstNode, scope_stack: &mut ScopeStack) {
-	print_info("visit statements");
-	visit_statements_children(ast_node, scope_stack)
-}
-
-fn visit_statements_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	for child in ast_node.get_child_vec_mut().iter_mut() {
-		match child.get_type() {
-			AstNodeType::BlockStmt => {
-				visit_block_statement(child, scope_stack);
-			}
-			AstNodeType::Statement => {
-				visit_statement(child, scope_stack);
-			}
-			_ => print_panic_more("visit statements children, child node type error", child),
-		}
-	}
-}
 
 /// ast_node type = AstNodeType::Statement
 ///
@@ -31,7 +12,7 @@ fn visit_statements_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStac
 /// 2. varDeclareStmt 声明语句
 /// 3. assignmentStmt 赋值语句
 /// 4. expressionStmt 表达式语句
-fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
+pub fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit statement");
 
 	// visit children

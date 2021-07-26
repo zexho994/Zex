@@ -1,8 +1,8 @@
 use crate::scope::Scope;
 use crate::scope_stack::ScopeStack;
+use crate::visitor::visit_statements::visit_statements;
 use crate::visitor::visitor::print_info;
 use crate::visitor::visitor::print_panic_more;
-use crate::visitor::visitor::visit_statements;
 pub use parse::ast_node_type::AstNodeType;
 
 /// ast_node type = AstNodeType::BlockStmt
@@ -21,7 +21,7 @@ pub fn visit_block_statement(
 	scope_stack.pop();
 }
 
-pub fn visit_block_statement_children(
+fn visit_block_statement_children(
 	ast_node: &mut parse::ast_node::AstNode,
 	scope_stack: &mut ScopeStack,
 ) {

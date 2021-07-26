@@ -1,7 +1,7 @@
+use crate::visitor::visit_statements::visit_statements;
 use crate::scope::Scope;
 use crate::scope_stack::ScopeStack;
 use crate::visitor::visitor::print_info;
-use crate::visitor::visitor::visit_statements;
 pub use parse::ast_node::AstNode;
 
 // 1. 创建全局域
