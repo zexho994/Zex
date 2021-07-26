@@ -143,7 +143,9 @@ fn visit_fn_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let id = ast_node.get_text();
 	let arguments = ast_node.get_argument_child();
 	let returnType = ast_node.get_return_child();
-	let block_stmt = ast_node.get_block_statement_child();
+	let mut block_stmt = ast_node.remove_block_statement_child();
+
+	visit_block_statement(&mut block_stmt, scope_stack);
 
 	// println!(
 	// 	"id = {:?},arguments = {:?},returnType ={:?} ,blockStmt ={:?} ",
