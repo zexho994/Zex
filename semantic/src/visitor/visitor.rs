@@ -1,8 +1,8 @@
-use super::ast_node::AstNode;
-use super::ast_node_type::AstNodeType;
-use super::scope::Scope;
-use super::scope_stack::ScopeStack;
-use super::symbol::*;
+use crate::ast_node::AstNode;
+use crate::ast_node_type::AstNodeType;
+use crate::scope::Scope;
+use crate::scope_stack::ScopeStack;
+use crate::symbol::*;
 
 // 1. 创建全局域
 // 2. 处理流程
@@ -144,7 +144,6 @@ fn visit_fn_declare_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	let arguments = ast_node.get_argument_child();
 	let returnType = ast_node.get_return_child();
 	let block_stmt = ast_node.get_block_statement_child();
-	
 
 	// println!(
 	// 	"id = {:?},arguments = {:?},returnType ={:?} ,blockStmt ={:?} ",

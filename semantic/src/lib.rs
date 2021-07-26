@@ -1,11 +1,12 @@
 pub mod scope;
+pub mod scope_stack;
 pub mod symbol;
 pub mod visitor;
-pub mod scope_stack;
 
 use crate::ast_node::AstNode;
+use crate::visitor::visitor::visit_program;
 use parse::*;
 
 pub fn semantic(mut ast_root: AstNode) {
-    visitor::visit_program(&mut ast_root);
+    visit_program(&mut ast_root);
 }
