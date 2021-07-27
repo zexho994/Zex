@@ -1,5 +1,6 @@
 use parse::ast_node::AstNode;
 
+pub const UN_DEFINED: u8 = 0;
 pub const SYMBOL_TYPE_VARIABLE: u8 = 1;
 pub const SYMBOL_TYPE_FUNCTION: u8 = 2;
 

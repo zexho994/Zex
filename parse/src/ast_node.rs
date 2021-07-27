@@ -86,6 +86,10 @@ impl AstNode {
     pub fn remove_class_child(&mut self) -> AstNode {
         self.remove_child(0)
     }
+
+    pub fn child_count(&self) -> usize {
+        self._child.len()
+    }
 }
 
 // trait Calculate {

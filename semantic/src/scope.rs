@@ -95,6 +95,12 @@ impl Scope {
 		new_symbol: Symbol,
 		scope_stack: &mut ScopeStack,
 	) {
+		println!("update symbol");
+
+		if !self.is_contain_symbol(symbol_name, scope_stack) {
+			panic!("变量未声明,symbol= {}", symbol_name);
+		}
+
 		if self.find_symbol(symbol_name).is_some() {
 			Scope::update_in_current(self, symbol_name, new_symbol);
 		} else {
@@ -153,12 +159,8 @@ impl Scope {
 		target_symbol
 	}
 
-	pub fn find_symbol(&self, name: &String) -> Option<&Symbol> {
+	fn find_symbol(&self, name: &String) -> Option<&Symbol> {
 		self.symbol_table.get(name)
-	}
-
-	pub fn find_symbol_mut(&mut self, name: &String) -> Option<&mut Symbol> {
-		self.symbol_table.get_mut(name)
 	}
 
 	/// 移除符号表一个符号，返回被移除的符号
@@ -169,7 +171,7 @@ impl Scope {
 	/// 查询域以及所有父域中是否包含目标符号
 	/// symbol_id: 要查询的符号名称
 	/// return
-	pub fn is_contain_symbol(&self, symbol_id: &String, scope_stack: &ScopeStack) -> bool {
+	fn is_contain_symbol(&self, symbol_id: &String, scope_stack: &ScopeStack) -> bool {
 		if self.find_symbol(&symbol_id).is_some() {
 			return true;
 		}

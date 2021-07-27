@@ -4,7 +4,7 @@ use crate::visitor::visit_declare_fn::visit_fn_declare_stmt;
 use crate::visitor::visit_declare_variable::visit_var_declare_stmt;
 use crate::visitor::visit_statement_assignment::visit_assignment_stmt;
 use crate::visitor::visit_statement_echo::visit_echo;
-use crate::visitor::visitor::print_info;
+use crate::visitor::visitor::print_info_extend;
 use crate::visitor::visitor::print_panic;
 use crate::visitor::visitor::print_panic_more;
 pub use parse::ast_node::AstNode;
@@ -18,7 +18,7 @@ pub use parse::ast_node_type::AstNodeType;
 /// 3. assignmentStmt 赋值语句
 /// 4. expressionStmt 表达式语句
 pub fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	print_info("visit statement");
+	print_info_extend("visit statement", ast_node);
 
 	// visit children
 	for child in ast_node.get_child_vec_mut().iter_mut() {

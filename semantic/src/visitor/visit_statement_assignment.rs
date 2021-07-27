@@ -10,7 +10,7 @@ pub use parse::ast_node_type::AstNodeType;
 /// 1. 确保变量已经声明
 /// 2. 更新变量的值
 pub fn visit_assignment_stmt(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
-	print_info("visit var declare stmt");
+	print_info_extend("visit assignment stmt", ast_node);
 	let var_id: String = ast_node.get_child_text(0).unwrap();
 	let new_symbol = Symbol::new(
 		var_id.clone(),
