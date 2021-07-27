@@ -17,7 +17,10 @@
 <echo> ::= echo (<intLiteral> | <id> | <expressionStm>) ;
 
 // 声明语句现在提供变量声明，以后还有方法声明、类声明
-<declare> ::= <varDeclare> | <fnDeclare>
+<declare> ::= <classDeclare> | <varDeclare> | <fnDeclare>
+
+// 类声明
+<classDeclare> ::= class <id> <blockStm>
 
 // 方法声明
 // fn foo () {}
@@ -31,7 +34,7 @@
 <returnType> ::= <Arrow> <type>
 
 // 箭头指向符
-<Arrow> ::= -> 
+<Arrow> ::= ->
 
 // 变量声明有两种，有无初始化
 <varDeclare> ::= (<varDefine> | <varDefine> <assignment> <expressionStm>) ;

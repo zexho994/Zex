@@ -9,6 +9,7 @@ pub mod flow_statement_expression;
 
 pub mod flow_declare;
 pub mod flow_declare_fn;
+pub mod flow_declare_class;
 pub mod flow_declare_variable;
 
 pub mod flow_expression_additive;

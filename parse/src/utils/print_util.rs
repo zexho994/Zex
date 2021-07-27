@@ -7,5 +7,5 @@ pub fn print_parse_more1_info<T: std::fmt::Debug>(_msg: &str, _t: T) {
 }
 
 pub fn print_parse_more2_info<T: std::fmt::Debug, K: std::fmt::Debug>(_msg: &str, _t1: T, _t2: K) {
-    // println!("[info][parse] {}, {:?}, {:?}", _msg, _t1, _t2);
+    println!("[info][parse] {}, {:?}, {:?}", _msg, _t1, _t2);
 }

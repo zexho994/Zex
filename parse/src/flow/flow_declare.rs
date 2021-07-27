@@ -1,5 +1,6 @@
 use super::flow_declare_fn::*;
 use crate::ast_node::*;
+use crate::flow::flow_declare_class::match_class_declare;
 use crate::flow::flow_declare_variable::match_var_declare;
 use crate::utils::print_util::print_parse_more2_info;
 use lexer::token::token_struct::*;
@@ -12,6 +13,8 @@ pub fn match_declare(tokens: &mut Tokens) -> Option<AstNode> {
     if let Some(n) = match_var_declare(tokens) {
         Some(n)
     } else if let Some(n) = match_fn_declare(tokens) {
+        Some(n)
+    } else if let Some(n) = match_class_declare(tokens) {
         Some(n)
     } else {
         tokens.set_position(pos);

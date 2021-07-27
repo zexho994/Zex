@@ -31,7 +31,16 @@ fn parse_echo() {
 #[test]
 fn parse_fn_declare() {
 	let s = String::from("fn foo () {int a; }");
-	println!("\n===> parse assignment {}", s);
+	println!("\n===> parse str {}", s);
+	let mut tokens = lexer::lexing(s.clone());
+	let ast = parsing(&mut tokens);
+	println!("\n==> parse str to ast , ast is {:?}", ast);
+}
+
+#[test]
+fn parse_class_declare() {
+	let s = String::from("class Zex { int i = 1;}");
+	println!("\n===> parse str {}", s);
 	let mut tokens = lexer::lexing(s.clone());
 	let ast = parsing(&mut tokens);
 	println!("\n==> parse str to ast , ast is {:?}", ast);
