@@ -51,11 +51,3 @@ fn visit_test() {
 	semantic(ast);
 }
 
-#[test]
-fn visit_fn_declare() {
-	let str = String::from("fn foo () {int i = 1;echo i;}");
-	println!("\n test => input : {}", str);
-	let mut tokens = lexer::lexing(str);
-	let ast = parsing(&mut tokens).unwrap();
-	semantic(ast);
-}

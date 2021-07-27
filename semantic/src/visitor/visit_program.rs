@@ -1,6 +1,6 @@
-use crate::visitor::visit_statements::visit_statements;
 use crate::scope::Scope;
 use crate::scope_stack::ScopeStack;
+use crate::visitor::visit_statements::visit_statements;
 use crate::visitor::visitor::print_info;
 pub use parse::ast_node::AstNode;
 
