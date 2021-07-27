@@ -24,7 +24,7 @@ pub fn match_class_declare(tokens: &mut Tokens) -> Option<AstNode> {
 	// 2
 	let mut node;
 	if let Some(n) = match_id(tokens) {
-		node = AstNode::new(AstNodeType::FnDeclareStmt, &n.get_text());
+		node = AstNode::new(AstNodeType::ClassDeclareStmt, &n.get_text());
 	} else {
 		tokens.set_position(pos);
 		return None;
@@ -37,8 +37,6 @@ pub fn match_class_declare(tokens: &mut Tokens) -> Option<AstNode> {
 		tokens.set_position(pos);
 		return None;
 	}
-
-	println!("\n--------debug mark--------");
-
+	
 	Option::Some(node)
 }

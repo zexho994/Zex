@@ -1,4 +1,5 @@
 use crate::scope_stack::ScopeStack;
+use crate::visitor::visit_declare_class::visit_class_declare_stmt;
 use crate::visitor::visit_declare_fn::visit_fn_declare_stmt;
 use crate::visitor::visit_declare_variable::visit_var_declare_stmt;
 use crate::visitor::visit_statement_assignment::visit_assignment_stmt;
@@ -23,6 +24,7 @@ pub fn visit_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	for child in ast_node.get_child_vec_mut().iter_mut() {
 		match child.get_type() {
 			AstNodeType::Echo => visit_echo(child, scope_stack),
+			AstNodeType::ClassDeclareStmt => visit_class_declare_stmt(child, scope_stack),
 			AstNodeType::VarDeclareStmt => visit_var_declare_stmt(child, scope_stack),
 			AstNodeType::FnDeclareStmt => visit_fn_declare_stmt(child, scope_stack),
 			AstNodeType::AssignmentStmt => visit_assignment_stmt(child, scope_stack),

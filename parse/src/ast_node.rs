@@ -82,6 +82,10 @@ impl AstNode {
             self.remove_child(0),
         )
     }
+
+    pub fn remove_class_child(&mut self) -> AstNode {
+        self.remove_child(0)
+    }
 }
 
 // trait Calculate {

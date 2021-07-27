@@ -6,11 +6,11 @@ pub enum AstNodeType {
     Statements,
     Statement,
     BlockStmt,
-    VarDeclareStmt, //变量声明
-    FnDeclareStmt,  //方法声明
-    ExpressionStmt, // 表达式语句
-    AssignmentStmt, // 赋值语句
-    
+    ClassDeclareStmt, //类声明
+    FnDeclareStmt,    //方法声明
+    VarDeclareStmt,   //变量声明
+    ExpressionStmt,   // 表达式语句
+    AssignmentStmt,   // 赋值语句
 
     Multiplicative, // 乘法表达式
     Additive,       // 加法表达式

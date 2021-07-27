@@ -132,6 +132,27 @@ impl Scope {
 		}
 	}
 
+	pub fn loop_find_symbol(id: String, scope_stack: &ScopeStack) -> Option<&Symbol> {
+		let mut target_symbol: Option<&Symbol> = None;
+
+		if let Some(symbol) = scope_stack.current_scope().find_symbol(&id) {
+			target_symbol = Some(symbol);
+		} else {
+			let mut parent_name = scope_stack.current_scope().parent_scope_name();
+			//父域中查找符号
+			while parent_name.is_some() {
+				let scope = scope_stack.find_scope(&parent_name.unwrap()).unwrap();
+				if let Some(symbol) = scope.find_symbol(&id) {
+					target_symbol = Some(symbol);
+					break;
+				}
+				parent_name = scope.parent_scope_name();
+			}
+		}
+
+		target_symbol
+	}
+
 	pub fn find_symbol(&self, name: &String) -> Option<&Symbol> {
 		self.symbol_table.get(name)
 	}
@@ -148,7 +169,7 @@ impl Scope {
 	/// 查询域以及所有父域中是否包含目标符号
 	/// symbol_id: 要查询的符号名称
 	/// return
-	fn is_contain_symbol(&self, symbol_id: &String, scope_stack: &ScopeStack) -> bool {
+	pub fn is_contain_symbol(&self, symbol_id: &String, scope_stack: &ScopeStack) -> bool {
 		if self.find_symbol(&symbol_id).is_some() {
 			return true;
 		}

@@ -3,14 +3,12 @@ use crate::scope_stack::ScopeStack;
 use crate::visitor::visit_statements::visit_statements;
 use crate::visitor::visitor::print_info;
 use crate::visitor::visitor::print_panic_more;
+use parse::ast_node::AstNode;
 pub use parse::ast_node_type::AstNodeType;
 
 /// ast_node type = AstNodeType::BlockStmt
 /// block域的父域是上一层域
-pub fn visit_block_statement(
-	ast_node: &mut parse::ast_node::AstNode,
-	scope_stack: &mut ScopeStack,
-) {
+pub fn visit_block_statement(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	print_info("visit block statement");
 	let current_scope: &Scope = scope_stack.current_scope();
 	let new_local_scope: Scope = Scope::new_local(current_scope.get_scope_name());
@@ -21,10 +19,7 @@ pub fn visit_block_statement(
 	scope_stack.pop();
 }
 
-fn visit_block_statement_children(
-	ast_node: &mut parse::ast_node::AstNode,
-	scope_stack: &mut ScopeStack,
-) {
+fn visit_block_statement_children(ast_node: &mut AstNode, scope_stack: &mut ScopeStack) {
 	for child in ast_node.get_child_vec_mut().iter_mut() {
 		match child.get_type() {
 			AstNodeType::Statements => visit_statements(child, scope_stack),
