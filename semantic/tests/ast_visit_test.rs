@@ -14,6 +14,7 @@ fn repeat_declare() {
 fn visit_test() {
 	let s = String::from(
 		"
+		
  {
 	int a = 5 + 5;
 	echo a;
@@ -43,6 +44,7 @@ fn visit_test() {
 	 int c = 30;
 	 echo c;
  }
+
 	",
 	);
 	println!("input : {}", s);

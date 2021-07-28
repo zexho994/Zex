@@ -1,8 +1,8 @@
 pub use parse::*;
 pub use semantic::*;
 
-/// 正确
 #[test]
+/// 正确
 fn should_success() {
 	let str = String::from("class A { int i = 1; echo i;}int i = 2;echo i;");
 	println!("\n test => input : {}", str);
@@ -11,9 +11,9 @@ fn should_success() {
 	semantic(ast);
 }
 
-/// 作用域外，i不生效
 #[test]
 #[ignore]
+/// 作用域外，i不生效
 fn should_fail() {
 	let str = String::from("class A { int i = 1;}  i = 2; echo i;");
 	println!("\n test => input : {}", str);
