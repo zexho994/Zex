@@ -83,8 +83,8 @@ impl AstNode {
         )
     }
 
-    pub fn remove_class_child(&mut self) -> AstNode {
-        self.remove_child(0)
+    pub fn get_class_child(&mut self) -> &mut AstNode {
+        self.get_child_mut(0).unwrap()
     }
 
     pub fn child_count(&self) -> usize {
