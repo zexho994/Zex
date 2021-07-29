@@ -75,11 +75,11 @@ impl AstNode {
         }
     }
 
-    pub fn remove_fn_child(&mut self) -> (AstNode, AstNode, AstNode) {
+    pub fn remove_fn_child(&mut self) -> (AstNode, AstNode, &mut AstNode) {
         (
             self.remove_child(0),
             self.remove_child(0),
-            self.remove_child(0),
+            self.get_child_mut(0).unwrap(),
         )
     }
 

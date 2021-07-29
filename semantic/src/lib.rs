@@ -2,6 +2,7 @@ pub mod scope;
 pub mod scope_stack;
 pub mod symbol;
 pub mod visitor;
+pub mod zex_table;
 
 use crate::ast_node::AstNode;
 use crate::visitor::visit_program::visit_program;
