@@ -1,13 +1,12 @@
-//
-use parse::ast_node::AstNode;
-pub mod byte_code;
+pub mod bytecode;
 pub mod file;
+
+use crate::bytecode::class_file::*;
+use parse::ast_node::AstNode;
 
 pub fn to_bytecode(ast: AstNode) {
     println!("hello {:?}", ast);
-    let c: byte_code::ClassFile = Default::default();
-    println!("{:?}", c);
 
-    let c1: byte_code::ClassFile = byte_code::ClassFile::new();
+    let c1: ClassFile = ClassFile::new();
     println!("{:?}", c1);
 }
