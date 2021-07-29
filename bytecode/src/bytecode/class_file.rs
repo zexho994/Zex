@@ -1,5 +1,14 @@
+use crate::bytecode::constant_pool::ConstantPool;
+use crate::bytecode::fields::Fields;
+use crate::bytecode::interfaces::Interfaces;
+use crate::bytecode::method::Method;
+
 pub type U2 = u16;
 pub type U4 = u32;
+
+enum AccessFlags{
+	ACC_SUPER = 0x20,
+}
 
 /// class file
 ///
@@ -44,7 +53,7 @@ pub struct ClassFile {
 }
 
 impl ClassFile {
-	pub fn new() -> ClassFile {
+	pub fn new_jdk8() -> ClassFile {
 		ClassFile {
 			magic: 0xCAFEBABE,
 			minor_version: 0,
@@ -72,21 +81,3 @@ impl ClassFile {
 		self.fields_count = count;
 	}
 }
-
-#[derive(Debug, Default)]
-pub struct ConstantPool {}
-
-/// 常量池中存储的基本单元
-#[derive(Debug, Default)]
-pub struct ConstantPoolUnit {
-	default: U2,
-}
-
-#[derive(Debug, Default)]
-pub struct Interfaces {}
-
-#[derive(Debug, Default)]
-pub struct Fields {}
-
-#[derive(Debug, Default)]
-pub struct Method {}
