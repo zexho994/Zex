@@ -6,9 +6,18 @@ use crate::bytecode::method::Method;
 pub type U2 = u16;
 pub type U4 = u32;
 
-enum AccessFlags{
-	ACC_SUPER = 0x20,
+pub enum ClassAccessFlags {
+	ACC_PUBLIC = 0x0001,
+	ACC_FINAL = 0x0010,
+	ACC_SUPER = 0x0020,
+	ACC_INTERFACE = 0x0200,
+	ACC_ABSTACT = 0x0400,
+	ACC_SYNTHETIC = 0x1000,
+	ACC_ANNOTATION = 0x2000,
+	ACC_ENYM = 0x4000,
 }
+
+
 
 /// class file
 ///
@@ -79,5 +88,9 @@ impl ClassFile {
 
 	pub fn set_fields_count(&mut self, count: U2) {
 		self.fields_count = count;
+	}
+
+	pub fn add_access_flag(&mut self, flag: ClassAccessFlags) {
+		self.access_flags += flag as u16;
 	}
 }
