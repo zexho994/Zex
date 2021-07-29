@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="mhCBieXG9H0Hiuy5WFCn" name="ast">
-        <mxGraphModel dx="901" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2638" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -13,39 +13,36 @@
                 <mxCell id="4" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="5" target="6" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="85" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="5" target="83" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="86" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="5" target="84" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
                 <mxCell id="5" value="type: blockStm&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="130" y="370" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-640" y="380" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="6" value="type: statements&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="130" y="515" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-640" y="525" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="7" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="12" target="5" edge="1">
+                <mxCell id="7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;" parent="1" source="12" target="5" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="12" target="14" edge="1">
+                <mxCell id="8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;" parent="1" source="12" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="12" target="18" edge="1">
+                <mxCell id="9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;" parent="1" source="12" target="18" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="12" target="22" edge="1">
+                <mxCell id="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;" parent="1" source="12" target="22" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="12" target="46" edge="1">
+                <mxCell id="11" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;edgeStyle=orthogonalEdgeStyle;curved=1;" parent="1" source="12" target="46" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="1916" y="340" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="82" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="12" target="58" edge="1">
+                <mxCell id="82" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;curved=1;" parent="1" source="12" target="58" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="1250" y="290" as="targetPoint"/>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;" edge="1" parent="1" source="12" target="91">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="12" value="type: statements&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
                     <mxGeometry x="450" y="240" width="120" height="80" as="geometry"/>
@@ -54,31 +51,31 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="14" value="type: statement&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="450" y="370" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-320" y="380" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="16" target="32" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="16" value="type: declare&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="450" y="504.5" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-320" y="514.5" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="17" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="18" target="20" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="18" value="type: statement&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="910" y="380" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="140" y="390" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="19" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="20" target="40" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="20" value="type: exprStm&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="910" y="515" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="140" y="525" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="21" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="22" target="26" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="22" value="type: statement&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="1220" y="390" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="450" y="400" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="23" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="26" target="42" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -90,7 +87,7 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="26" value="type: assignStm&lt;br&gt;text:&lt;br&gt;scope:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="1220" y="530" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="450" y="540" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="27" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="32" target="33" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -108,22 +105,22 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="32" value="type: varDeclare&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="450" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-320" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="33" value="type: type&lt;br&gt;text: &quot;int&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="280" y="760" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-490" y="770" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="34" value="type: id&lt;br&gt;text: &quot;a&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="420" y="760" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-350" y="770" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="35" value="type: assign&lt;br&gt;text: &quot;=&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="560" y="760" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-210" y="770" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="36" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="37" target="41" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="37" value="type: exprStm&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="710" y="760" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-60" y="770" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="38" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="40" target="53" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -132,25 +129,25 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="40" value="type: additive&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="910" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="140" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="41" value="type: additive&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="710" y="880" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-60" y="890" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="42" value="type: id&lt;br&gt;text: &quot;a&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="1080" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="310" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="43" value="type: assign&lt;br&gt;text: &quot;=&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="1220" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="450" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="44" value="type: exprStm&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="1370" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="600" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="45" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="46" target="51" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="46" value="type: statement&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="1650" y="370" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="880" y="380" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="47" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="51" target="52" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -167,28 +164,28 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="51" value="type: echo&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="1650" y="500" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="880" y="510" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="52" value="type:id&lt;br&gt;text:&quot;a&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="1510" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="740" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="53" value="type: primary&lt;br&gt;text:1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="850" y="760" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="80" y="770" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="54" value="type: multiplicative&amp;nbsp;&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="980" y="760" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="210" y="770" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="55" value="type:intliteral&lt;br&gt;text:1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="1650" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="880" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="56" value="type:exprStmt&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="1800" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1030" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="57" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="58" target="64" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="58" value="type: declare&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="2120" y="370" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1350" y="380" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="60" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="64" target="66" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -206,10 +203,10 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="64" value="type: fnDeclare&lt;br&gt;text: &quot;fn&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="2120" y="505.5" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1350" y="515.5" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="66" value="type: id&lt;br&gt;text: &quot;a&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="1990" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1220" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="88" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="67" target="87" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -218,10 +215,10 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="67" value="type: returnType&lt;br&gt;text:&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="2370" y="630" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1600" y="640" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="69" value="type: blockStmt&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="2580" y="630" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1810" y="640" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="75" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="72" target="74" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -230,7 +227,7 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="72" value="type: params&lt;br&gt;text:&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="2120" y="640" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1350" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="79" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="74" target="78" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -239,43 +236,37 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="74" value="type: param&lt;br&gt;text:&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="2040" y="770" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1270" y="780" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="76" value="type: param&lt;br&gt;text:&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="2180" y="770" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1410" y="780" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="78" value="type: int&lt;br&gt;text:&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="1900" y="920" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1130" y="930" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="80" value="type: id&lt;br&gt;text: &quot;a&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="2070" y="920" width="120" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="83" value="{" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry y="515" width="120" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="84" value="}" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
-                    <mxGeometry x="260" y="515" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1300" y="930" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="87" value="type: arrwo&lt;br&gt;text: -&amp;gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="2310" y="770" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1540" y="780" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="89" value="type: type&lt;br&gt;text: int" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="2440" y="770" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1670" y="780" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="93" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;" edge="1" parent="1" source="91" target="92">
+                <mxCell id="93" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;" parent="1" source="91" target="92" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="91" value="type: declare&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" vertex="1" parent="1">
-                    <mxGeometry x="2830" y="360" width="120" height="80" as="geometry"/>
+                <mxCell id="91" value="type: declare&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="2060" y="370" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="98" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;" edge="1" parent="1" source="92" target="96">
+                <mxCell id="98" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;" parent="1" source="92" target="96" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="92" value="type: classDeclare&lt;br&gt;text: &quot;{className}&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" vertex="1" parent="1">
-                    <mxGeometry x="2830" y="500" width="120" height="80" as="geometry"/>
+                <mxCell id="92" value="type: classDeclare&lt;br&gt;text: &quot;{className}&quot;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="2060" y="510" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="96" value="type: blockStmt&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" vertex="1" parent="1">
-                    <mxGeometry x="2830" y="640" width="120" height="80" as="geometry"/>
+                <mxCell id="96" value="type: blockStmt&lt;br&gt;text:" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
+                    <mxGeometry x="2060" y="650" width="120" height="80" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

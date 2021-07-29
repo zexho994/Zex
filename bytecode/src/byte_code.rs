@@ -1,3 +1,6 @@
+pub type U2 = u16;
+pub type U4 = u32;
+
 /// class file
 ///
 /// ```c
@@ -21,23 +24,23 @@
 /// }
 /// ```
 ///
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct ClassFile {
-	magic: u32,
-	minor_version: u16,
-	major_version: u16,
-	// constant_pool_count: u16,
-	// constant_pool: u32,
-	// access_flags: u16,
-	// this_class: u16,
-	// super_class: u16,
-	// interfaces_count: u16,
-	// interfaces:
-	// fields_count: u16,
-	// fields[fields_count]
-	// methods_count: u16,
-	// methods[methods_count]
-	// attributes_count: u16,
+	magic: U4,
+	minor_version: U2,
+	major_version: U2,
+	constant_pool_count: U2,
+	constant_pool: ConstantPool,
+	access_flags: U2,
+	this_class: U2,
+	super_class: U2,
+	interfaces_count: U2,
+	interfaces: Interfaces,
+	fields_count: U2,
+	fields: Fields,
+	methods_count: U2,
+	methods: Method,
+	attributes_count: U2,
 }
 
 impl ClassFile {
@@ -46,6 +49,44 @@ impl ClassFile {
 			magic: 0xCAFEBABE,
 			minor_version: 0,
 			major_version: 52,
+			constant_pool_count: 0,
+			constant_pool: ConstantPool {},
+			access_flags: 0,
+			this_class: 0,
+			super_class: 0,
+			interfaces_count: 0,
+			interfaces: Interfaces {},
+			fields_count: 0,
+			fields: Fields {},
+			methods_count: 0,
+			methods: Method {},
+			attributes_count: 0,
 		}
 	}
+
+	pub fn set_interfaces_count(&mut self, count: U2) {
+		self.interfaces_count = count;
+	}
+
+	pub fn set_fields_count(&mut self, count: U2) {
+		self.fields_count = count;
+	}
 }
+
+#[derive(Debug, Default)]
+pub struct ConstantPool {}
+
+/// 常量池中存储的基本单元
+#[derive(Debug, Default)]
+pub struct ConstantPoolUnit {
+	default: U2,
+}
+
+#[derive(Debug, Default)]
+pub struct Interfaces {}
+
+#[derive(Debug, Default)]
+pub struct Fields {}
+
+#[derive(Debug, Default)]
+pub struct Method {}
