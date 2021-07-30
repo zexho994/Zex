@@ -95,8 +95,6 @@ impl Scope {
 		new_symbol: Symbol,
 		scope_stack: &mut ScopeStack,
 	) {
-		println!("update symbol");
-
 		if !self.is_contain_symbol(symbol_name, scope_stack) {
 			panic!("变量未声明,symbol= {}", symbol_name);
 		}
