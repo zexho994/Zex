@@ -7,7 +7,7 @@ use bytecode::file::append_to_file;
 use bytecode::*;
 use std::fs::read;
 
-static PATH_STR: &'static str = "/Users/zexho/Github/Zex/sample/";
+static PATH_STR: &'static str = "/Users/com.zexho/Github/Zex/sample/";
 
 #[test]
 fn write_test() {
@@ -29,12 +29,12 @@ fn write_cafebabe() {
 
 #[test]
 fn read_class() {
-	let content = read("/Users/zexho/Github/Zex/java/Simply.class").unwrap();
+	let content = read("/Users/com.zexho/Github/Zex/java/Simply.class").unwrap();
 	println!("{:?}", content);
 }
 
 #[test]
 fn read_cafebabe() {
-	let content = read("/Users/zexho/Github/Zex/sample/write_class.class").unwrap();
+	let content = read("/Users/com.zexho/Github/Zex/sample/write_class.class").unwrap();
 	println!("{:?}", content);
 }
